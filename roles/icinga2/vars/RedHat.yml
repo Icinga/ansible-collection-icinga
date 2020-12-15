@@ -1,0 +1,10 @@
+---
+icinga2_user: icinga
+icinga2_group: icinga
+icinga2_default_constants:
+  PluginDir: /usr/lib64/nagios/plugins
+  ManubulonPluginDir: /usr/lib64/nagios/plugins
+  PluginContribDir: /usr/lib64/nagios/plugins
+  NodeName: "{{ icinga2_certname }}"
+  ZoneName: NodeName
+  TicketSalt: ''

@@ -1,0 +1,11 @@
+// {{ ansible_managed }}
+
+{% for endpoint, attrs in (icinga2_feature_defaults[item.name].endpoints| combine(item.endpoints)).items() %}
+object Endpoint {% if endpoint in icinga2_local_constants %}{{ endpoint }}{% else %}"{{ endpoint }}"{%endif %} {
+{{ lookup('icinga.icinga.icinga2_parser', attrs, constants=icinga2_local_constants, reserved=icinga2_reserved) }}}
+{% endfor %}
+
+{% for zone, attrs in (icinga2_feature_defaults[item.name].zones| combine(item.zones)).items() %}
+object Zone {% if zone in icinga2_local_constants %}{{ zone }}{% else %}"{{ zone }}"{%endif %} {
+{{ lookup('icinga.icinga.icinga2_parser', attrs, constants=icinga2_local_constants, reserved=icinga2_reserved) }}}
+{% endfor %}

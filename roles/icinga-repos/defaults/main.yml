@@ -1,0 +1,23 @@
+---
+# defaults file for icinga_repos
+icinga_repo_yum_stable_url: "http://packages.icinga.com/epel/$releasever/release/"
+icinga_repo_yum_stable_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_testing_url: "http://packages.icinga.com/epel/$releasever/testing/"
+icinga_repo_yum_testing_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_snapshot_url: "http://packages.icinga.com/epel/$releasever/snapshot/"
+icinga_repo_yum_snapshot_key: "{{ icinga_repo_gpgkey }}"
+
+icinga_repo_yum_epel_url: "http://download.fedoraproject.org/pub/epel/7/$basearch"
+icinga_repo_yum_epel_key: "https://getfedora.org/static/fedora.gpg"
+
+icinga_repo_apt_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_apt_stable_deb: "deb http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }} main"
+icinga_repo_apt_testing_deb: "deb http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }}-testing main"
+icinga_repo_apt_snapshot_deb: "deb http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }}-snapshot main"
+
+icinga_repo_gpgkey: "https://packages.icinga.com/icinga.key"
+icinga_repo_stable: true
+icinga_repo_testing: false
+icinga_repo_snapshot: false
+icinga_repo_epel: false
+icinga_repo_scl: false

@@ -1,0 +1,13 @@
+// {{ ansible_managed }}
+
+{% if icinga2_feature_defaults[item.name].library is defined %}
+library "{{ icinga2_feature_defaults[item.name].library }}"
+
+{% endif %}
+object {{ icinga2_feature_defaults[item.name].object_type }} "{{ icinga2_feature_defaults[item.name].object_name }}" {
+{% for attr,value in (item | combine(icinga2_feature_defaults[item.name].attrs)).items()  %}
+{% if attr not in ['name','state','endpoints','zones'] %}
+  {{ attr }} = "{{ value }}"
+{% endif %}
+{% endfor %}
+}

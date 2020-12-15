@@ -1,0 +1,24 @@
+---
+- name: Apt - add repository key
+  become: yes
+  apt_key:
+    url: "{{ icinga_repo_apt_key }}"
+    state: present
+- name: Apt - add Icinga repository (stable)
+  become: yes
+  apt_repository:
+    filename: /etc/apt/sources.list.d/icinga
+    repo: "{{ icinga_repo_apt_stable_deb }}"
+    state: "{{ 'present' if icinga_repo_stable else 'absent' }}"
+- name: Apt - add Icinga repository (testing)
+  become: yes
+  apt_repository:
+    filename: /etc/apt/sources.list.d/icinga
+    repo: "{{ icinga_repo_apt_testing_deb }}"
+    state: "{{ 'present' if icinga_repo_testing else 'absent' }}"
+- name: Apt - add Icinga repository (snapshot)
+  become: yes
+  apt_repository:
+    filename: /etc/apt/sources.list.d/icinga
+    repo: "{{ icinga_repo_apt_snapshot_deb }}"
+    state: "{{ 'present' if icinga_repo_snapshot else 'absent' }}"

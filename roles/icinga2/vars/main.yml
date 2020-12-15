@@ -1,0 +1,94 @@
+---
+icinga2_cert_path: /var/lib/icinga2/certs
+icinga2_feature_defaults:
+  checker:
+    object_type: CheckerComponent
+    object_name: checker
+    library: checker
+    attrs: {}
+  notification:
+    object_type: NotificationComponent
+    object_name: notification
+    library: notification
+    attrs: {}
+  mainlog:
+    object_type: FileLogger
+    object_name: main-log
+    attrs:
+      severity: information
+      path: /var/log/icinga2/icinga2.log
+  api:
+    object_type: ApiListener
+    object_name: api
+    endpoints:
+      - NodeName: {}
+    zones:
+      - ZoneName:
+          endpoints: [ NodeName ]
+    attrs:
+      ticket_salt: TicketSalt
+icinga2_reserved:
+  - Acknowledgement
+  - ApiBindHost
+  - ApiBindPort
+  - ApiEnvironment
+  - ApplicationType
+  - AttachDebugger
+  - BuildCompilerName
+  - BuildCompilerVersion
+  - BuildHostName
+  - Concurrency
+  - Critical
+  - Custom
+  - Deprecated
+  - Down
+  - DowntimeEnd
+  - DowntimeRemoved
+  - DowntimeStart
+  - Environment
+  - FlappingEnd
+  - FlappingStart
+  - HostDown
+  - HostUp
+  - IncludeConfDir
+  - Internal
+  - Json
+  - LocalStateDir
+  - LogCritical
+  - LogDebug
+  - LogInformation
+  - LogNotice
+  - LogWarning
+  - Math
+  - MaxConcurrentChecks
+  - ModAttrPath
+  - NodeName
+  - OK
+  - ObjectsPath
+  - PidPath
+  - PkgDataDir
+  - PlatformArchitecture
+  - PlatformKernel
+  - PlatformKernelVersion
+  - PlatformName
+  - PlatformVersion
+  - PrefixDir
+  - Problem
+  - Recovery
+  - RunAsGroup
+  - RunAsUser
+  - RunDir
+  - ServiceCritical
+  - ServiceOK
+  - ServiceUnknown
+  - ServiceWarning
+  - StatePath
+  - SysconfDir
+  - System
+  - Types
+  - Unknown
+  - Up
+  - UseVfork
+  - VarsPath
+  - Warning
+  - ZonesDir

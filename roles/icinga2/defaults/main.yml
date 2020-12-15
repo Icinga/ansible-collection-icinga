@@ -1,0 +1,19 @@
+---
+icinga2_certname: "{{ ansible_fqdn }}"
+icinga2_ensure: started
+icinga2_enabled: true
+icinga2_confd: true
+icinga2_plugins:
+  - plugins
+  - plugins-contrib
+  - windows-plugins
+  - nscp
+icinga2_purge_features: false
+icinga2_constants: {}
+icinga2_features:
+  - name: checker
+  - name: notification
+  - name: mainlog
+    state: present
+    severity: notice
+icinga2_force_newcert: false

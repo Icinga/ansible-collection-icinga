@@ -1,0 +1,56 @@
+---
+- name: configure zones.conf
+  template:
+    src: templates/zones.conf.j2
+    dest: /etc/icinga2/zones.conf
+  notify: reload icinga2 service
+
+- name: check key path exit
+  stat:
+    path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
+  register: path_key
+
+- name: check crt path exit.
+  stat:
+    path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+  register: path_crt
+
+- name: certificate request
+  block:
+    - name: create certs path
+      file:
+        path: "{{ icinga2_cert_path }}"
+        state: directory
+        owner: icinga
+        group: icinga
+        mode: "0750"
+
+    - name: save trusted-master.crt
+      shell: >
+        icinga2 pki save-cert
+        --host "{{ icinga2_ca_request_target |default(icinga2_ca_host) }}"
+        --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
+
+    - name: generate private and public key
+      shell: >
+        icinga2 pki new-cert
+        --cn "{{ icinga2_certname }}"
+        --key "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
+        --cert "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+
+    - name: ticket request
+      shell: icinga2 pki ticket --cn "{{ icinga2_certname }}"
+      delegate_to: "{{ icinga2_ca_host }}"
+      register: icinga2_ticket
+
+    - name: get certificate
+      shell: >
+        icinga2 pki request
+        --ticket "{{ icinga2_ticket.stdout }}"
+        --host "{{ icinga2_ca_request_target |default(icinga2_ca_host) }}"
+        --ca "{{ icinga2_cert_path }}/ca.crt"
+        --key "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
+        --cert "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+        --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
+      notify: reload icinga2 service
+  when: (path_key.stat.exists == false or path_crt.stat.exists == false) or (icinga2_force_newcert)

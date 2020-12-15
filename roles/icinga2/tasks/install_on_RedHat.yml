@@ -1,0 +1,2 @@
+- name: Yum - install package icinga2
+  yum: pkg=icinga2 state=present

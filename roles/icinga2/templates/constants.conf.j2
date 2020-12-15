@@ -1,0 +1,6 @@
+/**
+ * This file defines global constants which can be used in
+ * the other configuration files.
+ */
+
+{{ lookup('icinga.icinga.icinga2_parser', icinga2_local_constants|icinga.icinga.prefix('const '), constants=icinga2_local_constants, reserved=icinga2_reserved, indent=0) }}

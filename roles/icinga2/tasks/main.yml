@@ -18,5 +18,9 @@
 - name: configure icinga2
   include: configure.yml
 
+- name: manage monitoring
+  include: monitoring.yml
+  when: icinga2_monitoring_objects is defined
+
 - name: manage service icinga2
   include: service.yml

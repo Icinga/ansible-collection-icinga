@@ -1,0 +1,12 @@
+
+{% if item.object_type == "Host" %}
+object Host "{{ item.object_name }}" {
+{% elif item.object_type == "Service" %}
+object Service "{{ item.object_name }}" {
+{% endif %}
+{{ lookup('icinga.icinga.icinga2_parser',
+          item.attrs,
+          constants=icinga2_local_constants,
+          reserved=icinga2_reserved,
+          indent=2) }}
+}

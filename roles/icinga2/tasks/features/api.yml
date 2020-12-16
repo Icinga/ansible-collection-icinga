@@ -8,12 +8,12 @@
 - name: check key path exit
   stat:
     path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
-  register: path_key
+  register: icinga2_ssl_key_path
 
 - name: check crt path exit.
   stat:
     path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
-  register: path_crt
+  register: icinga2_ssl_cert_path
 
 - name: certificate request
   block:
@@ -21,8 +21,8 @@
       file:
         path: "{{ icinga2_cert_path }}"
         state: directory
-        owner: icinga
-        group: icinga
+        owner: "{{ icinga2_user }}"
+        group: "{{ icinga2_group }}"
         mode: "0750"
 
     - name: save trusted-master.crt
@@ -53,4 +53,4 @@
         --cert "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
       notify: reload icinga2 service
-  when: (path_key.stat.exists == false or path_crt.stat.exists == false) or (icinga2_force_newcert)
+  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false) or (icinga2_force_newcert)

@@ -1,3 +1,5 @@
 ---
 - name: Apt - install package icinga2
-  apt: pkg=icinga2 state=present
+  apt:
+    pkg: icinga2
+    state: present

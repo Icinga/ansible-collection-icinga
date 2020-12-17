@@ -1,3 +1,6 @@
 ---
-- name: service icinga2
-  service: name=icinga2 state="{{ icinga2_ensure }}" enabled="{{ icinga2_enabled }}"
+- name: "{{ icinga2_ensure }} service icinga2"
+  service:
+    name: icinga2
+    state: "{{ icinga2_ensure }}"
+    enabled: "{{ icinga2_enabled }}"

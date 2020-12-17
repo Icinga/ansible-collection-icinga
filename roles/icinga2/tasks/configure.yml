@@ -1,13 +1,17 @@
 ---
 - name: icinga2 main configuration file
-  template: src=icinga2.conf.j2 dest=/etc/icinga2/icinga2.conf
+  template:
+    src: icinga2.conf.j2
+    dest: /etc/icinga2/icinga2.conf
   notify: reload icinga2 service
 
 - set_fact:
     icinga2_local_constants: "{{ icinga2_default_constants | combine(icinga2_constants) }}"
 
 - name: icinga2 set constants
-  template: src=constants.conf.j2 dest=/etc/icinga2/constants.conf
+  template:
+    src: constants.conf.j2
+    dest: /etc/icinga2/constants.conf
   notify: reload icinga2 service
 
 - name: icinga2 features

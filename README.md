@@ -2,7 +2,7 @@
 
 Collection to setup and manage components of the Icinga software stack.
 
-# Monitring Objects Configuration
+# Monitoring Objects Configuration
 
 By adding the variable `icinga2_monitoring_objects` the role Icinga 2 will
 generate configuration files with objects included.

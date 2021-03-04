@@ -1,1 +1,12 @@
 ---
+
+- name: feature checker CheckerComponent object
+  icinga2_object:
+    state: present
+    name: checker
+    type: CheckerComponent
+    file: features-available/checker.conf
+  register: result
+
+- set_fact:
+    icinga2_objects: "{{ icinga2_objects|default([]) + [result.dest] }}"

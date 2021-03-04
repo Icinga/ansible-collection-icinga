@@ -1,4 +1,6 @@
 ---
+- gather_facts:
+
 - name: Include OS specific vars
   include_vars: "{{ lookup('first_found', params) }}"
   vars:
@@ -12,15 +14,11 @@
       paths:
         - 'vars'
 
-- name: install icinga2
-  include: "install_on_{{ ansible_os_family }}.yml"
+- name: install
+  include: install.yml
 
-- name: configure icinga2
+- name: configure
   include: configure.yml
 
-- name: manage monitoring
-  include: monitoring.yml
-  when: icinga2_monitoring_objects is defined
-
-- name: manage service icinga2
+- name: manage service
   include: service.yml

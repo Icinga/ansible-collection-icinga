@@ -1,23 +1,76 @@
 ---
-- name: configure zones.conf
-  template:
-    src: templates/zones.conf.j2
-    dest: /etc/icinga2/zones.conf
-  notify: reload icinga2 service
 
-- name: check key path exit
+- name: set api feature facts
+  set_fact: 
+    icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
+    icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host |mandatory }}"
+    icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
+    icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
+    icinga2_zones: "{{ icinga2_dict_features.api.zones |default([]) }}"
+
+- name: api feature cleanup arguments list 
+  set_fact:
+    args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
+  when: idx.key not in ['ca_host', 'cert_name', 'force_newcert', 'zones', 'endpoints']
+  loop: "{{ icinga2_dict_features.api |dict2items }}"
+  loop_control:
+    loop_var: idx
+
+- name: feature api ApiListener object
+  icinga2_object:
+    state: present
+    name: api
+    type: ApiListener
+    file: features-available/api.conf
+    args: "{{ args }}"
+  register: result
+
+- set_fact:
+    icinga2_objects: "{{ icinga2_objects|default([]) + [result.dest] }}"
+
+- name: feature api Endpoint objects
+  icinga2_object:
+    type: Endpoint
+    args: "{{ idx }}"
+  loop: "{{ icinga2_endpoints }}"
+  loop_control:
+    loop_var: idx
+  register: result
+
+- set_fact:
+    icinga2_objects: "{{ icinga2_objects|default([]) + [idx.dest] }}"
+  loop: "{{ result.results }}"
+  loop_control:
+    loop_var: idx
+
+- name: feature api Zone objects
+  icinga2_object:
+    type: Zone
+    args: "{{ idx }}"
+  loop: "{{ icinga2_zones }}"
+  loop_control:
+    loop_var: idx
+  register: result
+
+- set_fact:
+    icinga2_objects: "{{ icinga2_objects|default([]) + [idx.dest] }}"
+  loop: "{{ result.results }}"
+  loop_control:
+    loop_var: idx
+
+- name: check key already exits
   stat:
-    path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
+    path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
   register: icinga2_ssl_key_path
 
-- name: check crt path exit.
+- name: check certificate already exits
   stat:
-    path: "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+    path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
   register: icinga2_ssl_cert_path
 
 - name: certificate request
   block:
-    - name: create certs path
+    - name: create cert path
       file:
         path: "{{ icinga2_cert_path }}"
         state: directory
@@ -28,18 +81,18 @@
     - name: save trusted-master.crt
       shell: >
         icinga2 pki save-cert
-        --host "{{ icinga2_ca_request_target |default(icinga2_ca_host) }}"
+        --host "{{ icinga2_ca_host) }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
 
     - name: generate private and public key
       shell: >
         icinga2 pki new-cert
-        --cn "{{ icinga2_certname }}"
-        --key "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
-        --cert "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+        --cn "{{ icinga2_cert_name }}"
+        --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+        --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
 
     - name: ticket request
-      shell: icinga2 pki ticket --cn "{{ icinga2_certname }}"
+      shell: icinga2 pki ticket --cn "{{ icinga2_cert_name }}"
       delegate_to: "{{ icinga2_ca_host }}"
       register: icinga2_ticket
 
@@ -47,10 +100,10 @@
       shell: >
         icinga2 pki request
         --ticket "{{ icinga2_ticket.stdout }}"
-        --host "{{ icinga2_ca_request_target |default(icinga2_ca_host) }}"
+        --host "{{ a_host }}"
         --ca "{{ icinga2_cert_path }}/ca.crt"
-        --key "{{ icinga2_cert_path }}/{{ icinga2_certname }}.key"
-        --cert "{{ icinga2_cert_path }}/{{ icinga2_certname }}.crt"
+        --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+        --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
       notify: reload icinga2 service
   when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false) or (icinga2_force_newcert)

@@ -1,32 +1,4 @@
 ---
-icinga2_cert_path: /var/lib/icinga2/certs
-icinga2_feature_defaults:
-  checker:
-    object_type: CheckerComponent
-    object_name: checker
-    library: checker
-    attrs: {}
-  notification:
-    object_type: NotificationComponent
-    object_name: notification
-    library: notification
-    attrs: {}
-  mainlog:
-    object_type: FileLogger
-    object_name: main-log
-    attrs:
-      severity: information
-      path: /var/log/icinga2/icinga2.log
-  api:
-    object_type: ApiListener
-    object_name: api
-    endpoints:
-      - NodeName: {}
-    zones:
-      - ZoneName:
-          endpoints: [ NodeName ]
-    attrs:
-      ticket_salt: TicketSalt
 icinga2_reserved:
   - Acknowledgement
   - ApiBindHost
@@ -56,6 +28,7 @@ icinga2_reserved:
   - LocalStateDir
   - LogCritical
   - LogDebug
+  - LogDir
   - LogInformation
   - LogNotice
   - LogWarning
@@ -92,3 +65,11 @@ icinga2_reserved:
   - VarsPath
   - Warning
   - ZonesDir
+icinga2_object_types:
+  - CheckerComponent
+  - FileLogger
+  - NotificationComponent
+  - ApiListener
+  - Endpoint
+  - Zone
+  - Host

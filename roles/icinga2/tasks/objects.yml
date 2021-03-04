@@ -1,0 +1,18 @@
+---
+
+- set_fact:
+    test: "{{ test| default([]) + hostvars[item]['icinga2_remote_objects'] }}"
+  with_items: "{{ groups['all'] }}"
+  when: ansible_hostname == 'icinga' and hostvars[item]['icinga2_remote_objects'] is defined
+
+- icinga2_object:
+    args: "{{ item }}"
+  with_items: "{{ test }}"
+  when: ansible_hostname == 'icinga'
+  register: result
+
+- set_fact:
+    icinga2_objects: "{{ icinga2_objects|default([]) + [item.dest] }}"
+  when: ansible_hostname == 'icinga'
+  register: result
+  with_items: "{{ result.results }}"

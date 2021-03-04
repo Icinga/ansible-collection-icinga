@@ -1,18 +1,71 @@
 ---
-- name: icinga2 main configuration file
+
+- name: populate features (icinga2_dict_features)
+  set_fact:
+    icinga2_dict_features: "{{ icinga2_dict_features|default({}) | combine({ item.name: item }) }}"
+  with_items: "{{ icinga2_features }}"
+
+- name: main config file {{ icinga2_config_path + '/icinga2.conf' }}
   template:
     src: icinga2.conf.j2
-    dest: /etc/icinga2/icinga2.conf
+    dest: "{{ icinga2_config_path + '/icinga2.conf' }}"
   notify: reload icinga2 service
 
-- set_fact:
-    icinga2_local_constants: "{{ icinga2_default_constants | combine(icinga2_constants) }}"
+- name: merge defaults and user specified constants (set_fact icinga2_combined_constants)
+  set_fact:
+    icinga2_combined_constants: "{{ icinga2_default_constants | combine(icinga2_constants) }}"
 
-- name: icinga2 set constants
+- name: set constants in {{ icinga2_config_path + '/constants.conf' }}
   template:
     src: constants.conf.j2
-    dest: /etc/icinga2/constants.conf
+    dest: "{{ icinga2_config_path + '/constants.conf' }}"
   notify: reload icinga2 service
 
-- name: icinga2 features
+- name: features
   include_tasks: features.yml
+
+- name: objects
+  include_tasks: objects.yml
+
+- name: collect config fragments
+  find:
+    path: "{{ icinga2_fragments_path }}"
+    recurse: yes
+    file_type: file
+  register: result
+
+- name: cleanup config files
+  file:
+    state: absent
+    dest: "{{ item.path }}"
+  loop: "{{ result.files }}"
+  when: item.path not in icinga2_objects
+
+- name: collect empty config dirs
+  shell: >
+    find {{ icinga2_fragments_path }} -type d -empty
+  register: result
+  changed_when: result.stdout_lines |length > 0
+
+- name: remove empty config dirs
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items: "{{ result.stdout_lines }}"
+
+- name: collect config files
+  find:
+    path: "{{ icinga2_fragments_path }}"
+    recurse: yes
+    file_type: directory
+    pattern: '*.conf'
+  register: result
+
+- name: assemble config files
+  ansible.builtin.assemble:
+    src: "{{ item.path }}"
+    dest: "{{ item.path |regex_replace('^'+icinga2_fragments_path, '/etc/icinga2') }}"
+    delimiter: ' '
+  loop: "{{ result.files }}"
+  notify: reload icinga2 service
+

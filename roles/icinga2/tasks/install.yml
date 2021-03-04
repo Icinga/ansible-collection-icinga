@@ -1,0 +1,12 @@
+---
+
+- name: install on {{ ansible_os_family }}
+  include_tasks: "install_on_{{ ansible_os_family }}.yml"
+
+- name: fragments dir
+  file:
+    state: directory
+    path: "{{ icinga2_fragments_path }}"
+    owner: root
+    group: root
+    mode: 0700

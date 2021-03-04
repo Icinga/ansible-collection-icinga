@@ -1,16 +1,17 @@
 ---
-- name: collect all files with suffix conf
+
+- name: collect all files in {{ icinga2_config_path + '/features-enabled' }}
   find:
-    paths: /etc/icinga2/features-enabled
+    paths: "{{ icinga2_config_path + '/features-enabled' }}"
     patterns: '*.conf'
     file_type: any
-  register: collected_features
+  register: icnga2_collected_features
   when: icinga2_purge_features
 
 - name: collect enabled features
   set_fact:
     features_enabled: "{{ features_enabled|default([]) + [ item.path| basename| splitext | first ] }}"
-  loop: "{{ collected_features.files }}"
+  loop: "{{ icnga2_collected_features.files }}"
   when: icinga2_purge_features
 
 - name: purge features
@@ -21,24 +22,17 @@
   notify: reload icinga2 service
   when: icinga2_purge_features
 
-- name: install features
+- name: configure features
   include: "features/{{ item.name }}.yml"
   loop: "{{ icinga2_features }}"
   when: item.state is undefined or item.state != 'absent'
   notify: reload icinga2 service
 
-- name: configure features
-  template:
-    src: templates/feature.conf.j2
-    dest: "{{ '/etc/icinga2/features-available/' + item.name + '.conf' }}"
-  loop: "{{ icinga2_features }}"
-  when: item.state is undefined or item.state != 'absent'
-  notify: reload icinga2 service
-
-- name: manage features
+- name: enable features
   file:
     state: "{{ 'link' if (item.state is undefined or item.state != 'absent') else 'absent' }}"
     path: "{{ '/etc/icinga2/features-enabled/' + item.name + '.conf' }}"
     src: "{{ '../features-available/' + item.name + '.conf' if (item.state is undefined or item.state != 'absent') else omit }}"
   loop: "{{ icinga2_features }}"
   notify: reload icinga2 service
+

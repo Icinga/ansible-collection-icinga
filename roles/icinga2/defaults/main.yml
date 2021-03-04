@@ -1,22 +1,16 @@
 ---
-icinga2_certname: "{{ ansible_fqdn }}"
-icinga2_ensure: started
+icinga2_state: started
 icinga2_enabled: true
 icinga2_confd: true
-icinga2_config_location: /etc/icinga2/zones.d
 icinga2_plugins:
   - plugins
   - plugins-contrib
   - windows-plugins
   - nscp
-icinga2_purge_features: false
+icinga2_purge_features: true
 icinga2_constants: {}
 icinga2_features:
   - name: checker
   - name: notification
   - name: mainlog
-    state: present
-    severity: notice
-icinga2_force_newcert: false
-icinga2_find_bin: find
-icinga2_tmp_config: /var/cache/icinga2/tmp_config/
+icinga2_remote_objects: []

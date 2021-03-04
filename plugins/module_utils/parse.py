@@ -167,7 +167,8 @@ class Icinga2Parser(object):
             if re.search(r'^(assign|ignore) where$', attr):
                 for x in value:
                   config += "%s%s %s\n" % (' '*indent, attr, parser(x))
-            elif attr == 'vars':
+            elif attr == '_vars':
+                attr = "vars"
                 if type(value) is dict:
                     if "+" in value:
                         del value['+']
@@ -202,6 +203,8 @@ class Icinga2Parser(object):
                         op = "-"
                         value.pop(0)
                     config += "%s%s %s= [ %s]\n" % ( ' ' * indent, attr, op, process_array(value))
+                elif value is None:
+                    config += ''
                 else:
                     if ( r:=re.search(r'^([\+,-])\s+', str(value))):
                         config += "%s%s %s= %s\n" % (' '*indent, attr, op, parser(re.sub(r'^[\+,-]\s+', '', str(value))))

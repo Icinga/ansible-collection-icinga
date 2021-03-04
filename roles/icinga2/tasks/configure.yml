@@ -39,7 +39,7 @@
     state: absent
     dest: "{{ item.path }}"
   loop: "{{ result.files }}"
-  when: item.path not in icinga2_objects
+  when: item.path not in icinga2_local_objects
 
 - name: collect empty config dirs
   shell: >

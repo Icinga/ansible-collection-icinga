@@ -10,4 +10,4 @@
   register: result
 
 - set_fact:
-    icinga2_objects: "{{ icinga2_objects|default([]) + [result.dest] }}"
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"

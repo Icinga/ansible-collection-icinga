@@ -22,16 +22,9 @@
   notify: reload icinga2 service
   when: icinga2_purge_features
 
-- name: feature {{ item.name }} validate parameters
-  fail:
-    msg: "value of state must be one of: present, absent, got: {{ item.state }}"  
-  with_items: "{{ icinga2_features }}"
-  when: item.state is defined and item.state is not in ['present', 'absent']
-
 - name: configure features
   include: "features/{{ item.name }}.yml"
   loop: "{{ icinga2_features }}"
-  when: item.state is undefined or item.state != 'absent'
   notify: reload icinga2 service
 
 - name: enable features

@@ -30,6 +30,7 @@ class ActionModule(ActionBase):
 		# file path handling
 		#
 		path = task_vars['icinga2_fragments_path'] + '/' + obj['file'] + '/'
+		file_fragment = path + obj['order'] + '_' + type.lower() + '-' + obj['name']
 
 		file_args = dict()
 		file_args['state'] = 'directory'
@@ -49,7 +50,7 @@ class ActionModule(ActionBase):
 			else:
 				common_args['content'] += obj['name'] + ' {\n'
 
-			common_args['dest'] = path + obj['order'] + '_' + type.lower() + '-' + obj['name']
+			common_args['dest'] = file_fragment
 			common_args['content'] += Icinga2Parser().parse(obj["args"], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved'], 2) + '}\n'
 
 			copy_action = self._task.copy()
@@ -65,14 +66,13 @@ class ActionModule(ActionBase):
 
 			res = merge_hash(res, copy_action.run(task_vars=task_vars))
 		else:
-			copy_args = dict()
-			copy_args['state'] = 'absent'
-			copy_args['path'] = path + obj['order'] + '_' + type.lower() + '-' + obj['name']
-			test = self._execute_module(module_name='file', module_args=copy_args, task_vars=task_vars, tmp=tmp)
-			res = merge_hash(res, test)
+			if 'features-available' not in path:
+				copy_args = dict()
+				copy_args['state'] = 'absent'
+				copy_args['path'] = file_fragment
+				test = self._execute_module(module_name='file', module_args=copy_args, task_vars=task_vars, tmp=tmp)
+				res = merge_hash(res, test)
+			res['dest'] = file_fragment
 
-#		res['turn'] = re.sub('/|(_)', '_\g<1>', file)
-#		res['return'] = re.sub('(?<!_)_(?!_)', '/', res['info']).replace('__', '_')
-		res['info'] = obj
 		return res
 

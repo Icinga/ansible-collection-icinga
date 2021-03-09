@@ -2,7 +2,6 @@
 
 - name: feature notification NotificationComponent object
   icinga2_object:
-    state: present
     name: notification
     type: NotificationComponent
     file: features-available/notification.conf

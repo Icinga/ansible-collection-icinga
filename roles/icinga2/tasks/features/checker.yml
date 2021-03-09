@@ -2,10 +2,10 @@
 
 - name: feature checker CheckerComponent object
   icinga2_object:
-    state: present
     name: checker
     type: CheckerComponent
     file: features-available/checker.conf
+    args: "{{ icinga2_dict_features.checker }}"
   register: result
 
 - set_fact:

@@ -2,7 +2,6 @@
 
 - name: feature mainlog FileLogger object
   icinga2_object:
-    state: present
     name: main-log
     type: FileLogger
     file: features-available/mainlog.conf

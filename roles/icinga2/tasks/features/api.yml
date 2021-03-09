@@ -18,7 +18,6 @@
 
 - name: feature api ApiListener object
   icinga2_object:
-    state: present
     name: api
     type: ApiListener
     file: features-available/api.conf

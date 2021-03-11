@@ -137,7 +137,7 @@ class Icinga2Parser(object):
                 else:
                     if (r := re.search(r'^([\+,-])\s+', value)):
                         operator = r.group(1)
-                        value = re.sub(r'^[\+,-]\s+/', '', value)
+                        value = re.sub(r'^[\+,-]\s+', '', value)
                     else:
                         operator = ''
                     if level > 1:
@@ -164,9 +164,10 @@ class Icinga2Parser(object):
         op = ''
     
         for attr, value in attrs.items():
-            if re.search(r'^(assign|ignore) where$', attr):
+            #if re.search(r'^(assign|ignore) where$', attr):
+            if attr == 'assign' or attr == 'ignore':
                 for x in value:
-                  config += "%s%s %s\n" % (' '*indent, attr, parser(x))
+                  config += "%s%s %s\n" % (' '*indent, attr+' where', parser(x))
             elif attr == '_vars':
                 attr = "vars"
                 if type(value) is dict:
@@ -185,7 +186,8 @@ class Icinga2Parser(object):
                             else:
                                 config += process_hash(attrs=item, indent=indent+2, level=1, prefix=("%s%s." % (' '*indent, attr)))
                 else:
-                    op = '+' if re.search(r'^\+\s+', value) else None
+                    op = '+' if re.search(r'^\+\s+(.+)$', value) else None
+#                    config += "%s%s %s= %s\n" % ( ' ' * indent, attr, op, parser(r.group(1)) )
             else:
                 if type(value) is dict:
                     if "+" in value:
@@ -207,7 +209,7 @@ class Icinga2Parser(object):
                     config += ''
                 else:
                     if ( r:=re.search(r'^([\+,-])\s+', str(value))):
-                        config += "%s%s %s= %s\n" % (' '*indent, attr, op, parser(re.sub(r'^[\+,-]\s+', '', str(value))))
+                        config += "%s%s %s= %s\n" % (' '*indent, attr, r.group(1), parser(re.sub(r'^[\+,-]\s+', '', str(value))))
                     else:
                         config += "%s%s = %s\n" % (' '*indent, attr, parser(str(value)))
 

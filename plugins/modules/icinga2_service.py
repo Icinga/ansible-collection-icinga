@@ -11,14 +11,15 @@ def main():
 			order              = dict(default=10, type='int'),
 			file               = dict(default='features-available/checker.conf', type='str'),
 			template           = dict(default=False, type='bool'),
+			apply              = dict(default=False, type='str'),
 			imports            = dict(default=list(), type='list', elements='str'),
 			check_command      = dict(type='str'),
-			address            = dict(type='str'),
-			address6           = dict(type='str'),
+			command_endpoint   = dict(type='str'),
 			check_interval     = dict(type='str'),
 			retry_interval     = dict(type='str'),
 			max_check_attempts = dict(type='int'),
 			_vars              = dict(default=dict(), type='raw', aliases=['vars']),
+			assign             = dict(default=list(), type='list', elements='str'),
 		)
 	)
 
@@ -29,9 +30,20 @@ def main():
 	file = args.pop('file')
 	template = args.pop('template')
 	imports = args.pop('imports')
+	apply = args.pop('apply')
 	del args['_vars']
 
-	module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports)
+	if apply.lower() == 'true':
+		apply_for = False
+		apply = True
+	elif apply.lower() == 'false':
+		apply_for = False
+		apply = False
+	else:
+		apply_for = apply
+		apply = True
+
+	module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports, apply=apply, apply_for=apply_for)
 
 if __name__ == '__main__':
 	main()

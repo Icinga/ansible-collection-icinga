@@ -168,8 +168,7 @@ class Icinga2Parser(object):
             if attr == 'assign' or attr == 'ignore':
                 for x in value:
                   config += "%s%s %s\n" % (' '*indent, attr+' where', parser(x))
-            elif attr == '_vars':
-                attr = "vars"
+            elif attr == 'vars':
                 if type(value) is dict:
                     if "+" in value:
                         del value['+']
@@ -186,8 +185,10 @@ class Icinga2Parser(object):
                             else:
                                 config += process_hash(attrs=item, indent=indent+2, level=1, prefix=("%s%s." % (' '*indent, attr)))
                 else:
-                    op = '+' if re.search(r'^\+\s+(.+)$', value) else None
-#                    config += "%s%s %s= %s\n" % ( ' ' * indent, attr, op, parser(r.group(1)) )
+                    if re.search(r'^\+\s+', value):
+                        op = '+'
+                        value = re.sub(r'^\+\s+', '', str(value))
+                    config += "%s%s %s= %s\n" % ( ' ' * indent, attr, op, parser(value) )
             else:
                 if type(value) is dict:
                     if "+" in value:

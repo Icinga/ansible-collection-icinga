@@ -15,13 +15,13 @@ class ActionModule(ActionBase):
 		args = dict()
 		args = self._task.args.copy()
 		args = merge_hash(args.pop('args', {}), args)
-		type = args.pop('type', None)
+		object_type = args.pop('type', None)
 
-		if type not in task_vars['icinga2_object_types']:
-			raise AnsibleError('unknown Icinga object type: %s' % type)
+		if object_type not in task_vars['icinga2_object_types']:
+			raise AnsibleError('unknown Icinga object type: %s' % object_type)
 
 		obj = dict()
-		obj = self._execute_module(module_name='icinga2_'+type.lower(), module_args=args, task_vars=task_vars, tmp=tmp)
+		obj = self._execute_module(module_name='icinga2_'+object_type.lower(), module_args=args, task_vars=task_vars, tmp=tmp)
 
 		if 'failed' in obj:
 			raise AnsibleError('%s' % obj['msg'])
@@ -30,28 +30,63 @@ class ActionModule(ActionBase):
 		# file path handling
 		#
 		path = task_vars['icinga2_fragments_path'] + '/' + obj['file'] + '/'
-		file_fragment = path + obj['order'] + '_' + type.lower() + '-' + obj['name']
+		file_fragment = path + obj['order'] + '_' + object_type.lower() + '-' + obj['name']
 
 		file_args = dict()
 		file_args['state'] = 'directory'
 		file_args['path'] = path
 		test = self._execute_module(module_name='file', module_args=file_args, task_vars=task_vars, tmp=tmp)
 
-		
 		res = dict()
 		res = merge_hash(result, test)
 
 		if obj['state'] != 'absent':
 			common_args = dict()
-			common_args['content'] = 'object ' + type + ' '
+			li = list()
 
+			#
+			# quoting of object name?
+			#
 			if obj['name'] not in task_vars['icinga2_combined_constants']:
-				common_args['content'] += '"' + obj['name'] + '" {\n'
+				object_name = '"'+obj['name']+'"'
 			else:
-				common_args['content'] += obj['name'] + ' {\n'
+				object_name = obj['name']
+			
+			#
+			# apply rules template
+			#
+			if 'apply' in obj and obj['apply']:
+				object_content = 'apply ' + object_type
+				if 'apply_for' in obj and obj['apply_for']:
+					object_content += ' for (' + obj['apply_for'] + ') '
+					if (r := re.search(r'^(.+)\s+in\s+', obj['apply_for'])):
+        					tmp = r.group(1).strip()
+        					if (r := re.search(r'^(.+)=>(.+)$', tmp)):
+                					li.extend([r.group(1).strip(), r.group(2).strip()])
+        					else:
+                					li.append(tmp)
+				else:
+					object_content += ' '+object_name
+			elif 'template' in obj and obj['template']:
+				object_content = 'template '+object_type+' '+object_name
+			else:
+				object_content = 'object '+object_type+' '+object_name
+			object_content += ' {\n'
 
+			#
+			# imports?
+			#
+			if 'imports' in obj:
+				for item in obj['imports']:
+					object_content += '  import "' + str(item) + '"\n'
+				object_content += '\n'
+
+			#
+			# parser
+			#
+			object_content += Icinga2Parser().parse(obj["args"], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved']+li, 2) + '}\n'
 			common_args['dest'] = file_fragment
-			common_args['content'] += Icinga2Parser().parse(obj["args"], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved'], 2) + '}\n'
+			common_args['content'] = object_content
 
 			copy_action = self._task.copy()
 			copy_action.args = common_args

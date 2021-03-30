@@ -12,6 +12,7 @@ def main():
 			file            = dict(default='zones.conf', type='str'),
 			endpoints       = dict(required=True, type='list'),
 			parent          = dict(type='str'),
+			global          = dict(type='bool'),
 		)
 	)
 

@@ -15,7 +15,7 @@ def main():
 			imports                 = dict(default=list(), type='list', elements='str'),
 			display_name            = dict(type='str'),
 			host_name               = dict(type='str'),
-			groups                  = dict(default=list(), type='list', elements='str'),
+			groups                  = dict(type='list', elements='str'),
 			_vars                   = dict(default=dict(), type='raw', aliases=['vars']),
 			check_command           = dict(type='str'),
 			max_check_attempts      = dict(type='int'),

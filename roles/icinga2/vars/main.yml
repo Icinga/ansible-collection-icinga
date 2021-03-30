@@ -74,3 +74,4 @@ icinga2_object_types:
   - Zone
   - Host
   - Service
+  - SyslogLogger

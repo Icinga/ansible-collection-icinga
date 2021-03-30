@@ -1,0 +1,12 @@
+---
+  
+- name: feature syslog SyslogLogger object
+  icinga2_object:
+    name: syslog
+    type: SyslogLogger
+    file: features-available/syslog.conf
+    args: "{{ icinga2_dict_features.syslog }}"
+  register: result
+
+- set_fact:
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"

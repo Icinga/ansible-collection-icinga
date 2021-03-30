@@ -9,8 +9,10 @@ def main():
 			state           = dict(default='present', choices=['present', 'absent']),
 			name            = dict(required=True),
 			order		= dict(default=10, type='int'),
-			host            = dict(type='str'),
 			file            = dict(default='zones.conf', type='str'),
+			host            = dict(type='str'),
+			port            = dict(type='int'),
+			log_duration    = dict(type='str'),
 		)
 	)
 

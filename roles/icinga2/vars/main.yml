@@ -76,3 +76,4 @@ icinga2_object_types:
   - Service
   - SyslogLogger
   - GraphiteWriter
+  - InfluxdbWriter

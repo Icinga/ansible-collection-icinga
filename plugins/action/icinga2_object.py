@@ -20,6 +20,9 @@ class ActionModule(ActionBase):
 		if object_type not in task_vars['icinga2_object_types']:
 			raise AnsibleError('unknown Icinga object type: %s' % object_type)
 
+		#
+		# distribute to object type as module (name: icinga2_type)
+		#
 		obj = dict()
 		obj = self._execute_module(module_name='icinga2_'+object_type.lower(), module_args=args, task_vars=task_vars, tmp=tmp)
 
@@ -27,7 +30,7 @@ class ActionModule(ActionBase):
 			raise AnsibleError('%s' % obj['msg'])
 
 		#
-		# file path handling
+		# file path handling for assemble
 		#
 		path = task_vars['icinga2_fragments_path'] + '/' + obj['file'] + '/'
 		file_fragment = path + obj['order'] + '_' + object_type.lower() + '-' + obj['name']
@@ -35,25 +38,22 @@ class ActionModule(ActionBase):
 		file_args = dict()
 		file_args['state'] = 'directory'
 		file_args['path'] = path
-		test = self._execute_module(module_name='file', module_args=file_args, task_vars=task_vars, tmp=tmp)
-
-		res = dict()
-		res = merge_hash(result, test)
+		file_module = self._execute_module(module_name='file', module_args=file_args, task_vars=task_vars, tmp=tmp)
+		result = merge_hash(result, file_module)
 
 		if obj['state'] != 'absent':
-			common_args = dict()
-			li = list()
+			varlist = list() # list of variables from 'apply for'
 
 			#
 			# quoting of object name?
 			#
 			if obj['name'] not in task_vars['icinga2_combined_constants']:
-				object_name = '"'+obj['name']+'"'
+				object_name = '"' + obj['name'] + '"'
 			else:
 				object_name = obj['name']
 			
 			#
-			# apply rules template
+			# apply rule?
 			#
 			if 'apply' in obj and obj['apply']:
 				object_content = 'apply ' + object_type
@@ -62,15 +62,21 @@ class ActionModule(ActionBase):
 					if (r := re.search(r'^(.+)\s+in\s+', obj['apply_for'])):
         					tmp = r.group(1).strip()
         					if (r := re.search(r'^(.+)=>(.+)$', tmp)):
-                					li.extend([r.group(1).strip(), r.group(2).strip()])
+                					varlist.extend([r.group(1).strip(), r.group(2).strip()])
         					else:
-                					li.append(tmp)
+                					varlist.append(tmp)
 				else:
-					object_content += ' '+object_name
+					object_content += ' ' + object_name
+			#
+			# template?
+			#
 			elif 'template' in obj and obj['template']:
-				object_content = 'template '+object_type+' '+object_name
+				object_content = 'template ' + object_type + ' ' + object_name
+			#
+			# object
+			#
 			else:
-				object_content = 'object '+object_type+' '+object_name
+				object_content = 'object ' + object_type + ' ' + object_name
 			object_content += ' {\n'
 
 			#
@@ -84,12 +90,11 @@ class ActionModule(ActionBase):
 			#
 			# parser
 			#
-			object_content += Icinga2Parser().parse(obj["args"], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved']+li, 2) + '}\n'
-			common_args['dest'] = file_fragment
-			common_args['content'] = object_content
-
+			object_content += Icinga2Parser().parse(obj["args"], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved']+varlist, 2) + '}\n'
 			copy_action = self._task.copy()
-			copy_action.args = common_args
+			copy_action.args = dict()
+			copy_action.args['dest'] = file_fragment
+			copy_action.args['content'] = object_content
 
 			copy_action = self._shared_loader_obj.action_loader.get('copy',
 				task=copy_action,
@@ -99,15 +104,16 @@ class ActionModule(ActionBase):
 				templar=self._templar,
 				shared_loader_obj=self._shared_loader_obj)
 
-			res = merge_hash(res, copy_action.run(task_vars=task_vars))
+			result = merge_hash(result, copy_action.run(task_vars=task_vars))
 		else:
+			# remove file if does not belong to a feature
 			if 'features-available' not in path:
-				copy_args = dict()
-				copy_args['state'] = 'absent'
-				copy_args['path'] = file_fragment
-				test = self._execute_module(module_name='file', module_args=copy_args, task_vars=task_vars, tmp=tmp)
-				res = merge_hash(res, test)
-			res['dest'] = file_fragment
+				file_args = dict()
+				file_args['state'] = 'absent'
+				file_args['path'] = file_fragment
+				file_module = self._execute_module(module_name='file', module_args=file_args, task_vars=task_vars, tmp=tmp)
+				result = merge_hash(result, file_module)
+			result['dest'] = file_fragment
 
-		return res
+		return result
 

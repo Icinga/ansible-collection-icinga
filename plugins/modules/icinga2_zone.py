@@ -10,9 +10,9 @@ def main():
 			name            = dict(required=True),
 			order		= dict(default=10, type='int'),
 			file            = dict(default='zones.conf', type='str'),
-			endpoints       = dict(required=True, type='list'),
+			endpoints       = dict(type='list', elements='str'),
 			parent          = dict(type='str'),
-			global          = dict(type='bool'),
+			_global         = dict(type='bool', aliases=['global']),
 		)
 	)
 
@@ -21,6 +21,7 @@ def main():
 	order = args.pop('order')
 	state = args.pop('state')
 	file = args.pop('file')
+	del args['_global']        
 
 	module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file)
 

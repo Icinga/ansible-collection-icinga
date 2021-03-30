@@ -77,3 +77,7 @@ icinga2_object_types:
   - SyslogLogger
   - GraphiteWriter
   - InfluxdbWriter
+  - IdoMysqlConnection
+icinga2_feature_realname:
+  idomysql: ido-mysql
+

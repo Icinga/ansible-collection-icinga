@@ -1,0 +1,14 @@
+---
+
+- name: feature debuglog FileLogger object
+  icinga2_object:
+    name: debug-file
+    type: FileLogger
+    file: features-available/debuglog.conf
+    path: LogDir + /debug.log
+    severity: debug
+    args: "{{ icinga2_dict_features.debuglog }}"
+  register: result
+
+- set_fact:
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"

@@ -12,6 +12,7 @@ def main():
 			file                    = dict(default='features-available/checker.conf', type='str'),
 			template                = dict(default=False, type='bool'),
 			imports                 = dict(default=list(), type='list', elements='str'),
+			display_name            = dict(type='str'),
 			address                 = dict(type='str'),
 			address6                = dict(type='str'),
 			groups                  = dict(type='list', elements='str'),

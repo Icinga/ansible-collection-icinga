@@ -199,12 +199,13 @@ class Icinga2Parser(object):
                     else:
                         config += "%s%s %s= {}\n" % (' '*indent, op, attr)
                 elif type(value) is list:
-                    if value[0] == "+":
-                        op = "+"
-                        value.pop(0)
-                    elif value[0] == "-":
-                        op = "-"
-                        value.pop(0)
+                    if value:
+                        if value[0] == "+":
+                            op = "+"
+                            value.pop(0)
+                        elif value[0] == "-":
+                            op = "-"
+                            value.pop(0)
                     config += "%s%s %s= [ %s]\n" % ( ' ' * indent, attr, op, process_array(value))
                 elif value is None:
                     config += ''

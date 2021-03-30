@@ -80,4 +80,5 @@ icinga2_object_types:
   - IdoMysqlConnection
 icinga2_feature_realname:
   idomysql: ido-mysql
+  ido-mysql: idomysql
 

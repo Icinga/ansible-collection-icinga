@@ -10,6 +10,7 @@ def main():
 			name      = dict(required=True),
 			order     = dict(default=10, type='int'),
 			file      = dict(default='features-available/notification.conf', type='str'),
+			enable_ha = dict(type='bool'),
 		)
 	)
 

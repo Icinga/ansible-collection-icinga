@@ -75,3 +75,4 @@ icinga2_object_types:
   - Host
   - Service
   - SyslogLogger
+  - GraphiteWriter

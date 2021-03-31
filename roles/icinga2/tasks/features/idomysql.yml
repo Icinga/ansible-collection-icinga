@@ -1,0 +1,52 @@
+---
+
+- name: set api feature facts
+  set_fact:
+    icinga2_import_schema: "{{ icinga2_dict_features.idomysql.import_schema| default(False) }}"
+
+- name: api feature cleanup arguments list
+  set_fact:
+    args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
+  when: idx.key not in ['import_schema']
+  loop: "{{ icinga2_dict_features.idomysql |dict2items }}"
+  loop_control:
+    loop_var: idx
+    
+- name: feature idomysql IdoMysqlConnection object
+  icinga2_object:
+    name: ido-mysql
+    type: IdoMysqlConnection
+    file: features-available/ido-mysql.conf
+    args: "{{ args }}"
+  register: result
+
+- set_fact:
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"
+
+- name: install on {{ ansible_os_family }}
+  include_tasks: "features/idomysql/install_on_{{ ansible_os_family }}.yml"
+
+- name: MySQL import IDO schema
+  block:
+    - name: build mysql command
+      set_fact:
+        mysqlcmd: >-
+          mysql {% if icinga2_dict_features.idomysql.host| default('localhost') != 'localhost'  %} -h "{{ icinga2_dict_features.idomysql.host }}" {%- endif %}
+          -u "{{ icinga2_dict_features.idomysql.user |default('icinga2') }}"
+          -p"{{ icinga2_dict_features.idomysql.password }}"
+          "{{ icinga2_dict_features.idomysql.database |default('icinga2') }}"
+
+    - name: MySQL check for IDO schema
+      shell: >
+        {{ mysqlcmd }}
+        -Ns -e "select version from icinga_dbversion"
+      ignore_errors: True
+      changed_when: False
+      register: db_schema
+
+    - name: MySQL import IDO schema
+      shell: >
+        {{ mysqlcmd }}
+        < /usr/share/icinga2-ido-mysql/schema/mysql.sql
+      when: db_schema.rc != 0
+  when: icinga2_dict_features.idomysql.import_schema| default(False)

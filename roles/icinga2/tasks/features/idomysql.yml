@@ -32,6 +32,7 @@
       set_fact:
         mysqlcmd: >-
           mysql {% if icinga2_dict_features.idomysql.host| default('localhost') != 'localhost'  %} -h "{{ icinga2_dict_features.idomysql.host }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.port is defined %} -P "{{ icinga2_dict_features.idomysql.port }}" {%- endif %}
           -u "{{ icinga2_dict_features.idomysql.user |default('icinga2') }}"
           -p"{{ icinga2_dict_features.idomysql.password }}"
           "{{ icinga2_dict_features.idomysql.database |default('icinga2') }}"

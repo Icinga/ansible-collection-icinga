@@ -40,6 +40,7 @@ def main():
 			icon_image              = dict(type='str'),
 			icon_image_alt          = dict(type='str'),
 			assign                  = dict(default=list(), type='list', elements='str'),
+			ignore                  = dict(default=list(), type='list', elements='str'),
 		)
 	)
 

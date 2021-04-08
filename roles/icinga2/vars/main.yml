@@ -66,6 +66,11 @@ icinga2_reserved:
   - Warning
   - ZonesDir
   - Dictionary
+icinga2_feature_realname:
+  idomysql: ido-mysql
+  ido-mysql: idomysql
+  ido-pgsql: idopgsql
+  idopgsql: ido-pgsql
 icinga2_object_types:
   - CheckerComponent
   - FileLogger
@@ -81,9 +86,4 @@ icinga2_object_types:
   - IdoMysqlConnection
   - IdoPgsqlConnection
   - ApiUser
-icinga2_feature_realname:
-  idomysql: ido-mysql
-  ido-mysql: idomysql
-  ido-pgsql: idopgsql
-  idopgsql: ido-pgsql
-
+  - CheckCommand

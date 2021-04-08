@@ -80,6 +80,7 @@ icinga2_object_types:
   - InfluxdbWriter
   - IdoMysqlConnection
   - IdoPgsqlConnection
+  - ApiUser
 icinga2_feature_realname:
   idomysql: ido-mysql
   ido-mysql: idomysql

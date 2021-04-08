@@ -9,7 +9,7 @@ def main():
 			state                   = dict(default='present', choices=['present', 'absent']),
 			name                    = dict(required=True),
 			order                   = dict(default=10, type='int'),
-			file                    = dict(default='features-available/checker.conf', type='str'),
+			file                    = dict(required=True, type='str'),
 			template                = dict(default=False, type='bool'),
 			imports                 = dict(default=list(), type='list', elements='str'),
 			display_name            = dict(type='str'),

@@ -99,7 +99,7 @@
       shell: >
         icinga2 pki request
         --ticket "{{ icinga2_ticket.stdout }}"
-        --host "{{ a_host }}"
+        --host "{{ icinga2_ca_host }}"
         --ca "{{ icinga2_cert_path }}/ca.crt"
         --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
         --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"

@@ -20,6 +20,7 @@ def main():
 			max_check_attempts = dict(type='int'),
 			_vars              = dict(default=dict(), type='raw', aliases=['vars']),
 			assign             = dict(default=list(), type='list', elements='str'),
+			ignore             = dict(default=list(), type='list', elements='str'),
 		)
 	)
 

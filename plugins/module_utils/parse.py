@@ -14,10 +14,10 @@ class Icinga2Parser(object):
         def value_types(value, indent=2):
             #TODO: Get Constant List from from Moduleparams or AnsibleVars
             # Values without quotes
-            if ((r := re.search(r'^-?\d+\.?\d*[dhms]?$', value)) or (r := re.search(r'^(true|false|null)$', value)) or
-                ( r := re.search(r'^!?(host|service|user)\.', value))):
+            if ((re.search(r'^-?\d+\.?\d*[dhms]?$', value)) or (re.search(r'^(true|false|null)$', value)) or
+                (re.search(r'^!?(host|service|user)\.', value))):
                 result = value
-            elif (r := re.search(r'^(True|False)$', value)):
+            elif (re.search(r'^(True|False)$', value)):
                 result = value.lower()
             elif value in constants:
                 # Check if it is a constant
@@ -38,8 +38,6 @@ class Icinga2Parser(object):
     
             # r = re.search(r'^\{{2}(.+)\}{2}$', row)
             if (r := re.search(r'^\{{2}(.+)\}{2}$', row)):
-                #Ex. '{{ testfuction in icinga2 }}'
-                #print("Im a Function: " + row)
                 result += "{{ %s }}" % (r.group(1))
             elif (r := re.search(r'^(.+)\s([\+-]|\*|\/|==|!=|&&|\|{2}|in)\s\{{2}(.+)\}{2}$', row)):
                 #print("Im a expression with a function " + row )
@@ -48,15 +46,17 @@ class Icinga2Parser(object):
                 #print("Im a expression maybe assign " + row)
                 result += "%s %s %s" % (parser(r.group(1)), r.group(2), parser(r.group(3)))
             else:
+                # Search for string with round brackets, then parse the function. Ex.: match("name", host.name)
                 if (r := re.search(r'^(.+)\((.*)$', row)):
-                    #print("Irgendwas mit klammer %s(%s wahrscheinlich match(): " + row)
-                    result += "Parser kommt noch"
-                    # Alle Params der Funktion werden einzeln ohne Komma dem Parser übergeben und danach wieder zusammengeführt.
-                    # result += "%s(%s" % [ $1, $2.split(',').map {|x| parse(x.lstrip)}.join(', ') ]
+                    s = ', '
+                    result += "%s(%s" % (r.group(1), s.join(list(map(lambda x: parser(x.lstrip()),r.group(2).split(',')))))
+                # Search for closing bracket
                 elif (r := re.search(r'^ (.*)\)(.+)?$', row)):
-                    # TODO: Parse functions
-                    print("# closing bracket ) with optional access of an attribute e.g. '.arguments'" +
-                          'result += "%s)%s" % [ $1.split(', ').map {|x| parse(x.lstrip)}.join(', '), $2 ]"')
+                    s = ', '
+                    if r.group(2):
+                      result += "%s)%s" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))), r.group(2))
+                    else:
+                      result += " %s)" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))))
                 elif (r := re.search(r'^\((.*)$', row)):
                     result += "(%s" % (parser(r.group(1)))
                 elif (r := re.search(r'^\s*\[\s*(.*)\s*\]\s?(.+)?$', row)):

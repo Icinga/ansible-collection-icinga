@@ -80,7 +80,7 @@
     - name: save trusted-master.crt
       shell: >
         icinga2 pki save-cert
-        --host "{{ icinga2_ca_host) }}"
+        --host "{{ icinga2_ca_host }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
 
     - name: generate private and public key

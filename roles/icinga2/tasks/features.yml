@@ -5,13 +5,13 @@
     paths: "{{ icinga2_config_path + '/features-enabled' }}"
     patterns: '*.conf'
     file_type: any
-  register: icnga2_collected_features
+  register: icinga2_collected_features
   when: icinga2_purge_features
 
 - name: collect enabled features
   set_fact:
     features_enabled: "{{ features_enabled|default([]) + [ icinga2_feature_realname[item.path| basename| splitext| first]| default(item.path| basename| splitext| first) ] }}"
-  loop: "{{ icnga2_collected_features.files }}"
+  loop: "{{ icinga2_collected_features.files }}"
   when: icinga2_purge_features
 
 - name: purge features

@@ -1,0 +1,53 @@
+---
+
+- name: set api feature facts
+  set_fact:
+    icinga2_import_schema: "{{ icinga2_dict_features.idopgsql.import_schema| default(False) }}"
+
+- name: api feature cleanup arguments list
+  set_fact:
+    args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
+  when: idx.key not in ['import_schema']
+  loop: "{{ icinga2_dict_features.idopgsql |dict2items }}"
+  loop_control:
+    loop_var: idx
+    
+- name: feature idopgsql IdoPgsqlConnection object
+  icinga2_object:
+    name: ido-pgsql
+    type: IdoPgsqlConnection
+    file: features-available/ido-pgsql.conf
+    args: "{{ args }}"
+  register: result
+
+- set_fact:
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"
+
+- name: install on {{ ansible_os_family }}
+  include_tasks: "features/idopgsql/install_on_{{ ansible_os_family }}.yml"
+
+- name: PostgreSQL import IDO schema
+  block:
+    - name: build psql command
+      set_fact:
+        psqlcmd: >-
+          PGPASSWORD="{{ icinga2_dict_features.idopgsql.password }}"
+          psql {% if icinga2_dict_features.idopgsql.host| default('localhost') != 'localhost'  %} -h "{{ icinga2_dict_features.idopgsql.host }}" {%- endif %}
+          -U "{{ icinga2_dict_features.idopgsql.user |default('icinga2') }}"
+          {% if icinga2_dict_features.idopgsql.port is defined %} -p "{{ icinga2_dict_features.idopgsql.port }}" {%- endif %}
+          -d "{{ icinga2_dict_features.idopgsql.database |default('icinga2') }}"
+
+    - name: PostgreSQL check for IDO schema
+      shell: >
+        {{ psqlcmd }}
+        -w -c "select version from icinga_dbversion"
+      ignore_errors: True
+      changed_when: False
+      register: db_schema
+
+    - name: PostgreSQL import IDO schema
+      shell: >
+        {{ psqlcmd }}
+        -w -f /usr/share/icinga2-ido-pgsql/schema/pgsql.sql
+      when: db_schema.rc != 0
+  when: icinga2_dict_features.idopgsql.import_schema| default(False)

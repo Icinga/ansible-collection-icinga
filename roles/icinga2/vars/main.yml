@@ -65,6 +65,7 @@ icinga2_reserved:
   - VarsPath
   - Warning
   - ZonesDir
+  - Dictionary
 icinga2_object_types:
   - CheckerComponent
   - FileLogger
@@ -78,7 +79,10 @@ icinga2_object_types:
   - GraphiteWriter
   - InfluxdbWriter
   - IdoMysqlConnection
+  - IdoPgsqlConnection
 icinga2_feature_realname:
   idomysql: ido-mysql
   ido-mysql: idomysql
+  ido-pgsql: idopgsql
+  idopgsql: ido-pgsql
 

@@ -1,5 +1,4 @@
 ---
-
 - name: populate features (icinga2_dict_features)
   set_fact:
     icinga2_dict_features: "{{ icinga2_dict_features|default({}) | combine({ item.name: item }) }}"
@@ -60,6 +59,24 @@
     file_type: directory
     pattern: '*.conf'
   register: result
+
+- name: ensure zones.d config directories
+  ansible.builtin.file:
+    path: "{{ icinga2_config_path }}/zones.d/{{ item.zone }}/{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner | default(icinga2_user) }}"
+    group: "{{ item.group | default(icinga2_group) }}"
+  loop: "{{ icinga2_zonesd_directories }}"
+  when: icinga2_zonesd_directories is defined
+
+- name: ensure conf.d config directories
+  ansible.builtin.file:
+    path: "{{ icinga2_config_path }}/conf.d/{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner | default(icinga2_user) }}"
+    group: "{{ item.group | default(icinga2_group) }}"
+  loop: "{{ icinga2_confd_directories }}"
+  when: icinga2_confd_directories is defined
 
 - name: assemble config files
   ansible.builtin.assemble:

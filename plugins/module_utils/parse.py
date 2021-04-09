@@ -83,7 +83,7 @@ class Icinga2Parser(object):
                 elif type(item) is list:
                     result += "[ %s], " % ( process_array(item.split(','), indent=indent+2))
                 else:
-                    result += "%s, " % (parser(item))
+                    result += "%s, " % (parser(str(item)))
             return result
     
         def process_hash(attrs, level=3, indent=2, prefix=' '):
@@ -135,6 +135,7 @@ class Icinga2Parser(object):
                         result += "%s%s %s= [ %s]\n" % (
                         prefix, attribute_types(attr), op, process_array(value))
                 else:
+                    value = str(value)
                     if (r := re.search(r'^([\+,-])\s+', value)):
                         operator = r.group(1)
                         value = re.sub(r'^[\+,-]\s+', '', value)

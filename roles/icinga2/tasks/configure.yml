@@ -44,14 +44,14 @@
 - name: collect empty config dirs
   shell: >
     find {{ icinga2_fragments_path }} -type d -empty
-  register: result
-  changed_when: result.stdout_lines |length > 0
+  register: _empty_result
+  changed_when: _empty_result.stdout_lines |length > 0
 
 - name: remove empty config dirs
   file:
     state: absent
     path: "{{ item }}"
-  with_items: "{{ result.stdout_lines }}"
+  loop: "{{ _empty_result.stdout_lines }}"
 
 - name: collect config files
   find:
@@ -69,3 +69,9 @@
   loop: "{{ result.files }}"
   notify: reload icinga2 service
 
+- name: remove empty config files
+  ansible.builtin.file:
+    state: absent
+    path: "{{ item |regex_replace('^'+icinga2_fragments_path, '/etc/icinga2') }}"
+  loop: "{{ _empty_result.stdout_lines }}"
+  notify: reload icinga2 service

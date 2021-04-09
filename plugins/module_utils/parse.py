@@ -12,7 +12,6 @@ class Icinga2Parser(object):
             
     
         def value_types(value, indent=2):
-            #TODO: Get Constant List from from Moduleparams or AnsibleVars
             # Values without quotes
             if ((re.search(r'^-?\d+\.?\d*[dhms]?$', value)) or (re.search(r'^(true|false|null)$', value)) or
                 (re.search(r'^!?(host|service|user)\.', value))):
@@ -49,14 +48,14 @@ class Icinga2Parser(object):
                 # Search for string with round brackets, then parse the function. Ex.: match("name", host.name)
                 if (r := re.search(r'^(.+)\((.*)$', row)):
                     s = ', '
-                    result += "%s(%s" % (r.group(1), s.join(list(map(lambda x: parser(x.lstrip()),r.group(2).split(',')))))
+                    result += "%s(%s" % (r.group(1), s.join(list(map(lambda x: x.lstrip(),parser(r.group(2)).split(',')))))
                 # Search for closing bracket
-                elif (r := re.search(r'^ (.*)\)(.+)?$', row)):
+                elif (r := re.search(r'^(.*)\)(.+)?$', row)):
                     s = ', '
                     if r.group(2):
-                      result += "%s)%s" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))), r.group(2))
+                        result += "%s)%s" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))), r.group(2))
                     else:
-                      result += " %s)" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))))
+                        result += " %s)" % ( s.join(list(map(lambda x: parser(x.lstrip()),r.group(1).split(', ')))))
                 elif (r := re.search(r'^\((.*)$', row)):
                     result += "(%s" % (parser(r.group(1)))
                 elif (r := re.search(r'^\s*\[\s*(.*)\s*\]\s?(.+)?$', row)):

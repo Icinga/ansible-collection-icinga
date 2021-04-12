@@ -134,3 +134,6 @@
         remote_src: yes
       when: icinga2_ca_host == 'none'
   when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert)
+
+- set_fact:
+    args: None

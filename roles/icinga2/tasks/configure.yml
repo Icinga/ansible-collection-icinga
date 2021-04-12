@@ -68,8 +68,8 @@
     group: "{{ item.group | default(icinga2_group) }}"
   loop: "{{ icinga2_config_directories }}"
   when:
-    - item.split('/')[0] == 'conf.d' or item.split('/')[0] == 'zones.d'
     - icinga2_config_directories is defined
+    - item.split('/')[0] == 'conf.d' or item.split('/')[0] == 'zones.d'
     # If multiple local configs folders can be defined this rule creates only
     # the directories starting with defined folders.
     # Related var looks like this:

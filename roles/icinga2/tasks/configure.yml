@@ -60,23 +60,23 @@
     pattern: '*.conf'
   register: result
 
-- name: ensure zones.d config directories
+- name: ensure monitoring config directories
   ansible.builtin.file:
-    path: "{{ icinga2_config_path }}/zones.d/{{ item.zone }}/{{ item.path }}"
+    path: "{{ icinga2_config_path }}/{{ item }}"
     state: directory
     owner: "{{ item.owner | default(icinga2_user) }}"
     group: "{{ item.group | default(icinga2_group) }}"
-  loop: "{{ icinga2_zonesd_directories }}"
-  when: icinga2_zonesd_directories is defined
-
-- name: ensure conf.d config directories
-  ansible.builtin.file:
-    path: "{{ icinga2_config_path }}/conf.d/{{ item.path }}"
-    state: directory
-    owner: "{{ item.owner | default(icinga2_user) }}"
-    group: "{{ item.group | default(icinga2_group) }}"
-  loop: "{{ icinga2_confd_directories }}"
-  when: icinga2_confd_directories is defined
+  loop: "{{ icinga2_config_directories }}"
+  when:
+    - item.split('/')[0] == 'conf.d' or item.split('/')[0] == 'zones.d'
+    - icinga2_config_directories is defined
+    # If multiple local configs folders can be defined this rule creates only
+    # the directories starting with defined folders.
+    # Related var looks like this:
+    # icinga2_local_config:
+    #  - conf.d
+    #  - my_own_config.d
+    #- item.split('/')[0] in icinga2_local_config or item.split('/')[0] == 'zones.d'
 
 - name: assemble config files
   ansible.builtin.assemble:

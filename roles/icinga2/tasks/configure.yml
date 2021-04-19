@@ -90,5 +90,6 @@
   ansible.builtin.file:
     state: absent
     path: "{{ item |regex_replace('^'+icinga2_fragments_path, '/etc/icinga2') }}"
+  when: item.split('/')[3] == 'conf.d' or item.split('/')[3] == 'zones.d'
   loop: "{{ _empty_result.stdout_lines }}"
   notify: reload icinga2 service

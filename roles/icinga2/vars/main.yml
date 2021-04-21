@@ -73,6 +73,7 @@ icinga2_feature_realname:
   idopgsql: ido-pgsql
 icinga2_object_types:
   - HostGroup
+  - ServiceGroup
   - CheckerComponent
   - FileLogger
   - NotificationComponent

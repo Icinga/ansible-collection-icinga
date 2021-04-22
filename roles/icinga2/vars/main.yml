@@ -72,6 +72,7 @@ icinga2_feature_realname:
   ido-pgsql: idopgsql
   idopgsql: ido-pgsql
 icinga2_object_types:
+  - TimePeriod
   - HostGroup
   - ServiceGroup
   - CheckerComponent

@@ -86,6 +86,14 @@
   loop: "{{ result.files }}"
   notify: reload icinga2 service
 
+- name: enable features
+  file:
+    state: "{{ 'link' if (item.state is undefined or item.state != 'absent') else 'absent' }}"
+    path: "{{ '/etc/icinga2/features-enabled/' + icinga2_feature_realname[item.name]|default(item.name) + '.conf' }}"
+    src: "{{ '../features-available/' + icinga2_feature_realname[item.name]|default(item.name) + '.conf' if (item.state is undefined or item.state != 'absent') else omit }}"
+  loop: "{{ icinga2_features }}"
+  notify: reload icinga2 service
+
 - name: remove empty config files
   ansible.builtin.file:
     state: absent

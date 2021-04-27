@@ -88,5 +88,6 @@ icinga2_object_types:
   - InfluxdbWriter
   - IdoMysqlConnection
   - IdoPgsqlConnection
+  - IcingaApplication
   - ApiUser
   - CheckCommand

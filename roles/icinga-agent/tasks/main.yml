@@ -1,0 +1,30 @@
+---
+- assert:
+    that:
+      - icinga2_agent_ca_host
+    fail_msg: "required 'icinga2_agent_ca_host' must be a hostname"
+    success_msg: "required 'icinga2_agent_ca_host' is set"
+
+- set_fact:
+    icinga2_constants:
+      NodeName: "{{ icinga2_server_nodename | default(ansible_fqdn) }}"
+    icinga2_confd: false
+    icinga2_features:
+      - name: checker
+      - name: mainlog
+      - name: api
+        ca_host: "{{ icinga2_agent_ca_host }}"
+        force_newcert: false
+        endpoints:
+          - name: NodeName
+        zones:
+          - name: ZoneName
+            endpoints:
+              - NodeName
+
+- import_role:
+    name: icinga.icinga.repos
+  when: icinga2_server_manage_repos
+
+- import_role:
+    name: icinga.icinga.icinga2

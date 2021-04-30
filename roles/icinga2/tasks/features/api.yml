@@ -1,17 +1,27 @@
 ---
 
 - name: set api feature facts
-  set_fact: 
+  set_fact:
     icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
-    icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host |mandatory }}"
+    icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
     icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
     icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
     icinga2_zones: "{{ icinga2_dict_features.api.zones |default([]) }}"
+    icinga2_ssl_cert: "{{ icinga2_dict_features.api.ssl_cert | default(omit) }}"
+    icinga2_ssl_ca: "{{ icinga2_dict_features.api.ssl_ca | default(omit) }}"
+    icinga2_ssl_key: "{{ icinga2_dict_features.api.ssl_key | default(omit) }}"
 
-- name: api feature cleanup arguments list 
+- assert:
+    that: (( icinga2_ca_host is undefined and icinga2_ssl_cert is defined and icinga2_ssl_ca is defined and icinga2_ssl_key is defined) or
+          ( icinga2_ca_host is defined and icinga2_ssl_cert is undefined and icinga2_ssl_ca is undefined and icinga2_ssl_key is undefined))
+    fail_msg: "'icinga2_ca_host' and icinga2_ssl_ca/cert/key shouldn't be set at the same time"
+    success_msg: "API Feature is configured correctly"
+
+
+- name: api feature cleanup arguments list
   set_fact:
     args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
-  when: idx.key not in ['ca_host', 'cert_name', 'force_newcert', 'zones', 'endpoints']
+  when: idx.key not in ['ca_host', 'cert_name', 'force_newcert', 'zones', 'endpoints', 'ssl_ca', 'ssl_key', 'ssl_cert']
   loop: "{{ icinga2_dict_features.api |dict2items }}"
   loop_control:
     loop_var: idx
@@ -63,17 +73,17 @@
       stat:
         path: "{{ icinga2_ca_path }}/ca.key"
       register: icinga2_ca_key_path
-    
+
     - name: check ca cert already exits
       stat:
         path: "{{ icinga2_ca_path }}/ca.crt"
       register: icinga2_ca_cert_path
-    
+
     - name: create CA
       shell: >
         icinga2 pki new-ca
       when: icinga2_ca_cert_path.stat.exists == false and icinga2_ca_key_path.stat.exists == false
-  when: icinga2_ca_host == 'none'
+  when: ( icinga2_ssl_cert is undefined and icinga2_ca_host == 'none' )
 
 - name: check cert key already exits
   stat:
@@ -133,7 +143,30 @@
         dest: "{{ icinga2_cert_path }}/ca.crt"
         remote_src: yes
       when: icinga2_ca_host == 'none'
-  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert)
+  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert or icinga2_ssl_cert is not defined)
+
+- name: use self provided certificates
+  block:
+    - set_fact:
+        _tmp_crt:
+          - src: "{{ icinga2_ssl_ca }}"
+            dest: "{{ icinga2_cert_path }}/trusted-master.crt"
+          - src: "{{ icinga2_ssl_key }}"
+            dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+          - src: "{{ icinga2_ssl_cert }}"
+            dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+
+    - name: pre generated certificates copy to icinga2 certs
+      copy:
+        remote_src: yes
+        src: "{{ _crt.src }}"
+        dest: "{{ _crt.dest }}"
+        owner: "{{ icinga2_user }}"
+        group: "{{ icinga2_group }}"
+      loop: "{{ _tmp_crt }}"
+      loop_control:
+        loop_var: _crt
+  when: ( icinga2_ssl_ca is defined and icinga2_ssl_cert is defined and icinga2_ssl_key is defined )
 
 - set_fact:
     args: None

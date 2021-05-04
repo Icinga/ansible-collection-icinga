@@ -32,3 +32,14 @@ icinga2_objects:
         - "{{ ansible_fqdn }}"
       parent: main
 ```
+## Managing Config directories
+
+To create or prepare the directories for the monitoring configuration use the variable `icinga2_config_directories`.
+Those directories are only managed when they are part of `zones.d`, `conf.d` or the variable `icinga2_confd`.
+
+```
+icinga2_config_directories:
+  - zones.d/main/hosts/
+  - zones.d/main/services/
+  - conf.d/commands/
+```

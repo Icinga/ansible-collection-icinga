@@ -32,6 +32,56 @@ icinga2_objects:
         - "{{ ansible_fqdn }}"
       parent: main
 ```
+
+### Examples:
+
+#### Object Host
+
+```
+icinga2_objects:
+  host.example.org:
+    - name: agent.example.org
+      type: Host
+      file: zones.d/main/hosts.conf
+      imports:
+        - generic-host
+      groups:
+        - linux-hosts
+      address: 192.168.2.10
+      vars:
+        os: linux
+
+```
+
+#### Object Service
+
+```
+[...]
+  - name: ping
+    type: Service
+    order: 11
+    file: zones.d/main/services.conf
+    apply: true
+    imports:
+      - generic-service
+    check_command: ping4
+    assign:
+      - host.address
+```
+
+### Service Group
+
+```
+icinga2_objects:
+[...]
+    - name: service_group_linux
+      type: ServiceGroup
+      file: "local.d/groups.conf"
+      display_name: Linux Services
+      assign:
+        - host.vars.os == linux
+```
+
 ## Managing Config directories
 
 To create or prepare the directories for the monitoring configuration use the variable `icinga2_config_directories`.

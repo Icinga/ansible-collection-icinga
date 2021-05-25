@@ -19,7 +19,8 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian9, debian10]
+        #distro: [centos7, centos8, debian9, debian10]
+        distro: [centos7]
         scenario: [default]
 
     steps:
@@ -40,6 +41,7 @@ jobs:
         run: |
           mkdir -p ~/.ansible/collections/$COLLECTION_NAMESPACE
           cp -a ../ansible-collection-$COLLECTION_NAME ~/.ansible/collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+          ls ~/.ansible/collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
 
       - name: Test with molecule
         run: |

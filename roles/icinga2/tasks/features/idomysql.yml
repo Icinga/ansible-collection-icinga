@@ -11,7 +11,7 @@
   loop: "{{ icinga2_dict_features.idomysql |dict2items }}"
   loop_control:
     loop_var: idx
-    
+
 - name: feature idomysql IdoMysqlConnection object
   icinga2_object:
     name: ido-mysql

@@ -1,5 +1,4 @@
 ---
-# This is an example playbook to execute Ansible tests.
 
 - name: Verify
   hosts: all
@@ -8,8 +7,3 @@
     service:
       name: icinga2
       state: started
-  - name: Check for Icinga 2 log
-    file:
-      path: /var/log/icinga2/icinga2.log
-    register: icingalog
-    failed_when: not icingalog.stat.exists

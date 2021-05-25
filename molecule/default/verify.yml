@@ -4,6 +4,11 @@
 - name: Verify
   hosts: all
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+  - name: Check for running icinga2
+    service:
+      state: started
+  - name: Check for Icinga 2 log
+    file:
+      path: /var/log/icinga2/icinga2.log
+    register: icingalog
+    failed_when: not icingalog.stat.exists

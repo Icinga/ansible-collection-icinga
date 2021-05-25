@@ -19,7 +19,7 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian9, debian10]
+        distro: [centos7, debian9, debian10]
         scenario: [default]
 
     steps:

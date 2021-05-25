@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 env:
-    ANSIBLE_COLLECTIONS_PATHS: "~/.ansible/collections"
+    ANSIBLE_COLLECTIONS_PATHS: "~/.ansible/collections:$ANSIBLE_COLLECTIONS_PATHS"
 platforms:
   - name: icinga-default
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"

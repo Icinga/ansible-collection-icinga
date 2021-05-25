@@ -4,6 +4,6 @@
 - name: Verify
   hosts: all
   tasks:
-  - name: Install Kibana
+  - name: Install Icinga 2
     package:
-      name: kibana
+      name: icinga2

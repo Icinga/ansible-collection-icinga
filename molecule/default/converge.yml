@@ -9,3 +9,6 @@
     - name: "Include Icinga Repos"
       include_role:
         name: repos
+    - name: "Include Icinga 2"
+      include_role:
+        name: icinga2

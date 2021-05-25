@@ -1,5 +1,7 @@
 # ansible-collection-icinga
 
+[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/CI/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions?query=workflow%3ACI)
+
 Collection to setup and manage components of the Icinga software stack.
 
 ## Roles

@@ -8,5 +8,4 @@
   tasks:
     - name: "Include Icinga Repos"
       include_role:
-        #name: icinga.repos
         name: repos

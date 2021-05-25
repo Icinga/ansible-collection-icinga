@@ -38,10 +38,13 @@ jobs:
 
       - name: Install collection
         run: |
-          cd ../
-          mkdir -p ansible_collections/$COLLECTION_NAMESPACE
-          mv ansible-collection-$COLLECTION_NAME ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
-          cd ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+          #cd ../
+          #mkdir -p ansible_collections/$COLLECTION_NAMESPACE
+          #mv ansible-collection-$COLLECTION_NAME ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+          #cd ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+          mkdir -p ~/.ansible/collections/$COLLECTION_NAMESPACE
+          cp -a . ~/.ansible/collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+          cd ~/.ansible/collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
 
       - name: Test with molecule
         run: |

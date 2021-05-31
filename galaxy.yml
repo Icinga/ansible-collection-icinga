@@ -7,9 +7,9 @@ authors:
 - Thilo Wening <thilo.wening@netways.de>
 - Thomas Widhalm <thomas.widhalm@netways.de>
 description: >
-This collection manages all Icinga 2 Components.
-Including the official repositories, server, satellite and agent installations.
-Furthermore it can easily create and distribute monitoring configuration.
+  This collection manages all Icinga 2 Components.
+  Including the official repositories, server, satellite and agent installations.
+  Furthermore it can easily create and distribute monitoring configuration.
 license:
 - GPL-3.0-or-later
 license_file: 'LICENSE'

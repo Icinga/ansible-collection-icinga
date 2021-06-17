@@ -10,7 +10,7 @@ def main():
 			name      = dict(required=True),
 			order     = dict(default=10, type='int'),
 			file      = dict(default='features-available/mainlog.conf', type='str'),
-			path      = dict(default='LogDir + /icinga.log', type='str'),
+			path      = dict(default='LogDir + /icinga2.log', type='str'),
 			severity  = dict(default='information', choices=['debug', 'notice', 'information', 'warning', 'critical']),
 		)
 	)

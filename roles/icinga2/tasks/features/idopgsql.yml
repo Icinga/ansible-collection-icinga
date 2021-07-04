@@ -11,7 +11,7 @@
   loop: "{{ icinga2_dict_features.idopgsql |dict2items }}"
   loop_control:
     loop_var: idx
-    
+
 - name: feature idopgsql IdoPgsqlConnection object
   icinga2_object:
     name: ido-pgsql

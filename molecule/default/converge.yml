@@ -1,0 +1,13 @@
+---
+
+- name: Converge
+  hosts: all
+  collections:
+    icinga.icinga
+  tasks:
+    - name: "Include Icinga Repos"
+      include_role:
+        name: repos
+    - name: "Include Icinga 2"
+      include_role:
+        name: icinga2

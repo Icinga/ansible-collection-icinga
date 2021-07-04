@@ -1,0 +1,10 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install requirements for Debian
+      package:
+        name:
+        - gpg
+        - apt-transport-https
+      when: ansible_os_family == "Debian"

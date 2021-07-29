@@ -3,8 +3,9 @@
   hosts: all
   tasks:
     - name: Install requirements for Debian
-      package:
+      apt:
         name:
         - gpg
         - apt-transport-https
+        update_cache: yes
       when: ansible_os_family == "Debian"

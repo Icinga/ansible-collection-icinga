@@ -1,12 +1,12 @@
 ## Feature API
 
-The API Feature configures the server or agent API. The feature will create
-certificates, certificate signing requests and manage the **zones.conf**.
+The API Feature configures the API. The feature will manage
+certificate, private key and CA certificate or will create
+a certificate signing requests. It also manages the **zones.conf**.
 
 All attributes of the object type [ApiListener](https://icinga.com/docs/icinga-2/latest/doc/09-object-types/#apilistener) can be added as keys.
 
 All non Icinga attributes to configure the feature are explained below.
-
 
 ```
 icinga2_features:
@@ -21,46 +21,61 @@ icinga2_features:
           - NodeName
 ```
 
-### Icinga Server
+### Certificate Authority
 
-To create an Icinga 2 server the API should setup a *CA* this can be done with
-the parameter `icinga2_ca_host`. Set it to **none** if the role should create
-a CA on the server.
+To create an Icinga 2 with CA the API `icinga2_ca_host` has to be set to `none`.
 
 ```
 ca_host: none
 ```
 
-### Icinga Agent
+### Using Certificate Signing Requests
 
-If the role should create certificates for your **client** and request them by the
-satellite or server.
-Set the variable `icinga2_ca_host` to the address or name of the parent.
+Create Signing Request and get a certificate is done by setting `ca_host` on
+the server with the CA. Hostname, FQDN or an IP are allowed.
 
 ```
 ca_host: icinga-server.localdomain
 ```
 
+By default the FQDN is used as certificate common name, to put a name
+yourself:
+
+```
+cert_name: myown_cn
+```
+
+To force a new request set `force_newcert` to `true`:
+
+```
+force_newcert: true
+```
+
+### Use your own ready-made certificate
+
 If you want to use certificates which aren't created by **Icinga 2 CA**, then use
 the following variables to point the role to your own certificates.
 
 ```
-ssl_ca: /opt/icinga/ca.crt
-ssl_cert: /opt/icinga/certificate.crt
-ssl_key: /opt/icinga/certificate.key
+ssl_ca: ca.crt
+ssl_cert: certificate.crt
+ssl_key: certificate.key
 ```
 
-The role tries to copy the certificates on the remote location to
-**/var/lib/icinga2/certs** named after the value `cert_name`.
+All three parameters have to be set otherwise a signing request is built
+and `ca_host` must be set.
+
+The role will copy the files from your ansible working host to
+**/var/lib/icinga2/certs** on the remote host. File names are
+set to `cert_name` (by default FQDN).
 
 ```
 icinga2_features:
   - name: api
-    ssl_ca: /opt/icinga/ca.crt
-    ssl_cert: /opt/icinga/certificate.crt
-    ssl_key: /opt/icinga/certificate.key
-    cert_name: icinga-agent.localdomain
-    force_newcert: false
+    cert_name: host.example.org
+    ssl_ca: /home/ansible/certs/ca.crt
+    ssl_cert:/home/ansible/certs/host.crt
+    ssl_key:/home/ansible/certs/host.key
     endpoints:
       - name: NodeName
     zones:

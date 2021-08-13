@@ -41,8 +41,9 @@
       shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icinga_dbversion"
-      ignore_errors: True
-      changed_when: False
+      failed_when: false
+      changed_when: false
+      check_mode: false
       register: db_schema
 
     - name: MySQL import IDO schema

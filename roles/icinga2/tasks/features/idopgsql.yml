@@ -4,20 +4,12 @@
   set_fact:
     icinga2_import_schema: "{{ icinga2_dict_features.idopgsql.import_schema| default(False) }}"
 
-- name: api feature cleanup arguments list
-  set_fact:
-    args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
-  when: idx.key not in ['import_schema']
-  loop: "{{ icinga2_dict_features.idopgsql |dict2items }}"
-  loop_control:
-    loop_var: idx
-
 - name: feature idopgsql IdoPgsqlConnection object
   icinga2_object:
     name: ido-pgsql
     type: IdoPgsqlConnection
     file: features-available/ido-pgsql.conf
-    args: "{{ args }}"
+    args: "{{ icinga2_dict_features.idopgsql }}"
   register: result
 
 - set_fact:

@@ -60,12 +60,14 @@ class ActionModule(ActionBase):
 				object_content = 'apply ' + object_type
 				if 'apply_for' in obj and obj['apply_for']:
 					object_content += ' for (' + obj['apply_for'] + ') '
-					if (r := re.search(r'^(.+)\s+in\s+', obj['apply_for'])):
-        					tmp = r.group(1).strip()
-        					if (r := re.search(r'^(.+)=>(.+)$', tmp)):
-                					varlist.extend([r.group(1).strip(), r.group(2).strip()])
-        					else:
-                					varlist.append(tmp)
+					r = re.search(r'^(.+)\s+in\s+', obj['apply_for'])
+					if r:
+						tmp = r.group(1).strip()
+						r = re.search(r'^(.+)=>(.+)$', tmp)
+						if r:
+							varlist.extend([r.group(1).strip(), r.group(2).strip()])
+						else:
+							varlist.append(tmp)
 				else:
 					object_content += ' ' + object_name
 			#

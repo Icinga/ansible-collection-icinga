@@ -1,5 +1,5 @@
 #!/usr/bin/python
-  
+
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -26,6 +26,7 @@ def main():
 			failover_timeout     = dict(type='str'),
 			cleanup              = dict(type='dict'),
 			categories           = dict(type='list', elements='str'),
+			import_schema        = dict(type='bool'),
 		)
 	)
 
@@ -34,9 +35,10 @@ def main():
 	order = args.pop('order')
 	state = args.pop('state')
 	file = args.pop('file')
+	if 'import_schema' in args:
+		args.pop('import_schema')
 
 	module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file)
 
 if __name__ == '__main__':
 	main()
-

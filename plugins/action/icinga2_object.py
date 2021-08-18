@@ -28,7 +28,9 @@ class ActionModule(ActionBase):
 		obj = self._execute_module(module_name='icinga2_'+object_type.lower(), module_args=args, task_vars=task_vars, tmp=tmp)
 
 		if 'failed' in obj:
-			raise AnsibleError('%s' % obj['msg'])
+			raise AnsibleError('Call to module failed: %s' % obj['msg'])
+		elif 'skipped' in obj and obj['skipped']:
+			raise AnsibleError('Call to module was skipped: %s' % obj['msg'])
 
 		#
 		# file path handling for assemble

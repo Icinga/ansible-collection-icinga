@@ -1,10 +1,11 @@
 #!/usr/bin/python
-  
+
 
 from ansible.module_utils.basic import AnsibleModule
 
 def main():
 	module = AnsibleModule(
+		supports_check_mode=True,
 		argument_spec = dict(
 			state                  = dict(default='present', choices=['present', 'absent']),
 			name                   = dict(required=True),
@@ -30,4 +31,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

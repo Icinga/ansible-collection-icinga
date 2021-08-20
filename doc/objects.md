@@ -53,9 +53,10 @@ icinga2_objects:
 
 ```
 
-#### Object Service
+#### Service Apply
 
 ```
+icinga2_objects:
 [...]
   - name: ping
     type: Service
@@ -69,18 +70,64 @@ icinga2_objects:
       - host.address
 ```
 
+### Service Object
+
+```
+icinga2_objects:
+[...]
+  - name: ping6
+    type: Service
+    file: zones.d/main/agent.localdomain.conf
+    imports:
+      - generic-service
+    check_command: ping6
+    host_name: agent.localdomain
+```
+
 ### Service Group
 
 ```
 icinga2_objects:
 [...]
-    - name: service_group_linux
-      type: ServiceGroup
-      file: "local.d/groups.conf"
-      display_name: Linux Services
-      assign:
-        - host.vars.os == linux
+  - name: service_group_linux
+    type: ServiceGroup
+    file: "local.d/groups.conf"
+    display_name: Linux Services
+    assign:
+      - host.vars.os == linux
 ```
+
+### ApiUser
+
+```
+icinga2_objects:
+[...]
+  - name: icinga-api
+    type: ApiUser
+    file: "local.d/apiuser.conf"
+    password: supersecrectpassword123
+    permissions:
+      - "objects/query/Host"
+      - "objects/query/Service"
+
+```
+
+### TimePeriod
+
+```
+icinga2_objects:
+[...]
+- name: 24x7
+  type: TimePeriod
+  file: "local.d/timeperiods.conf"
+  ranges:
+    monday: "00:00-24:00"
+    tuesday: "00:00-24:00"
+    wednesday: "00:00-24:00"
+    thursday: "00:00-24:00"
+    friday: "00:00-24:00"
+```
+
 
 ## Managing Config directories
 
@@ -93,3 +140,153 @@ icinga2_config_directories:
   - zones.d/main/services/
   - conf.d/commands/
 ```
+
+## Parser Rules 
+
+The collection provides the possibility to deploy Icinga 2 configuration, this includes configuration to shape the instance and monitoring data to create a complete monitoring environment. 
+
+### Basic Syntax
+
+The parser takes every value in the configuration and decides how the value should be written in the configuration. This takes a few rules to handle the configuration the right way.
+
+First of all, to disable the parser use the prefix `-:`.
+
+```
+attr: -:"unparsed quoted string"
+```
+
+Strings are parsed in chunks, by splitting the original string into separate substrings at specific keywords (operators) such as `+`, `-`, `in`, `&&`, `||`, etc.
+
+**NOTICE:** This splitting only works for keywords that are surrounded by whitespace, e.g.:
+
+```
+attr: string1 + string2 - string3
+```
+
+The algorithm will loop over the parameter and start by splitting it into 'string1' and 'string2 - string3'. 'string1' will be passed to the sub function 'value_types' and then the algorithm will continue parsing the rest of the string ('string2 - string3'), splitting it, passing it to value_types, etc.
+
+Brackets are parsed for expressions:
+
+```
+attr: 3 * (value1 -  value2) / 2
+```
+
+The parser also detects function calls and will parse all parameters separately.
+
+```
+attr: function(param1, param2, ...)
+```
+
+Boolean values can be defined with or without quotes. In addition the Ansible bool types `yes` or `no` can be used either. 
+
+```
+attr: true or attr: 'true'
+```
+
+To avoid overlapping syntax with Ansible variable syntax, please refer to single quotes `' '` when using own lambda functions in Icinga. 
+
+```
+attrs => '{{ ... }}'
+```
+
+In general all values can be defined without quotes except for lamba functions where Ansible's own syntax would interfere with the double brackets.
+
+| Type           | Examples                                 |
+|----------------|------------------------------------------|
+| Boolean        | `true`,`false`,`True`,`False`,`yes`,`no` |
+| Numbers        | `2` or `3.5`                             |
+| Time Intervals | `3m` or `3.5h`                           |
+| String         | `attr: string`                           |
+
+### Advanced Syntax
+
+To replicate Icinga 2 advanced syntax like assignments with `+=` or `-=` you can use the prefix `+` or `-`.
+
+To create the following Icinga 2 DSL syntax, 
+```
+var += config
+```
+simply use a string with the prefix `+` e.g. 
+
+```
+var: `+ config`
+```
+
+Because of the blank between the `+` and `config` those values are separately parsed and therefore numbers are also possible. For numbers we also can build `-=`, just use the minus sign `-`. This method will work for every attribute or custom attribute. 
+
+```
+attr: + -14 or attr: - -14
+```
+
+The parser is able to merge or reduce an array. For this method set the first item of your array as `+` or `-` sign. 
+
+```
+attr:
+  - +
+  - item1
+  - item2 
+
+# Alterntive syntax
+attr: ['-','item1','item2']
+```
+Result in Icinga will be `attr += [ "item1", "item2", ]`.
+
+To reduce arrays use the minus sign `-`. 
+
+**NOTICE** Please be aware that the minus sign needs to be quoted otherwise the Ansible parser will have troubles reading the array.
+
+```
+attr: 
+  - '-'
+  - item1
+  - item2
+
+# Alterntive syntax
+attr: ['-','item1','item2']
+```
+
+Result in Icinga will be `attr -= [ "item1", "item2", ]`.
+
+#### Dictionaries
+
+To merge dictionaries we can use the plus sign `+`. The plus sign needs to be a key in the dictionary. See following example.
+
+```
+attr: 
+  +: true
+  key1: value1 
+```
+
+The result:
+
+```
+attr["key1"] = "value1"
+```
+
+The useage of levels in dictionaries aren't limited. 
+
+```
+attr:
+  key1:
+    key2:
+      key3:
+        +: true
+        value: test
+```
+
+Result: 
+
+```
+vars.attr["key1"] = {
+    key2 = {
+      key3 += {
+        value = "test"
+      }
+    }
+  }
+```
+
+
+
+
+

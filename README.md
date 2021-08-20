@@ -4,14 +4,16 @@
 
 Collection to setup and manage components of the Icinga software stack.
 
-## Roles
+## Documentation and Roles
 
-* [icinga.icinga.repos](doc/role-repos.md)
-* [icinga.icinga.icinga2](doc/role-icinga2.md)
-  * [Monitoring Objects](doc/objects.md)
+* [Role: icinga.icinga.repos](doc/role-repos.md)
+* [Role: icinga.icinga.icinga2](doc/role-icinga2.md)
+  * [Parser and Monitoring Objects](doc/objects.md)
   * [Features](doc/features.md)
     * [Feature API](doc/features/feature-api.md)
     * [Feature IDO](doc/features/feature-ido.md)
+    * [Feature mainlog](doc/features/feature-mainlog.md)
+    * [Feature notifiation](doc/features/feature-notification.md)
 
 
 ## Installation

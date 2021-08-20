@@ -11,7 +11,7 @@ def main():
 			order                = dict(default=10, type='int'),
 			file                 = dict(default='features-available/ido-mysql.conf', type='str'),
 			host                 = dict(default='localhost', type='str'),
-			port                 = dict(type='int'),
+			port                 = dict(default='3306', type='int'),
 			socket_path          = dict(type='str'),
 			user                 = dict(default='icinga2', type='str'),
 			password             = dict(required=True, type='str'),

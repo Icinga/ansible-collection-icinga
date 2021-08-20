@@ -74,8 +74,8 @@ icinga2_features:
   - name: api
     cert_name: host.example.org
     ssl_ca: /home/ansible/certs/ca.crt
-    ssl_cert:/home/ansible/certs/host.crt
-    ssl_key:/home/ansible/certs/host.key
+    ssl_cert: /home/ansible/certs/host.crt
+    ssl_key: /home/ansible/certs/host.key
     endpoints:
       - name: NodeName
     zones:
@@ -83,3 +83,36 @@ icinga2_features:
         endpoints:
           - NodeName
 ```
+
+### Feature variables
+
+* `icinga2_ca_host: string`
+  * Use to point the Icinga 2 installation to where to get the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value. 
+
+* `force_newcert: boolean`
+  * Force new certificates on the destination hosts. 
+
+* `cert_name: string`
+  * Common name of Icinga client/server instance. Default is **ansible_fqdn**.
+
+* `ssl_ca: string`
+  * Path to the ca file when using manual certificates
+
+* `ssl_cert: string`
+  * Path to the certificate file when using manual certificates.
+
+* `ssl_key: string`
+  * Path to the certificate key file when using manual certificates.
+
+* `endpoints: list of dicts`
+  * Defines endpoints in **zones.conf**, each endpoint is required to have a name and optional a host or port.  
+    * `name: string`
+    * `host: string`
+    * `port: number`
+
+* `zones: list of dicts`
+  * Defines zones in **zones.conf**, each zones is required to have a name and endpoints. The parameter global is optional.
+    * `name: string`
+    * `endpoints: list`
+    * `global: boolean`
+

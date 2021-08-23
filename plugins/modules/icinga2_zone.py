@@ -9,7 +9,7 @@ def main():
 		argument_spec = dict(
 			state           = dict(default='present', choices=['present', 'absent']),
 			name            = dict(required=True),
-			order		= dict(default=10, type='int'),
+			order		    = dict(default=10, type='int'),
 			file            = dict(default='zones.conf', type='str'),
 			endpoints       = dict(type='list', elements='str'),
 			parent          = dict(type='str'),

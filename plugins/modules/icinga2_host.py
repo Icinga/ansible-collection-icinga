@@ -38,9 +38,9 @@ def main():
 			command_endpoint        = dict(type='str'),
 			notes                   = dict(type='str'),
 			notes_url               = dict(type='str'),
-                        action_url              = dict(type='str'),
-                        icon_image              = dict(type='str'),
-                        icon_image_alt          = dict(type='str'),
+            action_url              = dict(type='str'),
+            icon_image              = dict(type='str'),
+            icon_image_alt          = dict(type='str'),
 		)
 	)
 

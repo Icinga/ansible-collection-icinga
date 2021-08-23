@@ -15,8 +15,6 @@ The default for `order` is set to 10, so everything below that number will be in
 
 The `type` will be the original Icinga 2 object types, a list of all can be found in the documentation. [Icinga 2 Monitoring Objects](https://icinga.com/docs/icinga-2/latest/doc/09-object-types/#monitoring-objects)
 
-
-
 ```
 icinga2_objects:
   host.example.org:
@@ -33,101 +31,7 @@ icinga2_objects:
       parent: main
 ```
 
-### Examples:
-
-#### Object Host
-
-```
-icinga2_objects:
-  host.example.org:
-    - name: agent.example.org
-      type: Host
-      file: zones.d/main/hosts.conf
-      imports:
-        - generic-host
-      groups:
-        - linux-hosts
-      address: 192.168.2.10
-      vars:
-        os: linux
-
-```
-
-#### Service Apply
-
-```
-icinga2_objects:
-[...]
-  - name: ping
-    type: Service
-    order: 11
-    file: zones.d/main/services.conf
-    apply: true
-    imports:
-      - generic-service
-    check_command: ping4
-    assign:
-      - host.address
-```
-
-### Service Object
-
-```
-icinga2_objects:
-[...]
-  - name: ping6
-    type: Service
-    file: zones.d/main/agent.localdomain.conf
-    imports:
-      - generic-service
-    check_command: ping6
-    host_name: agent.localdomain
-```
-
-### Service Group
-
-```
-icinga2_objects:
-[...]
-  - name: service_group_linux
-    type: ServiceGroup
-    file: "local.d/groups.conf"
-    display_name: Linux Services
-    assign:
-      - host.vars.os == linux
-```
-
-### ApiUser
-
-```
-icinga2_objects:
-[...]
-  - name: icinga-api
-    type: ApiUser
-    file: "local.d/apiuser.conf"
-    password: supersecrectpassword123
-    permissions:
-      - "objects/query/Host"
-      - "objects/query/Service"
-
-```
-
-### TimePeriod
-
-```
-icinga2_objects:
-[...]
-- name: 24x7
-  type: TimePeriod
-  file: "local.d/timeperiods.conf"
-  ranges:
-    monday: "00:00-24:00"
-    tuesday: "00:00-24:00"
-    wednesday: "00:00-24:00"
-    thursday: "00:00-24:00"
-    friday: "00:00-24:00"
-```
-
+More Examples at the end -> [Examples](#examples)
 
 ## Managing Config directories
 
@@ -286,7 +190,136 @@ vars.attr["key1"] = {
   }
 ```
 
+### Examples:
 
+#### Host
+
+```
+icinga2_objects:
+  host.example.org:
+    - name: agent.example.org
+      type: Host
+      file: zones.d/main/hosts.conf
+      imports:
+        - generic-host
+      groups:
+        - linux-hosts
+      address: 192.168.2.10
+      vars:
+        os: linux
+
+```
+
+#### Host Group
+
+```
+icinga2_objects:
+[...]
+    - name: linux-host
+      type: HostGroup
+      file: zones.d/main/hostgroups.conf
+      display_name: Linux Server
+      assign:
+        - host.vars.os == Linux
+```
+
+#### Service Apply
+
+```
+icinga2_objects:
+[...]
+  - name: ping
+    type: Service
+    order: 11
+    file: zones.d/main/services.conf
+    apply: true
+    imports:
+      - generic-service
+    check_command: ping4
+    assign:
+      - host.address
+```
+
+#### Service Object
+
+```
+icinga2_objects:
+[...]
+  - name: ping6
+    type: Service
+    file: zones.d/main/agent.localdomain.conf
+    imports:
+      - generic-service
+    check_command: ping6
+    host_name: agent.localdomain
+```
+
+#### Service Group
+
+```
+icinga2_objects:
+[...]
+  - name: service_group_linux
+    type: ServiceGroup
+    file: "local.d/groups.conf"
+    display_name: Linux Services
+    assign:
+      - host.vars.os == linux
+```
+
+#### ApiUser
+
+```
+icinga2_objects:
+[...]
+  - name: icinga-api
+    type: ApiUser
+    file: "local.d/apiuser.conf"
+    password: supersecrectpassword123
+    permissions:
+      - "objects/query/Host"
+      - "objects/query/Service"
+
+```
+
+#### TimePeriod
+
+```
+icinga2_objects:
+[...]
+- name: 24x7
+  type: TimePeriod
+  file: "local.d/timeperiods.conf"
+  ranges:
+    monday: "00:00-24:00"
+    tuesday: "00:00-24:00"
+    wednesday: "00:00-24:00"
+    thursday: "00:00-24:00"
+    friday: "00:00-24:00"
+```
+
+#### Endpoint
+
+```
+icinga2_objects:
+[...]
+  - name: agent.localdomain
+    type: Endpoint
+    file: zones.d/main/hosts/agent.localdomain
+    host: 10.10.10.10
+```
+
+#### Zone
+
+```
+icinga2_objects:
+[...]
+  - name: agent.localdomain
+    type: Zone
+    file: zones.d/main/hosts/agent.localdomain
+    endpoints:
+      - agent.localdomain
+```
 
 
 

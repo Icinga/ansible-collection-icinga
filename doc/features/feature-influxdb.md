@@ -49,10 +49,10 @@ icinga2_features:
 * `ssl_key: string`
   * Path to host key to accompany the ssl_cert.
 
-* `host_template: string`
+* `host_template: dict`
   * Host template to define the InfluxDB line protocol.
 
-* `service_template: string`
+* `service_template: dict`
   * Service template to define the influxDB line protocol.
 
 * `enable_send_thresholds: boolean`

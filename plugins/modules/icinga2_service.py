@@ -12,7 +12,8 @@ def main():
 			order                   = dict(default=10, type='int'),
 			file                    = dict(required=True, type='str'),
 			template                = dict(default=False, type='bool'),
-			apply                   = dict(default=False, type='str'),
+			apply                   = dict(default=False, type='bool'),
+			apply_for               = dict(type='str'),
 			imports                 = dict(default=list(), type='list', elements='str'),
 			display_name            = dict(type='str'),
 			host_name               = dict(type='str'),
@@ -53,17 +54,8 @@ def main():
 	template = args.pop('template')
 	imports = args.pop('imports')
 	apply = args.pop('apply')
+	apply_for = args.pop('apply_for')
 	del args['_vars']
-
-	if apply.lower() == 'true':
-		apply_for = False
-		apply = True
-	elif apply.lower() == 'false':
-		apply_for = False
-		apply = False
-	else:
-		apply_for = apply
-		apply = True
 
 	module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports, apply=apply, apply_for=apply_for)
 

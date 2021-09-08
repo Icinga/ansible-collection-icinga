@@ -60,7 +60,11 @@ class ActionModule(ActionBase):
 			#
 			if 'apply' in obj and obj['apply']:
 				object_content = 'apply ' + object_type
-				if 'apply_for' in obj and obj['apply_for']:
+				if 'apply_target' in obj and obj['apply_target']:
+					object_content += ' to ' + obj['apply_target']
+					if obj['apply_target'] != 'Host' and obj['apply_target'] != 'Service':
+						raise AnsibleError('unknown Icinga target type: %s ' % obj['apply_target'] + 'only Host or Service is allowed')
+				elif 'apply_for' in obj and obj['apply_for']:
 					object_content += ' for (' + obj['apply_for'] + ') '
 					r = re.search(r'^(.+)\s+in\s+', obj['apply_for'])
 					if r:

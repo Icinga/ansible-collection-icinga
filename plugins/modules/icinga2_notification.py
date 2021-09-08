@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from ansible.module_utils.basic import AnsibleModule
 
 def main():
@@ -9,12 +10,14 @@ def main():
             order                = dict(default=10, type='int'),
             file                 = dict(required=True, type='str'),
             template             = dict(default=False, type='bool'),
+            apply                = dict(default=False, type='bool'),
+            apply_target         = dict(type='str', choices=['Host', 'Service']),
             imports              = dict(default=list(), type='list', elements='str'),
             host_name            = dict(required=True, type='str'),
             service_name         = dict(type='str'),
             _vars                = dict(default=dict(), type='raw', aliases=['vars']),
-            users                = dict(required=True, type='list', elements='str'),
-            user_groups          = dict(required=True, type='list', elements='str'),
+            users                = dict(type='list', elements='str'),
+            user_groups          = dict(type='list', elements='str'),
             times                = dict(type='dict'),
             command              = dict(type='str'),
             interval             = dict(type='str'),
@@ -22,7 +25,10 @@ def main():
             zone                 = dict(type='str'),
             types                = dict(type='list', elements='str'),
             states               = dict(type='list', elements='str'),
-        )
+        ),
+        required_one_of = (
+            ['users', 'user_groups'],
+        ),
     )
 
     args = module.params
@@ -32,9 +38,11 @@ def main():
     file = args.pop('file')
     template = args.pop('template')
     imports = args.pop('imports')
+    apply = args.pop('apply')
+    apply_target = args.pop('apply_target')
     del args['_vars']
 
-    module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports)
+    module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports, apply=apply, apply_target=apply_target)
 
 if __name__ == '__main__':
     main()

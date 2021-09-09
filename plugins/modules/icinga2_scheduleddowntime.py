@@ -16,14 +16,16 @@ def main():
             apply         = dict(default=False, type='bool'),
             apply_target  = dict(type='str', choices=['Host', 'Service']),
             display_name  = dict(type='str'),
-            host_name     = dict(required=True, type='str'),
+            host_name     = dict(type='str'),
             service_name  = dict(type='str'),
-            author        = dict(required=True, type='str'),
-            comment       = dict(required=True, type='str'),
-            fixed         = dict(default=True, type='bool'),
+            author        = dict(type='str'),
+            comment       = dict(type='str'),
+            fixed         = dict(type='bool'),
             duration      = dict(type='str'),
-            ranges        = dict(required=True, type='dict'),
+            ranges        = dict(type='dict'),
             child_options = dict(type='str'),
+            assign        = dict(default=list(), type='list', elements='str'),
+			ignore        = dict(default=list(), type='list', elements='str'),
         )
     )
 

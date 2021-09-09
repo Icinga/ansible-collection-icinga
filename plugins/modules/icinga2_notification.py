@@ -13,7 +13,7 @@ def main():
             apply                = dict(default=False, type='bool'),
             apply_target         = dict(type='str', choices=['Host', 'Service']),
             imports              = dict(default=list(), type='list', elements='str'),
-            host_name            = dict(required=True, type='str'),
+            host_name            = dict(type='str'),
             service_name         = dict(type='str'),
             _vars                = dict(default=dict(), type='raw', aliases=['vars']),
             users                = dict(type='list', elements='str'),
@@ -25,10 +25,9 @@ def main():
             zone                 = dict(type='str'),
             types                = dict(type='list', elements='str'),
             states               = dict(type='list', elements='str'),
-        ),
-        required_one_of = (
-            ['users', 'user_groups'],
-        ),
+            assign               = dict(default=list(), type='list', elements='str'),
+			ignore               = dict(default=list(), type='list', elements='str'),
+        )   
     )
 
     args = module.params

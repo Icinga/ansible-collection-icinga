@@ -18,6 +18,7 @@ Current supported features:
 * [Feature IDO](features/feature-ido.md)
 * [Feature InfluxDB](features/feature-influxdb.md)
 * [Feature InfluxDB2](features/feature-influxdb2.md)
+* [Feature Livestatus](features/feature-livestatus.md)
 * [Feature mainlog](features/feature-mainlog.md)
 * [Feature notification](features/feature-notification.md)
 * [Feature perfdata](features/feature-perfdata.md)

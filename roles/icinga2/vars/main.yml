@@ -72,22 +72,24 @@ icinga2_feature_realname:
   ido-pgsql: idopgsql
   idopgsql: ido-pgsql
 icinga2_object_types:
-  - TimePeriod
-  - HostGroup
-  - ServiceGroup
-  - CheckerComponent
-  - FileLogger
-  - NotificationComponent
   - ApiListener
-  - Endpoint
-  - Zone
-  - Host
-  - Service
-  - SyslogLogger
-  - GraphiteWriter
-  - InfluxdbWriter
-  - IdoMysqlConnection
-  - IdoPgsqlConnection
-  - IcingaApplication
   - ApiUser
   - CheckCommand
+  - CheckerComponent
+  - Endpoint
+  - ExternalCommandListener
+  - FileLogger
+  - GraphiteWriter
+  - Host
+  - HostGroup
+  - IcingaApplication
+  - IdoMysqlConnection
+  - IdoPgsqlConnection
+  - InfluxdbWriter
+  - NotificationComponent
+  - Service
+  - ServiceGroup
+  - SyslogLogger
+  - TimePeriod
+  - Zone
+

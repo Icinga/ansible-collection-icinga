@@ -20,6 +20,8 @@ def main():
 			ssl_ca_cert            = dict(type='str'),
 			ssl_cert               = dict(type='str'),
 			ssl_key                = dict(type='str'),
+			ssl_insecure_noverify  = dict(type='bool'),
+			basic_auth             = dict(type='dict'),
 			host_template          = dict(type='dict'),
 			service_template       = dict(type='dict'),
 			enable_send_thresholds = dict(type='bool'),

@@ -321,5 +321,17 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+#### User
 
+```
+[...]
+  - name: admin
+    type: User
+    period: "24x7"
+    groups: [ administrators ]
+    email: "icinga@localhost"
+    states: [ OK, Warning, Critical, Unknown ]
+    types: [ Problem, Recovery ]
+    file: zones.d/main/users.conf
+```
 

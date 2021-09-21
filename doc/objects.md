@@ -321,5 +321,20 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+#### ScheduledDowntime
 
+```
+icinga2_objects:
+[...]
+  - name: webserver_downtime
+    type: ScheduledDowntime
+    display_name: "webserver_downtime"
+    host_name: "web1.localdomain"
+    author: "icingaadmin"
+    comment: "web server maintenance"
+    fixed: false
+    file: zones.d/main/downtime.conf
+    ranges:
+        "sunday": "10:00-11:00"
+```
 

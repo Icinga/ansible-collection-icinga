@@ -328,6 +328,7 @@ icinga2_objects:
 [...]
   - name: database_notification
     imports: ['notifcation_template']
+    file: zones.d/main/notification.conf
     host_name: database
     service_name: mysql_health
     user_groups: ['administrators']

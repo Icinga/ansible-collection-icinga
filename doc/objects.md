@@ -335,6 +335,10 @@ icinga2_objects:
     apply: true
     apply_target: Host
     type: Notification
+    assign:
+      - match(*web, host.name) && (host.vars.customer == customer-xy)
+    ignore:
+      - match(host.vars.os_family == Debian)
 ```
 
 

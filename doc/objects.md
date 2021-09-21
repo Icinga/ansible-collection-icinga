@@ -321,5 +321,19 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+### Notification
+
+````
+icinga2_objects:
+[...]
+  - name: database_notification
+    imports: ['notifcation_template']
+    host_name: database
+    service_name: mysql_health
+    user_groups: ['administrators']
+    apply: true
+    apply_target: Host
+    type: Notification
+```
 
 

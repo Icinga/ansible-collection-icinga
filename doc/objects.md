@@ -322,4 +322,17 @@ icinga2_objects:
 ```
 
 
+#### CheckCommand
 
+```
+icinga2_objects:
+[...]
+  - name: http
+    command: [ PluginDir + /check_http ]
+    type: CheckCommand
+    file: zones.d/main/check_command.conf
+    arguments:
+      -H: $http_vhost$
+      -S:
+        set_if: $http_ssl$
+```

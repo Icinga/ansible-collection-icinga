@@ -321,4 +321,27 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+#### NotificationCommand
+
+```
+icinga2_objects:
+[...]
+  - name: service-notification-command
+    command: [ ConfigDir + /scripts/mail-service-notification.sh ]
+    type: NotificationCommand
+    file: zones.d/main/notification_command.conf
+    arguments:
+      +: true
+      -4:
+        required: true
+        value: $notification_address$
+        description: The notification address
+      -6: $notification_address6$
+      -b: $notification_author$
+      vars:
+        +: true
+        notification_address: $address$
+        notification_address6: $address6$
+        notification_author: $notification.author$
+````
 

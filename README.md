@@ -13,7 +13,7 @@ Collection to setup and manage components of the Icinga software stack.
     * [Feature API](doc/features/feature-api.md)
     * [Feature IDO](doc/features/feature-ido.md)
     * [Feature mainlog](doc/features/feature-mainlog.md)
-    * [Feature notifiation](doc/features/feature-notification.md)
+    * [Feature notification](doc/features/feature-notification.md)
     * [Feature InfluxDB](doc/features/feature-influxdb.md)
     * [Feature Graphite](doc/features/feature-graphite.md)
 

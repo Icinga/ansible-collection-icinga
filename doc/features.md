@@ -12,7 +12,7 @@ Current supported features:
 * [Feature API](features/feature-api.md)
 * [Feature IDO](features/feature-ido.md)
 * [Feature mainlog](features/feature-mainlog.md)
-* [Feature notifiation](features/feature-notification.md)
+* [Feature notification](features/feature-notification.md)
 * [Feature InfluxDB](features/feature-influxdb.md)
 * [Feature Graphite](features/feature-graphite.md)
 

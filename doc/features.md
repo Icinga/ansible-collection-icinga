@@ -9,12 +9,12 @@ A few other features can have more attributes to configure the feature itself, l
 
 Current supported features:
 
-    * [Feature API](features/feature-api.md)
-    * [Feature IDO](features/feature-ido.md)
-    * [Feature mainlog](features/feature-mainlog.md)
-    * [Feature notifiation](features/feature-notification.md)
-    * [Feature InfluxDB](features/feature-influxdb.md)
-    * [Feature Graphite](features/feature-graphite.md)
+* [Feature API](features/feature-api.md)
+* [Feature IDO](features/feature-ido.md)
+* [Feature mainlog](features/feature-mainlog.md)
+* [Feature notifiation](features/feature-notification.md)
+* [Feature InfluxDB](features/feature-influxdb.md)
+* [Feature Graphite](features/feature-graphite.md)
 
 ```
 icinga2_features:

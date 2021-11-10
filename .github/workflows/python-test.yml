@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  py3:
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,6 +28,29 @@ jobs:
 
       - name: Test with unittest
         run: |
-          python -m unittest test.py
+          python -m unittest -v tests/python3-tests.py
+        env:
+          MOLECULE_DISTRO: ${{ matrix.distro }}#
+  py2:
+    runs-on: ubuntu-latest
+
+    strategy:
+      # max-parallel: 4
+      matrix:
+        distro: [centos8, debian10]
+        python: ['2.7']
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Test with unittest
+        run: |
+          python -m unittest -v tests/python2-tests.py
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}

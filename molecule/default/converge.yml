@@ -4,6 +4,8 @@
   hosts: all
   vars:
     icinga2_features:
+      - name: checker
+      - name: mainlog
       - name: api
         ca_host: none
         endpoints:

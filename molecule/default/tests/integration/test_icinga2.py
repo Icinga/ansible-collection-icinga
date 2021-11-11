@@ -6,10 +6,10 @@ def test_icinga2_configdir(host):
     icinga2_cdir = host.file("/etc/icinga2/zones.d/main")
     assert icinga2_cdir.is_directory
     if host.system_info.distribution == 'centos':
-      assert icinga2_cdir.owner == "icinga"
+      assert icinga2_cdir.user == "icinga"
       assert icinga2_cdir.group == "icinga"
     if host.system_info.distribution == 'debian':
-      assert icinga2_cdir.owner == "nagios"
+      assert icinga2_cdir.user == "nagios"
       assert icinga2_cdir.group == "nagios"
 
 def test_icinga2_dir(host):

@@ -6,6 +6,7 @@ on:
       - v*
     branches:
       - main
+      - enhancement/32-add-molecule-intergration-tests
   pull_request:
 
 jobs:

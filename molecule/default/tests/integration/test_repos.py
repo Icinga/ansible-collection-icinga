@@ -1,8 +1,9 @@
-def test_repos(host, system_info):
-    if SystemInfo.distribution == 'debian':
+def test_repos(host):
+    if host.system_info.distribution == 'debian':
       file = '/etc/apt/sources.list.d/icinga'
-    if SystemInfo.distribution == 'centos':
+    if host.system_info.distribution == 'centos':
       file = '/etc/yum.repos.d/ICINGA-release'
+    
 
     repofile = host.file(file)
     assert repofile.exists

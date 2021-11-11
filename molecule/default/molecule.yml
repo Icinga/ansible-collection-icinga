@@ -14,18 +14,8 @@ platforms:
 provisioner:
   name: ansible
   inventory:
-    host_vars:
-      icinga2_objects:
-        icinga-master.localdomain:
-          - name: agent.localdomain
-            type: Endpoint
-            file: zones.d/main/hosts/agent.localdomain.conf
-          - name: agent.localdomain
-            type: Host
-            file: zones.d/main/hosts/agent.localdomain.conf
-            check_command: hostalive
-            address: 127.0.0.1
-            check_interval: 3m
+    link:
+      host_vars: host_vars/
 verifier:
   name: testinfra
   directory: tests/integration/

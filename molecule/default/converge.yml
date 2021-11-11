@@ -19,6 +19,9 @@
   collections:
     icinga.icinga
   tasks:
+    - debug:
+        var: ansible_fqdn
+        
     - name: "Include Icinga Repos"
       include_role:
         name: repos

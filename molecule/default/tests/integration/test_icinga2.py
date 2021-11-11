@@ -12,6 +12,12 @@ def test_icinga2_configdir(host):
       assert icinga2_cdir.user == "nagios"
       assert icinga2_cdir.group == "nagios"
 
+def test_icinga2_objects(host):
+    i2_oh = host.file("/etc/icinga2/zones.d/main/hosts")
+    assert i2_oh.is_directory
+    
+
+
 def test_icinga2_dir(host):
     icinga2_dir = host.file("/etc/icinga2")
     assert icinga2_dir.is_directory

@@ -7,5 +7,5 @@ def test_icinga2_dir(host):
     assert icinga2_dir.is_directory
 
 def test_icinga2_features(host):
-    f_checker = host.file("/etc/icinga2/feature-enabled/checker.conf")
-    assert f_checker.linked_to("/etc/icinga2/feature-available/checker.conf")
+    f_checker = host.file("/etc/icinga2/features-enabled/checker.conf")
+    assert f_checker.linked_to("/etc/icinga2/features-available/checker.conf")

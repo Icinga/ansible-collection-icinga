@@ -1,4 +1,4 @@
-name: Run python unit tests
+name: Python Unittest
 on:
   push:
     tags:
@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  py3:
+  unittest-py3:
     runs-on: ubuntu-latest
 
     strategy:
@@ -28,10 +28,10 @@ jobs:
 
       - name: Test with unittest
         run: |
-          python -m unittest -v tests/python3-tests.py
+          python -m unittest -v tests.unittestpy3.test-data
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}#
-  py2:
+  unittest-py2:
     runs-on: ubuntu-latest
 
     strategy:
@@ -51,6 +51,6 @@ jobs:
 
       - name: Test with unittest
         run: |
-          python -m unittest -v tests/python2-tests.py
+          python -m unittest -v tests.unittestpy2.test-data
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}

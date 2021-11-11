@@ -240,6 +240,18 @@ icinga2_objects:
       - host.address
 ```
 
+#### Service Apply for 
+
+```
+[...]
+  - name: ping
+    type: Service
+    apply: true
+    apply_for: config in host.vars.ips
+    check_command: ping4
+    vars: + config
+```
+
 #### Service Object
 
 ```

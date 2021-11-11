@@ -1,8 +1,8 @@
 def test_repos(host):
     if host.system_info.distribution == 'debian':
-      file = '/etc/apt/sources.list.d/icinga'
+      file = '/etc/icinga2/icinga2.conf'
     if host.system_info.distribution == 'centos':
-      file = '/etc/yum.repos.d/ICINGA-release'
+      file = '/etc/icinga2/icinga2.conf'
 
 
     repofile = host.file(file)

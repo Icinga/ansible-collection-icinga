@@ -2,6 +2,18 @@
 
 - name: Converge
   hosts: all
+  vars:
+    icinga2_features:
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main
   collections:
     icinga.icinga
   tasks:

@@ -28,7 +28,7 @@ jobs:
 
       - name: Test with unittest
         run: |
-          python -m unittest -v tests.unittestpy3.test-data
+          python -m unittest -v tests.unittestpy3.test_data
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}#
   unittest-py2:
@@ -51,6 +51,6 @@ jobs:
 
       - name: Test with unittest
         run: |
-          python -m unittest -v tests.unittestpy2.test-data
+          python -m unittest -v tests.unittestpy2.test_data
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}

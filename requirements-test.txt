@@ -2,4 +2,4 @@ ansible
 ansible-lint
 molecule
 molecule-docker
-testinfra
+pytest-testinfra

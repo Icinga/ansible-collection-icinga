@@ -1,4 +1,4 @@
-def test_repos(host, SystemInfo):
+def test_repos(host, system_info):
     if SystemInfo.distribution == 'debian':
       file = '/etc/apt/sources.list.d/icinga'
     if SystemInfo.distribution == 'centos':

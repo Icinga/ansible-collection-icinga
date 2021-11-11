@@ -15,7 +15,7 @@ provisioner:
   name: ansible
 verifier:
   name: testinfra
-  directory: tests/intergration/
+  directory: tests/integration/
 lint: |
   set -e
   yamllint .

@@ -21,5 +21,5 @@ verifier:
   directory: tests/integration/
 lint: |
   set -e
-  yamllint .
-  ansible-lint .
+  yamllint --no-warnings roles/
+  ansible-lint roles/

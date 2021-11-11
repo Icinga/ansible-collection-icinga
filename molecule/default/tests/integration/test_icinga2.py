@@ -15,7 +15,8 @@ def test_icinga2_configdir(host):
 def test_icinga2_objects(host):
     i2_oh = host.file("/etc/icinga2/zones.d/main/hosts")
     assert i2_oh.is_directory
-    
+    i2_oagent = host.file("/etc/icinga2/zones.d/main/hosts/agent.localdomain.conf")
+    assert i2_oagent.is_file
 
 
 def test_icinga2_dir(host):

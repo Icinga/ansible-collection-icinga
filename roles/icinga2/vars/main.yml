@@ -66,6 +66,7 @@ icinga2_reserved:
   - Warning
   - ZonesDir
   - Dictionary
+  - ConfigDir
 icinga2_feature_realname:
   idomysql: ido-mysql
   ido-mysql: idomysql

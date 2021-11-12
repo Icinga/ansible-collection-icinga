@@ -83,34 +83,37 @@ def test_icinga2_dir(host):
     assert icinga2_dir.is_directory
 
 def test_icinga2_feature_checker(host):
-    i2_file = host.file("/etc/icinga2/features-enabled/checker.conf")
+    i2_file = host.file("/etc/icinga2/features-available/checker.conf")
+    i2_link = host.file("/etc/icinga2/features-enabled/checker.conf")
     assert i2_file.exists
-    assert i2_file.linked_to == "/etc/icinga2/features-available/checker.conf"
+    assert i2_link.linked_to == "/etc/icinga2/features-available/checker.conf"
     if host.system_info.distribution == 'centos':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "icinga"
+      assert i2_file.group == "icinga"
     if host.system_info.distribution == 'debian':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "nagios"
+      assert i2_file.group == "nagios"
 
 def test_icinga2_feature_mainlog(host):
-    i2_file = host.file("/etc/icinga2/features-enabled/mainlog.conf")
+    i2_file = host.file("/etc/icinga2/features-available/mainlog.conf")
+    i2_link = host.file("/etc/icinga2/features-enabled/mainlog.conf")
     assert i2_file.exists
-    assert i2_file.linked_to == "/etc/icinga2/features-available/mainlog.conf"
+    assert i2_link.linked_to == "/etc/icinga2/features-available/mainlog.conf"
     if host.system_info.distribution == 'centos':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "icinga"
+      assert i2_file.group == "icinga"
     if host.system_info.distribution == 'debian':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "nagios"
+      assert i2_file.group == "nagios"
 
 def test_icinga2_feature_api(host):
-    i2_file = host.file("/etc/icinga2/features-enabled/api.conf")
+    i2_file = host.file("/etc/icinga2/features-available/api.conf")
+    i2_link = host.file("/etc/icinga2/features-enabled/api.conf")
     assert i2_file.exists
-    assert i2_file.linked_to == "/etc/icinga2/features-available/api.conf"
+    assert i2_link.linked_to == "/etc/icinga2/features-available/api.conf"
     if host.system_info.distribution == 'centos':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "icinga"
+      assert i2_file.group == "icinga"
     if host.system_info.distribution == 'debian':
-      assert i2_file.user == "root"
-      assert i2_file.group == "root"
+      assert i2_file.user == "nagios"
+      assert i2_file.group == "nagios"

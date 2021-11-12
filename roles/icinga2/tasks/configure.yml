@@ -84,6 +84,8 @@
     src: "{{ item.path }}"
     dest: "{{ item.path |regex_replace('^'+icinga2_fragments_path, '/etc/icinga2') }}"
     delimiter: ' '
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
   loop: "{{ result.files }}"
   notify: reload icinga2 service
 

@@ -16,11 +16,10 @@
               - "{{ ansible_fqdn }}"
     icinga2_config_directories:
       - zones.d/main/hosts
+      - zones.d/main/services
   collections:
     icinga.icinga
   tasks:
-    - debug:
-        var: ansible_fqdn
     - name: "Include Icinga Repos"
       include_role:
         name: repos

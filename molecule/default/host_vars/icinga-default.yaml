@@ -15,3 +15,19 @@ icinga2_objects:
       check_command: hostalive
       address: 127.0.0.1
       check_interval: 3m
+    - name: generic-service
+      type: Service
+      template: true
+      check_interval: 300s
+      retry_interval: 30s
+      order: 1
+    - name: ping
+      type: Service
+      file: zones.d/main/services/services.conf
+      imports:
+        - generic-service
+      check_command: ping4
+      assign:
+        - host.address
+      ignore:
+        - match("no*", host.name)

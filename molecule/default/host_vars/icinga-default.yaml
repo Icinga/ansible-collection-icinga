@@ -17,6 +17,7 @@ icinga2_objects:
       check_interval: 3m
     - name: generic-service
       type: Service
+      file: zones.d/main/services/services.conf
       template: true
       check_interval: 300s
       retry_interval: 30s

@@ -105,6 +105,7 @@
 
 - name: check config
   ansible.builtin.command: icinga2 daemon -C
+  changed_when: false
   register: da
   ignore_errors: true
 

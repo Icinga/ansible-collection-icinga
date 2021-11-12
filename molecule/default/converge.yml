@@ -3,6 +3,7 @@
 - name: Converge
   hosts: all
   vars:
+    icinga2_confd: false
     icinga2_features:
       - name: checker
       - name: mainlog

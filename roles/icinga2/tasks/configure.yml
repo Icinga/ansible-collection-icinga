@@ -110,4 +110,4 @@
   ignore_errors: true
 
 - debug:
-    var: da
+    var: da.stdout

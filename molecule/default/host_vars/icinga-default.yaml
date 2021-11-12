@@ -24,6 +24,7 @@ icinga2_objects:
       order: 1
     - name: ping
       type: Service
+      apply: true
       file: zones.d/main/services/services.conf
       imports:
         - generic-service

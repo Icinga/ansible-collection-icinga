@@ -104,12 +104,3 @@
   when: item.split('/')[3] == 'conf.d' or item.split('/')[3] == 'zones.d'
   loop: "{{ _empty_result.stdout_lines }}"
   notify: reload icinga2 service
-
-- name: check config
-  ansible.builtin.command: icinga2 daemon -C
-  changed_when: false
-  register: da
-  ignore_errors: true
-
-- debug:
-    var: da.stdout

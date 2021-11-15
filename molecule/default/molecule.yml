@@ -13,9 +13,13 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  inventory:
+    link:
+      host_vars: host_vars/
 verifier:
-  name: ansible
+  name: testinfra
+  directory: tests/integration/
 lint: |
   set -e
-  yamllint .
-  ansible-lint .
+  yamllint --no-warnings roles/
+  ansible-lint roles/

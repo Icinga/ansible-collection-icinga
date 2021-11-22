@@ -333,6 +333,17 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+#### UserGroup
+
+```
+[...]
+  - name: administrators
+    type: UserGroup
+    display_name: Admins
+    file: zones.d/main/groups.conf
+```
+
+
 
 #### CheckCommand
 

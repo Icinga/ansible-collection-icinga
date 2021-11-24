@@ -92,3 +92,4 @@ icinga2_object_types:
   - ApiUser
   - CheckCommand
   - Notification
+  - User

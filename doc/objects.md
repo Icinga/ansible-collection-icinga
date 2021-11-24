@@ -326,15 +326,14 @@ icinga2_objects:
 ```
 icinga2_objects:
 [...]
-  - name: database_notification
-    imports: ['notifcation_template']
+  - name: notification-to-rhel-host
+    type: Notification
     file: zones.d/main/notification.conf
-    host_name: database
-    service_name: mysql_health
+    imports:
+      - notification-template
     user_groups: ['administrators']
     apply: true
     apply_target: Host
-    type: Notification
     assign:
       - match(*web, host.name) && (host.vars.customer == customer-xy)
     ignore:

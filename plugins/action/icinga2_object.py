@@ -61,7 +61,7 @@ class ActionModule(ActionBase):
 			if 'apply' in obj and obj['apply']:
 				object_content = 'apply ' + object_type
 				if 'apply_target' in obj and obj['apply_target']:
-					object_content += ' to ' + obj['apply_target']
+					object_content += ' ' + object_name + ' to ' + obj['apply_target']
 				elif 'apply_for' in obj and obj['apply_for']:
 					object_content += ' for (' + obj['apply_for'] + ') '
 					r = re.search(r'^(.+)\s+in\s+', obj['apply_for'])

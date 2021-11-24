@@ -92,4 +92,7 @@ icinga2_object_types:
   - IcingaApplication
   - ApiUser
   - CheckCommand
+  - Notification
+  - NotificationCommand
+  - User
   - UserGroup

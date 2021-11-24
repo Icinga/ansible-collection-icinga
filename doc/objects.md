@@ -240,6 +240,18 @@ icinga2_objects:
       - host.address
 ```
 
+#### Service Apply for 
+
+```
+[...]
+  - name: ping
+    type: Service
+    apply: true
+    apply_for: config in host.vars.ips
+    check_command: ping4
+    vars: + config
+```
+
 #### Service Object
 
 ```
@@ -321,6 +333,7 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+
 ### Notification
 
 ```
@@ -377,3 +390,28 @@ icinga2_objects:
         notification_address6: $address6$
         notification_author: $notification.author$
 ````
+
+#### UserGroup
+
+```
+[...]
+  - name: administrators
+    type: UserGroup
+    display_name: Admins
+    file: zones.d/main/groups.conf
+```
+
+#### CheckCommand
+
+```
+icinga2_objects:
+[...]
+  - name: http
+    command: [ PluginDir + /check_http ]
+    type: CheckCommand
+    file: zones.d/main/check_command.conf
+    arguments:
+      -H: $http_vhost$
+      -S:
+        set_if: $http_ssl$
+```

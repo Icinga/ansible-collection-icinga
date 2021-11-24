@@ -24,7 +24,7 @@ icinga2_features:
     password: icinga2
     import_schema: false
     cleanup:
-      downtimehistory: 48h
+      downtimehistory_age: 48h
       contactnotifications_age: 31d
 ```
 
@@ -39,7 +39,7 @@ icinga2_features:
     password: icinga2
     import_schema: true
     cleanup:
-      downtimehistory: 48h
+      downtimehistory_age: 48h
       contactnotifications_age: 31d
 ``` 
 

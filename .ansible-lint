@@ -7,3 +7,4 @@ warn_list:
   - literal-compare
   - meta-incorrect
   - meta-no-info
+  - new-line-at-end-of-file

@@ -240,7 +240,7 @@ icinga2_objects:
       - host.address
 ```
 
-#### Service Apply for 
+#### Service Apply for
 
 ```
 [...]
@@ -414,4 +414,21 @@ icinga2_objects:
       -H: $http_vhost$
       -S:
         set_if: $http_ssl$
+```
+
+#### Dependency
+
+```
+- name: dependency-to-host
+  type: Dependency
+  apply: true
+  apply_target: Host
+  file: zones.d/main/dependencies.conf
+  parent_host_name: router.localdomain
+  disable_checks: true
+  disable_notifications: true
+  states:
+    - Up
+  assign:
+    - host.name == agent.localdomain
 ```

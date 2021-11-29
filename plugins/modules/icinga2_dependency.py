@@ -24,7 +24,7 @@ def main():
             period                = dict(type='str'),
             states                = dict(type='list', elements='str'),
             assign                = dict(default=list(), type='list', elements='str'),
-			ignore                = dict(default=list(), type='list', elements='str'),
+            ignore                = dict(default=list(), type='list', elements='str'),
         )
     )
 
@@ -37,7 +37,6 @@ def main():
     imports = args.pop('imports')
     apply = args.pop('apply')
     apply_target = args.pop('apply_target')
-    del args['_vars']
 
     module.exit_json(changed=False, args=args, name=name, order=str(order), state=state, file=file, template=template, imports=imports, apply=apply, apply_target=apply_target)
 

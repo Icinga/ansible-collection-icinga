@@ -4,7 +4,7 @@ def test_icinga2_object_host(host):
     assert i2_file.is_file
     assert i2_file.contains('apply Dependency "dependency-test" to Host {')
     assert i2_file.contains('disable_checks = true')
-    assert i2_file.contains('states = [ Up, ]')
+    assert i2_file.contains('states = [ Up, ]\n')
     assert i2_file.contains('parent_host_name = "agent.localdomain"')
     assert i2_file.contains('assign where host.name == "test.localdomain"')
     if host.system_info.distribution == 'centos':

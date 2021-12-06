@@ -12,6 +12,10 @@ icinga2_features:
     username: influx
     password: influx
     database: influxdb
+    host_template:
+      measurement: "$host.check_command$"
+      tags:
+        hostname: "$host.name$"
 ```
 
 ### Feature variables

@@ -3,6 +3,7 @@ icinga2_objects:
     - name: eventcommand-test
       type: EventCommand
       file: zones.d/main/eventcommand.conf
+      command: [ ConfigDir + /scripts/eventcommand.sh ]
     - name: scheduled-downtime-test
       type: ScheduledDowntime
       file: zones.d/main/ScheduledDowntime.conf

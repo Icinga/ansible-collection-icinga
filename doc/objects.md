@@ -45,9 +45,9 @@ icinga2_config_directories:
   - conf.d/commands/
 ```
 
-## Parser Rules 
+## Parser Rules
 
-The collection provides the possibility to deploy Icinga 2 configuration, this includes configuration to shape the instance and monitoring data to create a complete monitoring environment. 
+The collection provides the possibility to deploy Icinga 2 configuration, this includes configuration to shape the instance and monitoring data to create a complete monitoring environment.
 
 ### Basic Syntax
 
@@ -81,13 +81,13 @@ The parser also detects function calls and will parse all parameters separately.
 attr: function(param1, param2, ...)
 ```
 
-Boolean values can be defined with or without quotes. In addition the Ansible bool types `yes` or `no` can be used either. 
+Boolean values can be defined with or without quotes. In addition the Ansible bool types `yes` or `no` can be used either.
 
 ```
 attr: true or attr: 'true'
 ```
 
-To avoid overlapping syntax with Ansible variable syntax, please refer to single quotes `' '` when using own lambda functions in Icinga. 
+To avoid overlapping syntax with Ansible variable syntax, please refer to single quotes `' '` when using own lambda functions in Icinga.
 
 ```
 attrs => '{{ ... }}'
@@ -106,41 +106,41 @@ In general all values can be defined without quotes except for lamba functions w
 
 To replicate Icinga 2 advanced syntax like assignments with `+=` or `-=` you can use the prefix `+` or `-`.
 
-To create the following Icinga 2 DSL syntax, 
+To create the following Icinga 2 DSL syntax,
 ```
 var += config
 ```
-simply use a string with the prefix `+` e.g. 
+simply use a string with the prefix `+` e.g.
 
 ```
 var: `+ config`
 ```
 
-Because of the blank between the `+` and `config` those values are separately parsed and therefore numbers are also possible. For numbers we also can build `-=`, just use the minus sign `-`. This method will work for every attribute or custom attribute. 
+Because of the blank between the `+` and `config` those values are separately parsed and therefore numbers are also possible. For numbers we also can build `-=`, just use the minus sign `-`. This method will work for every attribute or custom attribute.
 
 ```
 attr: + -14 or attr: - -14
 ```
 
-The parser is able to merge or reduce an array. For this method set the first item of your array as `+` or `-` sign. 
+The parser is able to merge or reduce an array. For this method set the first item of your array as `+` or `-` sign.
 
 ```
 attr:
   - +
   - item1
-  - item2 
+  - item2
 
 # Alterntive syntax
 attr: ['-','item1','item2']
 ```
 Result in Icinga will be `attr += [ "item1", "item2", ]`.
 
-To reduce arrays use the minus sign `-`. 
+To reduce arrays use the minus sign `-`.
 
 **NOTICE** Please be aware that the minus sign needs to be quoted otherwise the Ansible parser will have troubles reading the array.
 
 ```
-attr: 
+attr:
   - '-'
   - item1
   - item2
@@ -156,9 +156,9 @@ Result in Icinga will be `attr -= [ "item1", "item2", ]`.
 To merge dictionaries we can use the plus sign `+`. The plus sign needs to be a key in the dictionary. See following example.
 
 ```
-attr: 
+attr:
   +: true
-  key1: value1 
+  key1: value1
 ```
 
 The result:
@@ -167,7 +167,7 @@ The result:
 attr["key1"] = "value1"
 ```
 
-The useage of levels in dictionaries aren't limited. 
+The useage of levels in dictionaries aren't limited.
 
 ```
 attr:
@@ -178,7 +178,7 @@ attr:
         value: test
 ```
 
-Result: 
+Result:
 
 ```
 vars.attr["key1"] = {
@@ -238,6 +238,18 @@ icinga2_objects:
     check_command: ping4
     assign:
       - host.address
+```
+
+#### Service Apply for
+
+```
+[...]
+  - name: ping
+    type: Service
+    apply: true
+    apply_for: config in host.vars.ips
+    check_command: ping4
+    vars: + config
 ```
 
 #### Service Object
@@ -321,5 +333,118 @@ icinga2_objects:
       - agent.localdomain
 ```
 
+#### ScheduledDowntime
 
+```
+icinga2_objects:
+[...]
+  - name: webserver_downtime
+    type: ScheduledDowntime
+    display_name: "webserver_downtime"
+    host_name: "web1.localdomain"
+    author: "icingaadmin"
+    comment: "web server maintenance"
+    fixed: false
+    file: zones.d/main/downtime.conf
+    ranges:
+        "sunday": "10:00-11:00"
+```
 
+#### Notification
+
+```
+icinga2_objects:
+[...]
+  - name: notification-to-rhel-host
+    type: Notification
+    file: zones.d/main/notification.conf
+    imports:
+      - notification-template
+    user_groups: ['administrators']
+    apply: true
+    apply_target: Host
+    assign:
+      - match(*web, host.name) && (host.vars.customer == customer-xy)
+    ignore:
+      - match(host.vars.os_family == Debian)
+```
+
+#### User
+
+ ```
+ [...]
+   - name: admin
+     type: User
+     period: "24x7"
+     groups: [ administrators ]
+     email: "icinga@localhost"
+     states: [ OK, Warning, Critical, Unknown ]
+     types: [ Problem, Recovery ]
+     file: zones.d/main/users.conf
+ ```
+
+#### NotificationCommand
+
+```
+icinga2_objects:
+[...]
+  - name: service-notification-command
+    command: [ ConfigDir + /scripts/mail-service-notification.sh ]
+    type: NotificationCommand
+    file: zones.d/main/notification_command.conf
+    arguments:
+      +: true
+      -4:
+        required: true
+        value: $notification_address$
+        description: The notification address
+      -6: $notification_address6$
+      -b: $notification_author$
+      vars:
+        +: true
+        notification_address: $address$
+        notification_address6: $address6$
+        notification_author: $notification.author$
+````
+
+#### UserGroup
+
+```
+[...]
+  - name: administrators
+    type: UserGroup
+    display_name: Admins
+    file: zones.d/main/groups.conf
+```
+
+#### CheckCommand
+
+```
+icinga2_objects:
+[...]
+  - name: http
+    command: [ PluginDir + /check_http ]
+    type: CheckCommand
+    file: zones.d/main/check_command.conf
+    arguments:
+      -H: $http_vhost$
+      -S:
+        set_if: $http_ssl$
+```
+
+#### Dependency
+
+```
+- name: dependency-to-host
+  type: Dependency
+  apply: true
+  apply_target: Host
+  file: zones.d/main/dependencies.conf
+  parent_host_name: router.localdomain
+  disable_checks: true
+  disable_notifications: true
+  states:
+    - Up
+  assign:
+    - host.name == agent.localdomain
+```

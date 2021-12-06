@@ -448,3 +448,12 @@ icinga2_objects:
   assign:
     - host.name == agent.localdomain
 ```
+
+#### EventCommand
+
+```
+- name: restart-httpd-event
+  type: EventCommand
+  file: zones.d/main/eventcommands.conf
+  command: /opt/bin/restart-httpd.sh
+```

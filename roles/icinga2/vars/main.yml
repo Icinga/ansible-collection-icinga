@@ -92,6 +92,7 @@ icinga2_object_types:
   - IcingaApplication
   - ApiUser
   - CheckCommand
+  - ScheduledDowntime
   - Dependency
   - Notification
   - NotificationCommand

@@ -1,5 +1,15 @@
 icinga2_objects:
   icinga-default:
+    - name: scheduled-downtime-test
+      type: ScheduledDowntime
+      file: zones.d/main/ScheduledDowntime.conf
+      host_name: agent.localdomain
+      author: icingaadmin
+      comment: "Downtime"
+      fixed: false
+      duration: 30m
+      ranges:
+        sunday: 02:00-03:00
     - name: dependency-test
       type: Dependency
       file: zones.d/main/dependencies.conf

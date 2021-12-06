@@ -1,5 +1,17 @@
 icinga2_objects:
   icinga-default:
+    - name: dependency-test
+      type: Dependency
+      file: zones.d/main/dependencies.conf
+      apply: true
+      apply_target: Host
+      parent_host_name: agent.localdomain
+      disable_checks: true
+      disable_notifications: true
+      states:
+        - Up
+      assign:
+        - host.name == test.localdomain
     - name: agent.localdomain
       type: Endpoint
       file: zones.d/main/hosts/agent.localdomain.conf

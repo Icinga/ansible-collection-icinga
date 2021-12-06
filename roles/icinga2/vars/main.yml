@@ -93,6 +93,7 @@ icinga2_object_types:
   - ApiUser
   - CheckCommand
   - ScheduledDowntime
+  - Dependency
   - Notification
   - NotificationCommand
   - User

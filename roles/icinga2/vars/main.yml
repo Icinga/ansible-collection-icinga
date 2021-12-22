@@ -66,6 +66,7 @@ icinga2_reserved:
   - Warning
   - ZonesDir
   - Dictionary
+  - ConfigDir
 icinga2_feature_realname:
   idomysql: ido-mysql
   ido-mysql: idomysql
@@ -76,7 +77,9 @@ icinga2_object_types:
   - ApiUser
   - CheckCommand
   - CheckerComponent
+  - Dependency
   - Endpoint
+  - EventCommand
   - ExternalCommandListener
   - FileLogger
   - GraphiteWriter
@@ -86,10 +89,14 @@ icinga2_object_types:
   - IdoMysqlConnection
   - IdoPgsqlConnection
   - InfluxdbWriter
+  - Notification
+  - NotificationCommand
   - NotificationComponent
+  - ScheduledDowntime
   - Service
   - ServiceGroup
   - SyslogLogger
   - TimePeriod
+  - User
+  - UserGroup
   - Zone
-

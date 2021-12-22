@@ -58,6 +58,8 @@ class ActionModule(ActionBase):
 			#
 			# apply rule?
 			#
+			if 'apply' in obj and obj['apply'] and not obj['args']['assign']:
+				raise AnsibleError('Apply rule %s is missing the assign rule.' % obj['name'])
 			if 'apply' in obj and obj['apply']:
 				object_content = 'apply ' + object_type
 				if 'apply_target' in obj and obj['apply_target']:

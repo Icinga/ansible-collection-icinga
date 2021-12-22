@@ -11,6 +11,7 @@ def main():
 			name                   = dict(required=True),
 			order                  = dict(default=10, type='int'),
 			file                   = dict(default='features-available/command.conf', type='str'),
+			command_path		   = dict(type='str'),
 		)
 	)
 

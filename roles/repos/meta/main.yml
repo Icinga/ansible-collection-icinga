@@ -2,9 +2,9 @@ galaxy_info:
   authors:
     - Lennart Betz <lennart.betz@netways.de>
     - Thilo Wening <thilo.wening@netways.de>
+    - Thomas Widhalm <thomas.widhalm@netways.de>
   description: Role to configure or manage official Icinga repositories.
   license: GPL-3.0-only
-  license_file: LICENSE
   min_ansible_version: 2.9
   platforms:
     - name: EL

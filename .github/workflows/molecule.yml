@@ -39,6 +39,11 @@ jobs:
           python3 -m pip install 'ansible==${{ matrix.ansible }}'
           python3 -m pip install -r requirements-test.txt
 
+      - name: Install community.docker if ansible 2.9.10
+        if: matrix.ansible == '2.9.10'
+        run: |
+          ansible-galaxy collection install community.docker
+
       - name: Install collection
         run: |
           mkdir -p ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE

@@ -19,7 +19,7 @@
       - zones.d/main/hosts
       - zones.d/main/services
   collections:
-    icinga.icinga
+    - icinga.icinga
   tasks:
     - name: "Include Icinga Repos"
       include_role:

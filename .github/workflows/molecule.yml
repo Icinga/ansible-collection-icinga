@@ -21,7 +21,7 @@ jobs:
       matrix:
         distro: [centos7, centos8, debian10]
         python: ['3.6', '3.8', '3.9']
-        ansible: ['2.10.7']
+        ansible: ['2.10.7', '2.9.10']
         scenario: [default]
 
     steps:
@@ -38,11 +38,6 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install 'ansible==${{ matrix.ansible }}'
           python3 -m pip install -r requirements-test.txt
-
-      - name: Install community.docker if ansible 2.9.10
-        if: matrix.ansible == '2.9.10'
-        run: |
-          ansible-galaxy collection install community.docker
 
       - name: Install collection
         run: |

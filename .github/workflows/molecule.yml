@@ -21,7 +21,7 @@ jobs:
       matrix:
         distro: [centos7, centos8, debian10]
         python: ['3.6', '3.8', '3.9']
-        ansible: ['2.9.10', '2.10.7']
+        ansible: ['2.10.7']
         scenario: [default]
 
     steps:

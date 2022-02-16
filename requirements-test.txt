@@ -1,4 +1,4 @@
 ansible-lint
-molecule
+molecule==3.5.2
 molecule-docker
 pytest-testinfra

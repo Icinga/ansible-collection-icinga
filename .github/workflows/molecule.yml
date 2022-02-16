@@ -46,6 +46,8 @@ jobs:
 
       - name: Test with molecule
         run: |
+          ansible --version
+          molecule --version
           molecule test -s ${{ matrix.scenario }}
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}

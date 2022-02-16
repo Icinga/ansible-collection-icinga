@@ -34,11 +34,19 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: Install dependencies
+        if: matrix.ansible != '2.9.10'
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install 'ansible==${{ matrix.ansible }}'
           python3 -m pip install -r requirements-test.txt
 
+      - name: Install dependencies ansible==2.9.10
+        if: matrix.ansible == '2.9.10'
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install 'ansible==${{ matrix.ansible }}'
+          python3 -m pip install -r requirements-test-2.9.0.txt
+          
       - name: Install collection
         run: |
           mkdir -p ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE

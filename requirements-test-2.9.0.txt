@@ -1,0 +1,4 @@
+ansible-lint
+molecule==3.4.1
+molecule-docker
+pytest-testinfra

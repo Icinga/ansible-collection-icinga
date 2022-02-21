@@ -1,6 +1,7 @@
 # ansible-collection-icinga
 
-[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/CI/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/molecule.yml/badge.svg)
+[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/CI/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/build.yml/badge.svg)
+[![PythonUnit](https://github.com/Icinga/ansible-collection-icinga/workflows/CI/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/python-test.yml/badge.svg)
 
 Collection to setup and manage components of the Icinga software stack.
 

@@ -64,7 +64,7 @@ jobs:
       matrix:
         distro: [centos7, centos8, debian10]
         python: ['3.6', '3.8', '3.9']
-        ansible: ['2.10.7']
+        ansible: ['2.10.7', '2.11.8']
         scenario: [default]
 
     steps:
@@ -79,8 +79,7 @@ jobs:
       - name: Install dependencies ansible
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install 'ansible==${{ matrix.ansible }}'
-          python3 -m pip install -r requirements-test.txt
+          python3 -m pip install -r requirements-test-${{ matrix.ansible }}.txt
 
       - name: Install collection
         run: |

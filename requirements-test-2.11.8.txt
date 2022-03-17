@@ -1,3 +1,4 @@
+ansible-core==2.11.8
 ansible-lint
 molecule
 molecule-docker

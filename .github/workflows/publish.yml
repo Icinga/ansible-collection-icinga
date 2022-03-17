@@ -10,9 +10,6 @@ on:
 
 jobs:
   publish:
-    needs:
-      - ansible29/build
-      - ansible210/build
     runs-on: ubuntu-latest
     env:
       COLLECTION_NAMESPACE: icinga
@@ -21,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: $TAG
-          
+
       - name: build and publish collection
         uses: artis3n/ansible_galaxy_collection@v2
         with:

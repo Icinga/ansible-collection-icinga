@@ -1,0 +1,30 @@
+---
+name: publish
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish'
+        required: true
+        default: ''
+
+jobs:
+  publish:
+    needs:
+      - ansible29/build
+      - ansible210/build
+    runs-on: ubuntu-latest
+    env:
+      COLLECTION_NAMESPACE: icinga
+      COLLECTION_NAME: icinga
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: $TAG
+          
+      - name: build and publish collection
+        uses: artis3n/ansible_galaxy_collection@v2
+        with:
+          api_key: '${{ secrets.GALAXY_API_KEY }}'
+          build: true
+          publish: true

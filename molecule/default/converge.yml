@@ -5,6 +5,7 @@
   vars:
     icinga2_confd: false
     icinga2_features:
+      - name: notification
       - name: checker
       - name: mainlog
       - name: api

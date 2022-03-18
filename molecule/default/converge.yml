@@ -17,6 +17,7 @@
             endpoints:
               - "{{ ansible_fqdn }}"
     icinga2_config_directories:
+      - zones.d/main/commands
       - zones.d/main/hosts
       - zones.d/main/services
   collections:

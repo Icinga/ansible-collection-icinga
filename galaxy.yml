@@ -13,7 +13,6 @@ description: >
   Furthermore it can easily create and distribute monitoring configuration.
 license:
   - GPL-3.0-or-later
-license_file: 'LICENSE'
 tags:
   - icinga2
   - monitoring

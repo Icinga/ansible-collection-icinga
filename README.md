@@ -24,7 +24,7 @@ Collection to setup and manage components of the Icinga software stack.
 You can easily install the collection with the `ansible-galaxy` command.
 
 ```
-ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,v0.1.0
+ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.1.0
 ```
 
 Or if you are using Tower or AWX add the collection to your requirements file.
@@ -33,7 +33,7 @@ Or if you are using Tower or AWX add the collection to your requirements file.
 collections:
   - name: https://github.com/Icinga/ansible-collection-icinga.git
     type: git
-    version: v0.1.0
+    version: 0.1.0
 ```
 
 ## Usage

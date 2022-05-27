@@ -42,9 +42,7 @@ To use the collection in your playbooks, add the collections and then use the ro
 
 ```
 - hosts: icinga-server
-  collections:
-    - icinga.icinga
   roles:
-    - repos
-    - icinga2
+    - icinga.icinga.repos
+    - icinga.icinga.icinga2
 ```

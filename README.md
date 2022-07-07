@@ -1,28 +1,50 @@
 # ansible-collection-icinga
 
+[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/build/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/build.yml/badge.svg)
+[![PythonUnit](https://github.com/Icinga/ansible-collection-icinga/workflows/Python%20Unittest/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/python-test.yml/badge.svg)
+
 Collection to setup and manage components of the Icinga software stack.
 
-# Monitoring Objects Configuration
+## Documentation and Roles
+* [Getting started](doc/getting-started.md)
+* [Role: icinga.icinga.repos](doc/role-repos.md)
+* [Role: icinga.icinga.icinga2](doc/role-icinga2.md)
+  * [Parser and Monitoring Objects](doc/objects.md)
+  * [Features](doc/features.md)
+    * [Feature API](doc/features/feature-api.md)
+    * [Feature IDO](doc/features/feature-ido.md)
+    * [Feature mainlog](doc/features/feature-mainlog.md)
+    * [Feature notification](doc/features/feature-notification.md)
+    * [Feature InfluxDB](doc/features/feature-influxdb.md)
+    * [Feature Graphite](doc/features/feature-graphite.md)
 
-By adding the variable `icinga2_objects` the role Icinga 2 will
-generate configuration files with objects included.
 
-The second level ot the dictionary tells on which host the configuration is to be made. Both objects below goes to host `host.example.org`.
+## Installation
 
-The `file` key will be used to control in which directory structure the object will be placed.
+You can easily install the collection with the `ansible-galaxy` command.
 
 ```
-icinga2_objects:
-  host.example.org:
-    - name: "{{ ansible_fqdn }}"
-      type: Endpoint
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-    - name: "{{ ansible_fqdn }}"
-      type: Zone
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-      endpoints:
-        - "{{ ansible_fqdn }}"
-      parent: main
+ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,v0.1.0
+```
+
+Or if you are using Tower or AWX add the collection to your requirements file.
+
+```
+collections:
+  - name: https://github.com/Icinga/ansible-collection-icinga.git
+    type: git
+    version: v0.1.0
+```
+
+## Usage
+
+To use the collection in your playbooks, add the collections and then use the roles
+
+```
+- hosts: icinga-server
+  collections:
+    - icinga.icinga
+  roles:
+    - repos
+    - icinga2
 ```

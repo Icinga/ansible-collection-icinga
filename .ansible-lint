@@ -1,0 +1,11 @@
+skip_list:
+  - 'yaml'
+  - unnamed-task
+warn_list:
+  - command-instead-of-shell
+  - risky-file-permissions
+  - literal-compare
+  - meta-incorrect
+  - meta-no-info
+  - new-line-at-end-of-file
+  - no-changed-when

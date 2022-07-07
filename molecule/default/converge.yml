@@ -1,0 +1,29 @@
+---
+
+- name: Converge
+  hosts: all
+  vars:
+    icinga2_confd: false
+    icinga2_features:
+      - name: checker
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main/hosts
+      - zones.d/main/services
+  collections:
+    - icinga.icinga
+  tasks:
+    - name: "Include Icinga Repos"
+      include_role:
+        name: repos
+    - name: "Include Icinga 2"
+      include_role:
+        name: icinga2

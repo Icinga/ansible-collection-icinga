@@ -3,6 +3,11 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+from ansible.plugins.lookup import LookupBase
+from ansible_collections.icinga.icinga.plugins.module_utils.parse import (
+    Icinga2Parser,
+)
+
 DOCUMENTATION = '''
     author:
       - Lennart Betz (lennart.betz@netways.de)
@@ -38,18 +43,14 @@ RETURN = """
         type: strings
 """
 
-from ansible.plugins.lookup import LookupBase
-from ansible_collections.icinga.icinga.plugins.module_utils.parse import (
-    Icinga2Parser,
-)
 
 class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         config = Icinga2Parser()
         ret = []
-        constants = list( kwargs.get('constants', {}).keys() )
+        constants = list(kwargs.get('constants', {}).keys())
         reserved = kwargs.get('reserved', [])
         indent = kwargs.get('indent', 2)
 
-        ret.append( config.parse(terms[0], constants+reserved, indent) )
+        ret.append(config.parse(terms[0], constants+reserved, indent))
         return ret

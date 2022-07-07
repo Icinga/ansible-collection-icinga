@@ -4,20 +4,12 @@
   set_fact:
     icinga2_import_schema: "{{ icinga2_dict_features.idomysql.import_schema| default(False) }}"
 
-- name: api feature cleanup arguments list
-  set_fact:
-    args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
-  when: idx.key not in ['import_schema']
-  loop: "{{ icinga2_dict_features.idomysql |dict2items }}"
-  loop_control:
-    loop_var: idx
-    
 - name: feature idomysql IdoMysqlConnection object
   icinga2_object:
     name: ido-mysql
     type: IdoMysqlConnection
     file: features-available/ido-mysql.conf
-    args: "{{ args }}"
+    args: "{{ icinga2_dict_features.idomysql }}"
   register: result
 
 - set_fact:
@@ -41,8 +33,9 @@
       shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icinga_dbversion"
-      ignore_errors: True
-      changed_when: False
+      failed_when: false
+      changed_when: false
+      check_mode: false
       register: db_schema
 
     - name: MySQL import IDO schema

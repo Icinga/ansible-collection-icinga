@@ -1,0 +1,5 @@
+jinja2==3.0.3
+ansible-lint==5.4.0
+molecule==3.0.8
+molecule-docker
+pytest-testinfra

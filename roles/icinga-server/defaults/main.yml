@@ -1,0 +1,8 @@
+icinga2_server_ido_type: mysql
+icinga2_server_ido_host: localhost
+icinga2_server_ido_port: 3306
+icinga2_server_ido_user: icinga2
+icinga2_server_ido_password: "{{ lookup('ansible.builtin.password', '.icinga-server-icinga2ido chars=ascii_letters') }}"
+icinga2_server_ido_database: icinga2
+icinga2_server_manage_repos: yes
+icinga2_server_ticket_salt: "{{ lookup('ansible.builtin.password', '.icinga-server-ticketsalt chars=ascii_letters') }}"

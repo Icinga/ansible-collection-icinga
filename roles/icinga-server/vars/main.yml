@@ -1,8 +1,24 @@
-icinga2_server_ido_type: idomysql
-icinga2_server_ido_host: localhost
-icinga2_server_ido_port: 3306
-icinga2_server_ido_user: icinga2
-icinga2_server_ido_password: icinga2
-icinga2_server_ido_database: icinga2
-icinga2_server_manage_repos: yes
-icinga2_server_ticket_salt: ZU6Y3wwCup7f5SWEZjTS5Gs3HFJqmiGK
+icinga2_constants:
+  TicketSalt: "{{ icinga2_server_ticket_salt }}"
+  ZoneName: main
+  NodeName: "{{ icinga2_server_nodename | default(ansible_fqdn) }}"
+icinga2_confd: false
+icinga2_features:
+  - name: "{{ icinga2_server_ido_type }}"
+    host: "{{ icinga2_server_ido_host }}"
+    port: "{{ icinga2_server_ido_port }}"
+    user: "{{ icinga2_server_ido_user }}"
+    database: "{{ icinga2_server_ido_database }}"
+    password: "{{ icinga2_server_ido_password }}"
+  - name: checker
+  - name: notification
+  - name: mainlog
+  - name: api
+    ca_host: 'none'
+    force_newcert: false
+    endpoints:
+      - name: NodeName
+    zones:
+      - name: ZoneName
+        endpoints:
+          - NodeName

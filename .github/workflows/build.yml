@@ -19,7 +19,7 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian10]
+        distro: [centos7, centos8, debian10, fedora36]
         python: ['3.6', '3.8']
         ansible: ['2.9.10']
         scenario: [default]
@@ -62,7 +62,7 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian10]
+        distro: [centos7, centos8, debian10, fedora36]
         python: ['3.6', '3.8', '3.9']
         ansible: ['2.10.7', '2.11.8']
         scenario: [default]

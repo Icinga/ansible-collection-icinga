@@ -1,6 +1,6 @@
 namespace: icinga
 name: icinga
-version: 0.1.0-beta
+version: 0.1.0
 readme: README.md
 authors:
   - Lennart Betz <lennart.betz@netways.de>
@@ -13,7 +13,6 @@ description: >
   Furthermore it can easily create and distribute monitoring configuration.
 license:
   - GPL-3.0-or-later
-license_file: 'LICENSE'
 tags:
   - icinga2
   - monitoring

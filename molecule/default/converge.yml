@@ -5,6 +5,7 @@
   vars:
     icinga2_confd: false
     icinga2_features:
+      - name: notification
       - name: checker
       - name: influxdb2
         host: 127.0.0.1
@@ -22,6 +23,7 @@
             endpoints:
               - "{{ ansible_fqdn }}"
     icinga2_config_directories:
+      - zones.d/main/commands
       - zones.d/main/hosts
       - zones.d/main/services
   collections:

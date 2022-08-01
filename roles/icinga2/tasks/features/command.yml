@@ -1,0 +1,12 @@
+---
+
+- name: feature command ExternalCommandListener object
+  icinga2_object:
+    name: command
+    type: ExternalCommandListener
+    file: features-available/command.conf
+    args: "{{ icinga2_dict_features.command }}"
+  register: result
+
+- set_fact:
+    icinga2_local_objects: "{{ icinga2_local_objects|default([]) + [result.dest] }}"

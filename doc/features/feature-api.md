@@ -86,8 +86,8 @@ icinga2_features:
 
 ### Feature variables
 
-* `icinga2_ca_host: string`
-  * Use to point the Icinga 2 installation to where to get the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value. 
+* `ca_host: string`
+  * Use to decide where to gather the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value. 
 
 * `force_newcert: boolean`
   * Force new certificates on the destination hosts. 

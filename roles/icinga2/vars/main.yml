@@ -86,6 +86,7 @@ icinga2_object_types:
   - Host
   - HostGroup
   - IcingaApplication
+  - IcingaDB
   - IdoMysqlConnection
   - IdoPgsqlConnection
   - Influxdb2Writer

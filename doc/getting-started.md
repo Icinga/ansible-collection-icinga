@@ -26,7 +26,7 @@ ansible-galaxy collection install icinga.icinga
 
 Or pull the collection from the git. (Only useable with Ansible version 2.10.9)
 ```
-ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,v0.1.0
+ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.1.0
 ```
 
 Pre 2.10 you can also clone the repository, manually build and install the collection.

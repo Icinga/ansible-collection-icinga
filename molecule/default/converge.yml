@@ -2,8 +2,34 @@
 
 - name: Converge
   hosts: all
+  vars:
+    icinga2_confd: false
+    icinga2_features:
+      - name: icingadb
+        host: 127.0.0.1
+      - name: notification
+      - name: checker
+      - name: influxdb2
+        host: 127.0.0.1
+        port: 8086
+        organization: monitoring
+        bucket: icinga2
+        auth_token: testtoken123
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main/commands
+      - zones.d/main/hosts
+      - zones.d/main/services
   collections:
-    icinga.icinga
+    - icinga.icinga
   tasks:
     - name: "Include Icinga Repos"
       include_role:

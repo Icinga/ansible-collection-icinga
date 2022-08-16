@@ -12,11 +12,16 @@ Collection to setup and manage components of the Icinga software stack.
   * [Parser and Monitoring Objects](doc/objects.md)
   * [Features](doc/features.md)
     * [Feature API](doc/features/feature-api.md)
+    * [Feature Command](doc/features/feature-command.md)
+    * [Feature Graphite](doc/features/feature-graphite.md)
+    * [Feature IcingaDB](doc/features/feature-icingadb.md)
     * [Feature IDO](doc/features/feature-ido.md)
+    * [Feature InfluxDB](doc/features/feature-influxdb.md)
+    * [Feature InfluxDB2](doc/features/feature-influxdb2.md)
     * [Feature mainlog](doc/features/feature-mainlog.md)
     * [Feature notification](doc/features/feature-notification.md)
-    * [Feature InfluxDB](doc/features/feature-influxdb.md)
-    * [Feature Graphite](doc/features/feature-graphite.md)
+
+
 
 
 ## Installation
@@ -24,15 +29,14 @@ Collection to setup and manage components of the Icinga software stack.
 You can easily install the collection with the `ansible-galaxy` command.
 
 ```
-ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.1.0
+ansible-galaxy collection install icinga.icinga
 ```
 
 Or if you are using Tower or AWX add the collection to your requirements file.
 
 ```
 collections:
-  - name: https://github.com/Icinga/ansible-collection-icinga.git
-    type: git
+  - name: icinga.icinga
     version: 0.1.0
 ```
 

@@ -1,0 +1,3 @@
+object CheckCommand "test" {
+  command = [ PluginDir + "/bin/true" ]
+}

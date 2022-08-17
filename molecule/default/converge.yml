@@ -5,6 +5,13 @@
   vars:
     icinga2_confd: false
     icinga2_features:
+      - name: elasticsearch
+        host: localhost
+        port: 9200
+        index: "icinga2"
+        enable_send_perfdata: true
+        flush_interval: 10
+        flush_threshold: 1024
       - name: opentsdb
         host: localhost
         port: 4242

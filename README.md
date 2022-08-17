@@ -14,6 +14,7 @@ Collection to setup and manage components of the Icinga software stack.
     * [Feature API](doc/features/feature-api.md)
     * [Feature Command](doc/features/feature-command.md)
     * [Feature ElasticSearch](doc/features/feature-elasticsearch.md)
+    * [Feature GelfWriter](doc/features/feature-gelf.md)
     * [Feature Graphite](doc/features/feature-graphite.md)
     * [Feature IcingaDB](doc/features/feature-icingadb.md)
     * [Feature IDO](doc/features/feature-ido.md)

@@ -66,29 +66,41 @@ icinga2_reserved:
   - Warning
   - ZonesDir
   - Dictionary
+  - ConfigDir
 icinga2_feature_realname:
   idomysql: ido-mysql
   ido-mysql: idomysql
   ido-pgsql: idopgsql
   idopgsql: ido-pgsql
 icinga2_object_types:
-  - TimePeriod
-  - HostGroup
-  - ServiceGroup
-  - CheckerComponent
-  - FileLogger
-  - NotificationComponent
   - ApiListener
-  - Endpoint
-  - Zone
-  - Host
-  - Service
-  - SyslogLogger
-  - GraphiteWriter
-  - InfluxdbWriter
-  - IdoMysqlConnection
-  - IdoPgsqlConnection
-  - IcingaApplication
   - ApiUser
   - CheckCommand
+  - CheckerComponent
+  - Dependency
   - ElasticsearchWriter
+  - Endpoint
+  - EventCommand
+  - ExternalCommandListener
+  - FileLogger
+  - GraphiteWriter
+  - Host
+  - HostGroup
+  - IcingaApplication
+  - IcingaDB
+  - IdoMysqlConnection
+  - IdoPgsqlConnection
+  - Influxdb2Writer
+  - InfluxdbWriter
+  - Notification
+  - NotificationCommand
+  - NotificationComponent
+  - OpenTsdbWriter
+  - ScheduledDowntime
+  - Service
+  - ServiceGroup
+  - SyslogLogger
+  - TimePeriod
+  - User
+  - UserGroup
+  - Zone

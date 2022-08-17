@@ -94,6 +94,7 @@ icinga2_object_types:
   - Notification
   - NotificationCommand
   - NotificationComponent
+  - OpenTsdbWriter
   - ScheduledDowntime
   - Service
   - ServiceGroup

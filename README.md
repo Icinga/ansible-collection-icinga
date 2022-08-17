@@ -12,11 +12,17 @@ Collection to setup and manage components of the Icinga software stack.
   * [Parser and Monitoring Objects](doc/objects.md)
   * [Features](doc/features.md)
     * [Feature API](doc/features/feature-api.md)
+    * [Feature Command](doc/features/feature-command.md)
+    * [Feature ElasticSearch](doc/features/feature-elasticsearch.md)
+    * [Feature Graphite](doc/features/feature-graphite.md)
+    * [Feature IcingaDB](doc/features/feature-icingadb.md)
     * [Feature IDO](doc/features/feature-ido.md)
+    * [Feature InfluxDB](doc/features/feature-influxdb.md)
+    * [Feature InfluxDB2](doc/features/feature-influxdb2.md)
     * [Feature mainlog](doc/features/feature-mainlog.md)
     * [Feature notification](doc/features/feature-notification.md)
-    * [Feature InfluxDB](doc/features/feature-influxdb.md)
-    * [Feature Graphite](doc/features/feature-graphite.md)
+
+
 
 
 ## Installation
@@ -32,7 +38,7 @@ Or if you are using Tower or AWX add the collection to your requirements file.
 ```
 collections:
   - name: icinga.icinga
-    version: v0.1.0
+    version: 0.1.0
 ```
 
 ## Usage
@@ -41,9 +47,7 @@ To use the collection in your playbooks, add the collection and then use the rol
 
 ```
 - hosts: icinga-server
-  collections:
-    - icinga.icinga
   roles:
-    - repos
-    - icinga2
+    - icinga.icinga.repos
+    - icinga.icinga.icinga2
 ```

@@ -8,6 +8,8 @@
   template:
     src: icinga2.conf.j2
     dest: "{{ icinga2_config_path + '/icinga2.conf' }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
   notify: reload icinga2 service
 
 - name: merge defaults and user specified constants (set_fact icinga2_combined_constants)
@@ -31,14 +33,16 @@
     path: "{{ icinga2_fragments_path }}"
     recurse: yes
     file_type: file
-  register: result
+  register: result_frag
 
 - name: cleanup config files
   file:
     state: absent
     dest: "{{ item.path }}"
-  loop: "{{ result.files }}"
-  when: item.path not in icinga2_local_objects
+  loop: "{{ result_frag.files }}"
+  when:
+    - item.path not in icinga2_local_objects
+    - item.path not in _icinga2_custom_conf_paths
 
 - name: collect empty config dirs
   shell: >
@@ -101,6 +105,6 @@
   ansible.builtin.file:
     state: absent
     path: "{{ item |regex_replace('^'+icinga2_fragments_path, '/etc/icinga2') }}"
-  when: item.split('/')[3] == 'conf.d' or item.split('/')[3] == 'zones.d'
+  when: item.split('/')[icinga2_fragments_path.split('/')|length] == 'conf.d' or item.split('/')[icinga2_fragments_path.split('/')|length] == 'zones.d'
   loop: "{{ _empty_result.stdout_lines }}"
   notify: reload icinga2 service

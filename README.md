@@ -1,6 +1,6 @@
 # ansible-collection-icinga
 
-[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/build/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/build.yml/badge.svg)
+[![CI](https://github.com/Icinga/ansible-collection-icinga/workflows/Build/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/build.yml/badge.svg)
 [![PythonUnit](https://github.com/Icinga/ansible-collection-icinga/workflows/Python%20Unittest/badge.svg?event=push)](https://github.com/Icinga/ansible-collection-icinga/actions/workflows/python-test.yml/badge.svg)
 
 Collection to setup and manage components of the Icinga software stack.
@@ -43,7 +43,7 @@ collections:
 
 ## Usage
 
-To use the collection in your playbooks, add the collections and then use the roles
+To use the collection in your playbooks, add the collection and then use the roles.
 
 ```
 - hosts: icinga-server

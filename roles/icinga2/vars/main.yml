@@ -83,6 +83,7 @@ icinga2_object_types:
   - EventCommand
   - ExternalCommandListener
   - FileLogger
+  - GelfWriter
   - GraphiteWriter
   - Host
   - HostGroup

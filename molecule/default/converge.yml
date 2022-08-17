@@ -5,6 +5,9 @@
   vars:
     icinga2_confd: false
     icinga2_features:
+      - name: gelf
+        host: localhost
+        port: 12201
       - name: elasticsearch
         host: localhost
         port: 9200

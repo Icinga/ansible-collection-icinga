@@ -78,6 +78,7 @@ icinga2_object_types:
   - CheckCommand
   - CheckerComponent
   - Dependency
+  - ElasticsearchWriter
   - Endpoint
   - EventCommand
   - ExternalCommandListener

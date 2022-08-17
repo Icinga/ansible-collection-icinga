@@ -22,6 +22,7 @@ Collection to setup and manage components of the Icinga software stack.
     * [Feature InfluxDB2](doc/features/feature-influxdb2.md)
     * [Feature mainlog](doc/features/feature-mainlog.md)
     * [Feature notification](doc/features/feature-notification.md)
+    * [Feature perfdata](doc/features/feature-perfdata.md)
 
 
 

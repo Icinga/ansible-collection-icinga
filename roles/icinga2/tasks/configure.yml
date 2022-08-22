@@ -41,7 +41,8 @@
     dest: "{{ item.path }}"
   loop: "{{ result_frag.files }}"
   when:
-    - item.path not in icinga2_local_objects or ( _icinga2_custom_conf_paths is defined and item.path not in _icinga2_custom_conf_paths )
+    - item.path not in icinga2_local_objects
+    - item.path not in _icinga2_custom_conf_paths
 
 - name: collect empty config dirs
   shell: >

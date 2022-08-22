@@ -20,23 +20,23 @@
 - name: prepare custom config
   block:
   when: icinga2_custom_config is defined and icinga2_custom_config|length > 0
-  - name: construct _icinga2_custom_conf_paths
-    set_fact:
-      _icinga2_custom_conf_paths: "{{ _icinga2_custom_conf_paths + [ icinga2_fragments_path + '/' + item.path + '/' + item.order|default('20')|string + '_' + item.name] }}"
-    loop: "{{ icinga2_custom_config }}"
-  
-  - name: prepare custom config paths
-    file:
-      state: directory
-      owner: root
-      group: root
-      path: "{{ icinga2_fragments_path }}/{{ item.path }}/"
-    loop: "{{ icinga2_custom_config }}"
-  
-  - name: add custom config to assemble
-    ansible.builtin.copy:
-      owner: root
-      group: root
-      src: "files/{{ item.name }}"
-      dest: "{{ icinga2_fragments_path }}/{{ item.path }}/{{ item.order|default('20')|string }}_{{ item.name }}"
-    loop: "{{ icinga2_custom_config }}"
+    - name: construct _icinga2_custom_conf_paths
+      set_fact:
+        _icinga2_custom_conf_paths: "{{ _icinga2_custom_conf_paths + [ icinga2_fragments_path + '/' + item.path + '/' + item.order|default('20')|string + '_' + item.name] }}"
+      loop: "{{ icinga2_custom_config }}"
+    
+    - name: prepare custom config paths
+      file:
+        state: directory
+        owner: root
+        group: root
+        path: "{{ icinga2_fragments_path }}/{{ item.path }}/"
+      loop: "{{ icinga2_custom_config }}"
+    
+    - name: add custom config to assemble
+      ansible.builtin.copy:
+        owner: root
+        group: root
+        src: "files/{{ item.name }}"
+        dest: "{{ icinga2_fragments_path }}/{{ item.path }}/{{ item.order|default('20')|string }}_{{ item.name }}"
+      loop: "{{ icinga2_custom_config }}"

@@ -29,6 +29,7 @@
     group: root
     path: "{{ icinga2_fragments_path }}/{{ item.path }}/"
   loop: "{{ icinga2_custom_config }}"
+  when: icinga2_custom_config is defined
 
 
 - name: add custom config to assemble

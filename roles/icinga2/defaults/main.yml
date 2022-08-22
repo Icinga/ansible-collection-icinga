@@ -14,3 +14,4 @@ icinga2_features:
   - name: notification
   - name: mainlog
 icinga2_remote_objects: []
+_icinga2_custom_conf_paths: []

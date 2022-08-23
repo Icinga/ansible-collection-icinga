@@ -1,3 +1,8 @@
+icinga2_custom_config:
+  - name: icinga2_command
+    path: zones.d/main/commands/custom_commands.conf
+
+
 icinga2_objects:
   icinga-default:
     - name: eventcommand-test

@@ -4,6 +4,8 @@
   set_fact:
     icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
     icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
+    icinga2_ca_host_port: "{{ icinga2_dict_features.api.ca_host_port | default(omit) }}"
+    icinga2_ca_fingerprint: "{{ icinga2_dict_features.api.ca_fingerprint | default(omit) }}"
     icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
     icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
     icinga2_zones: "{{ icinga2_dict_features.api.zones |default([]) }}"
@@ -19,7 +21,7 @@
 - name: api feature cleanup arguments list
   set_fact:
     args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
-  when: idx.key not in ['ca_host', 'cert_name', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert']
+  when: idx.key not in ['ca_host', 'icinga2_ca_host_port', 'cert_name', 'ca_fingerprint', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert' ]
   loop: "{{ icinga2_dict_features.api |dict2items }}"
   loop_control:
     loop_var: idx
@@ -94,6 +96,7 @@
   register: icinga2_ssl_cert_path
 
 - name: certificate request
+  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert) and icinga2_ssl_cacert is not defined
   block:
     - name: create cert path
       file:
@@ -107,8 +110,22 @@
       shell: >-
         icinga2 pki save-cert
         --host "{{ icinga2_ca_host }}"
+        --port "{{ icinga2_ca_host_port | default('5665') }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
       when: icinga2_ca_host != 'none'
+      register: _trusted_master_cert
+
+    - name: normalize ca fingerprint
+      set_fact:
+        _ca_fingerprint_normalized: "{{ icinga2_ca_fingerprint | upper | replace(':', ' ') }}"
+      when: icinga2_ca_fingerprint is defined
+
+    - name: validate ca certificate fingerprint
+      fail:
+        msg: "CA certificate identity not verified. Fingerprint did not match."
+      when:
+        - icinga2_ca_fingerprint is defined
+        - _trusted_master_cert.stdout | regex_search(_ca_fingerprint_normalized, multiline=True) is none
 
     - name: generate private and public key
       shell: >-
@@ -117,9 +134,9 @@
         --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
         {% if icinga2_ca_host != 'none' %} --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt" {% else %} --csr "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.csr" {%- endif %}
 
-    - name: ticket request
+    - name: delegate ticket request to master
       shell: icinga2 pki ticket --cn "{{ icinga2_cert_name }}"
-      delegate_to: "{{ icinga2_ca_host }}"
+      delegate_to: "{{ icinga2_delegate_host | default('icinga2_ca_host') }}"
       register: icinga2_ticket
       when: icinga2_ca_host != 'none'
 
@@ -128,6 +145,7 @@
         icinga2 pki {% if icinga2_ca_host != 'none' %} request
         --ticket "{{ icinga2_ticket.stdout }}"
         --host "{{ icinga2_ca_host }}"
+        --port "{{ icinga2_ca_host_port | default('5665') }}"
         --ca "{{ icinga2_cert_path }}/ca.crt"
         --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
@@ -143,7 +161,6 @@
         group: "{{ icinga2_group }}"
         remote_src: yes
       when: icinga2_ca_host == 'none'
-  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert) and icinga2_ssl_cacert is not defined
 
 - name: use self provided certificates
   block:

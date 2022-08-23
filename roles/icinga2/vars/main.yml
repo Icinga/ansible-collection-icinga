@@ -78,20 +78,27 @@ icinga2_object_types:
   - CheckCommand
   - CheckerComponent
   - Dependency
+  - ElasticsearchWriter
   - Endpoint
   - EventCommand
   - ExternalCommandListener
   - FileLogger
+  - GelfWriter
   - GraphiteWriter
   - Host
   - HostGroup
   - IcingaApplication
+  - IcingaDB
   - IdoMysqlConnection
   - IdoPgsqlConnection
+  - Influxdb2Writer
   - InfluxdbWriter
   - Notification
   - NotificationCommand
   - NotificationComponent
+  - LivestatusListener
+  - OpenTsdbWriter
+  - PerfdataWriter
   - ScheduledDowntime
   - Service
   - ServiceGroup

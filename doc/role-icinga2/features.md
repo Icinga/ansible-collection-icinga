@@ -9,12 +9,18 @@ A few other features can have more attributes to configure the feature itself, l
 
 Current supported features:
 
-* [Feature API](features/feature-api.md)
-* [Feature IDO](features/feature-ido.md)
-* [Feature mainlog](features/feature-mainlog.md)
-* [Feature notification](features/feature-notification.md)
-* [Feature InfluxDB](features/feature-influxdb.md)
-* [Feature Graphite](features/feature-graphite.md)
+    * [Feature API](features/feature-api.md)
+    * [Feature Command](features/feature-command.md)
+    * [Feature ElasticSearch](features/feature-elasticsearch.md)
+    * [Feature GelfWriter](features/feature-gelf.md)
+    * [Feature Graphite](features/feature-graphite.md)
+    * [Feature IcingaDB](features/feature-icingadb.md)
+    * [Feature IDO](features/feature-ido.md)
+    * [Feature InfluxDB](features/feature-influxdb.md)
+    * [Feature InfluxDB2](features/feature-influxdb2.md)
+    * [Feature mainlog](features/feature-mainlog.md)
+    * [Feature notification](features/feature-notification.md)
+    * [Feature perfdata](dfeatures/feature-perfdata.md)
 
 ```
 icinga2_features:
@@ -24,6 +30,7 @@ icinga2_features:
     host: localhost
     port: 3000
   - name: api
+    ca_host: none
     force_newcert: false
     endpoints:
       - name: NodeName

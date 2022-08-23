@@ -57,6 +57,8 @@ To increase your security set `ca_fingerprint` to validate the certificate of th
 ca_fingerprint: "00 DE AD BE EF"
 # alternatively
 ca_fingerprint: "00:DE:AD:BE:EF"
+# or lowercase
+ca_fingerprint: "00 de ad be ef"
 ```
 
 The fingerprint can be retrieved with OpenSSL:
@@ -101,10 +103,10 @@ icinga2_features:
 ### Feature variables
 
 * `ca_host: string`
-  * Use to decide where to gather the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value. 
+  * Use to decide where to gather the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value.
 
 * `force_newcert: boolean`
-  * Force new certificates on the destination hosts. 
+  * Force new certificates on the destination hosts.
 
 * `cert_name: string`
   * Common name of Icinga client/server instance. Default is **ansible_fqdn**.
@@ -129,4 +131,3 @@ icinga2_features:
     * `name: string`
     * `endpoints: list`
     * `global: boolean`
-

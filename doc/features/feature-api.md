@@ -51,6 +51,20 @@ To force a new request set `force_newcert` to `true`:
 force_newcert: true
 ```
 
+To increase your security set `ca_fingerprint` to validate the certificate of the `ca_host`:
+
+```
+ca_fingerprint: "00 DE AD BE EF"
+# alternatively
+ca_fingerprint: "00:DE:AD:BE:EF"
+```
+
+The fingerprint can be retrieved with OpenSSL:
+
+```
+openssl x509 -noout -fingerprint -sha256 -inform pem -in /path/to/ca.crt
+```
+
 ### Use your own ready-made certificate
 
 If you want to use certificates which aren't created by **Icinga 2 CA**, then use

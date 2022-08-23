@@ -4,6 +4,7 @@
   set_fact:
     icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
     icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
+    icinga2_ca_fingerprint: "{{ icinga2_dict_features.api.ca_fingerprint | default(omit) }}"
     icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
     icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
     icinga2_zones: "{{ icinga2_dict_features.api.zones |default([]) }}"
@@ -94,6 +95,7 @@
   register: icinga2_ssl_cert_path
 
 - name: certificate request
+  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert) and icinga2_ssl_cacert is not defined
   block:
     - name: create cert path
       file:
@@ -109,6 +111,19 @@
         --host "{{ icinga2_ca_host }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
       when: icinga2_ca_host != 'none'
+      register: _trusted_master_cert
+
+    - name: normalize ca fingerprint
+      set_fact:
+        _ca_fingerprint_normalized: "{{ icinga2_ca_fingerprint | upper | replace(':', ' ') }}"
+      when: icinga2_ca_fingerprint is defined
+
+    - name: validate ca certificate fingerprint
+      fail:
+        msg: "CA certificate identity not verified. Fingerprint did not match."
+      when:
+        - icinga2_ca_fingerprint is defined
+        - _trusted_master_cert.stdout | regex_search(_ca_fingerprint_normalized, multiline=True) is none
 
     - name: generate private and public key
       shell: >-
@@ -143,7 +158,6 @@
         group: "{{ icinga2_group }}"
         remote_src: yes
       when: icinga2_ca_host == 'none'
-  when: (icinga2_ssl_cert_path.stat.exists == false or icinga2_ssl_key_path.stat.exists == false or icinga2_force_newcert) and icinga2_ssl_cacert is not defined
 
 - name: use self provided certificates
   block:

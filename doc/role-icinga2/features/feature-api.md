@@ -48,7 +48,7 @@ ca_host: none
 
 ### Generate Certificate Signing Requests
 
-Create Signing Request to get a certificate managed by the parameter `ca_host`. If
+Create Signing Request to get a certificate managed by the parameter `ca_host` and `ca_host_port`. If
 set to the master/server hostname, FQDN or IP, the node setup tries to connect
 via API an retrieve the trusted certificate.
 
@@ -57,6 +57,7 @@ can defined as icinga2_delegate_host to match the Ansible alias.
 
 ```
 ca_host: icinga-server.localdomain
+ca_host_port: 5665
 ```
 
 By default the FQDN is used as certificate common name, to put a name

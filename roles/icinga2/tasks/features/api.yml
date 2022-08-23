@@ -4,6 +4,7 @@
   set_fact:
     icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
     icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
+    icinga2_ca_host_port: "{{ icinga2_dict_features.api.ca_host_port | default(omit) }}"
     icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
     icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
     icinga2_zones: "{{ icinga2_dict_features.api.zones |default([]) }}"

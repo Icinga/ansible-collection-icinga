@@ -87,7 +87,7 @@ This is an example on how to install an Icinga 2 server/master instance.
     - icinga.icinga.icinga2
 ```
 
-This is an example on how to install an Icinga 2 server/master instance.
+This is an example on how to install an Icinga 2 agent instance.
 
 ```
 - name: install icinga2 agent

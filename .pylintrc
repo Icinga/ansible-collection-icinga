@@ -1,0 +1,18 @@
+# pylint config
+[FORMAT]
+good-names=n,x,s,op,i,d,l,r,__metaclass__
+[MESSAGES CONTROL]
+disable=fixme,
+        duplicate-code,
+        import-error,
+        line-too-long,
+        missing-class-docstring,
+        missing-function-docstring,
+        missing-module-docstring,
+        too-few-public-methods,
+        too-many-branches,
+        too-many-locals,
+        too-many-return-statements,
+        too-many-statements,
+        use-list-literal,
+        use-dict-literal

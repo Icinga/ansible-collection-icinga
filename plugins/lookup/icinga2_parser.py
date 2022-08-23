@@ -45,7 +45,8 @@ RETURN = """
 
 
 class LookupModule(LookupBase):
-    def run(self, terms, variables=None, **kwargs):
+    # TODO can the variables parameter be removed?
+    def run(self, terms, variables=None, **kwargs):  # pylint: disable=unused-argument
         config = Icinga2Parser()
         ret = []
         constants = list(kwargs.get('constants', {}).keys())

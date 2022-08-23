@@ -11,7 +11,7 @@ icinga2_features:
     service_perfdata_path: "/var/spool/icinga2/perfdata/service-perfdata"
     host_format_template: "DATATYPE::HOSTPERFDATA"
     service_format_template: "DATATYPE::SERVICEPERFDATA"
-    rotation_interval = 15s
+    rotation_interval: "15s"
 ```
 
 ### Feature variables

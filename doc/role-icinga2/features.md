@@ -20,7 +20,7 @@ Current supported features:
 * [Feature InfluxDB2](features/feature-influxdb2.md)
 * [Feature mainlog](features/feature-mainlog.md)
 * [Feature notification](features/feature-notification.md)
-* [Feature perfdata](dfeatures/feature-perfdata.md)
+* [Feature perfdata](features/feature-perfdata.md)
 
 ```
 icinga2_features:

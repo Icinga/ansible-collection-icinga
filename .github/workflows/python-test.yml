@@ -2,7 +2,7 @@ name: Python Unittest
 on:
   push:
     tags:
-      - *
+      - '*'
     branches:
       - main
       - '!doc/**'

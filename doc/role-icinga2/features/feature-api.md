@@ -52,6 +52,9 @@ Create Signing Request to get a certificate managed by the parameter `ca_host`. 
 set to the master/server hostname, FQDN or IP, the node setup tries to connect
 via API an retrieve the trusted certificate.
 
+> **_NOTE:_**  Ticket creation will be delegated, the host should accessible via the name or
+can defined as icinga2_delegate_host to match the Ansible alias.
+
 ```
 ca_host: icinga-server.localdomain
 ```
@@ -60,7 +63,7 @@ By default the FQDN is used as certificate common name, to put a name
 yourself:
 
 ```
-cert_name: myown_cn
+cert_name: myown-commonname.fqdn
 ```
 
 To force a new request set `force_newcert` to `true`:
@@ -80,12 +83,12 @@ ssl_cert: certificate.crt
 ssl_key: certificate.key
 ```
 
-All three parameters have to be set otherwise a signing request is built
-and `ca_host` must be set.
+> **_NOTE:_** All three parameters have to be set otherwise a signing request is built
+and `ca_host` must be defined.
 
-The role will copy the files from your ansible working host to
+The role will copy the files from your Ansible controller node to
 **/var/lib/icinga2/certs** on the remote host. File names are
-set to `cert_name` (by default FQDN).
+set to by the parameter `cert_name` (by default FQDN).
 
 ```
 icinga2_features:

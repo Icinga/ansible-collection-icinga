@@ -107,7 +107,7 @@
       shell: >-
         icinga2 pki save-cert
         --host "{{ icinga2_ca_host }}"
-        --port "{{ icinga2_ca_host_port | default('5665')}}"
+        --port "{{ icinga2_ca_host_port | default('5665') }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
       when: icinga2_ca_host != 'none'
 
@@ -129,7 +129,7 @@
         icinga2 pki {% if icinga2_ca_host != 'none' %} request
         --ticket "{{ icinga2_ticket.stdout }}"
         --host "{{ icinga2_ca_host }}"
-        --port "{{ icinga2_ca_host_port | default('5665')}}"
+        --port "{{ icinga2_ca_host_port | default('5665') }}"
         --ca "{{ icinga2_cert_path }}/ca.crt"
         --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"

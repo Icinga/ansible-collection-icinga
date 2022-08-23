@@ -4,8 +4,8 @@ The feature for the IDO connection installs, enables and configures the object a
 addition is able to import the db_schema. This is only possible if the mysql or
 pgsql client binary is available.
 
-If the database is available use the boolean key `import_schema` to enable
-import schema.
+> **_NOTE:_** If the database and permissions to connect are available, use the boolean key `import_schema` to enable
+the schema import.
 
 All other keys are equal to the object type an can be found in the documentation.
 
@@ -41,7 +41,7 @@ icinga2_features:
     cleanup:
       downtimehistory_age: 48h
       contactnotifications_age: 31d
-``` 
+```
 
 ### Feature variables
 
@@ -55,7 +55,7 @@ icinga2_features:
   * Database name. Defaults to **icinga2**.
 
 * `user: sring`
-  * Database user with read/write permission to the icinga database. Defaults to **icinga2**. 
+  * Database user with read/write permission to the icinga database. Defaults to **icinga2**.
 
 * `password: string`
   * Database user’s password.
@@ -64,10 +64,10 @@ icinga2_features:
   * Decides whether the feature is enabled or disabled. Possible values present, absent.
 
 * `enable_ssl: boolean`
-  * Use SSL. Change to true in case you want to use any of the SSL options. 
+  * Use SSL. Change to true in case you want to use any of the SSL options.
 
-* `ssl_mode: string` 
-  * **Only PgSQL**: nable SSL connection mode. Value must be set according to the sslmode setting: prefer, require, verify-ca, verify-full, allow, disable. 
+* `ssl_mode: string`
+  * **Only PgSQL**: Enable SSL connection mode. Value must be set according to the sslmode setting: prefer, require, verify-ca, verify-full, allow, disable. 
 
 * `ssl_key: string`
   * SSL client key file path.
@@ -79,16 +79,16 @@ icinga2_features:
   * SSL certificate authority certificate file path.
 
 * `ssl_capath: string`
-  * SSL trusted SSL CA certificates in PEM format directory path. 
+  * SSL trusted SSL CA certificates in PEM format directory path.
 
 * `ssl_cipher: string`
   * **Only MySQL**: SSL list of allowed ciphers.
 
 * `socket_path: string`
-  * **Only MySQL**: MySQL socket path. 
+  * **Only MySQL**: MySQL socket path.
 
 * `table_prefix: string`
-  * Database table prefix. 
+  * Database table prefix.
 
 * `instance_name: string`
   * Unique identifier for the local Icinga 2 instance, used for multiple Icinga 2 clusters writing to the same database. Defaults to default.
@@ -106,8 +106,7 @@ icinga2_features:
   * Dictionary with items for historical table cleanup.
 
 * `categories: list`
-  * Array of information types that should be written to the database. 
+  * Array of information types that should be written to the database.
 
 * `import_schema: boolean`
   * Import schema in the database set for the feature.
-

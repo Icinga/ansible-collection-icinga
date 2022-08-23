@@ -8,6 +8,8 @@ All attributes of the object type [ApiListener](https://icinga.com/docs/icinga-2
 
 All non Icinga attributes to configure the feature are explained below.
 
+Example how to install an Agent:
+
 ```
 icinga2_features:
   - name: api
@@ -21,18 +23,37 @@ icinga2_features:
           - NodeName
 ```
 
-### Certificate Authority
+Example how to install a master/server instance:
 
-To create an Icinga 2 with CA the API `icinga2_ca_host` has to be set to `none`.
+```
+icinga2_features:
+  - name: api
+    force_newcert: false
+    ca_host: none
+    endpoints:
+      - name: NodeName
+    zones:
+      - name: ZoneName
+        endpoints:
+          - NodeName
+```
+
+### Instance with Certificate Authority
+
+To create an instance with a local CA, the API Feature parameter `ca_host` should be `none`.
 
 ```
 ca_host: none
 ```
 
-### Using Certificate Signing Requests
+### Generate Certificate Signing Requests
 
-Create Signing Request and get a certificate is done by setting `ca_host` on
-the server with the CA. Hostname, FQDN or an IP are allowed.
+Create Signing Request to get a certificate managed by the parameter `ca_host`. If
+set to the master/server hostname, FQDN or IP, the node setup tries to connect
+via API an retrieve the trusted certificate.
+
+> **_NOTE:_**  Ticket creation will be delegated, the host should accessible via the name or
+can defined as icinga2_delegate_host to match the Ansible alias.
 
 ```
 ca_host: icinga-server.localdomain
@@ -42,7 +63,7 @@ By default the FQDN is used as certificate common name, to put a name
 yourself:
 
 ```
-cert_name: myown_cn
+cert_name: myown-commonname.fqdn
 ```
 
 To force a new request set `force_newcert` to `true`:
@@ -62,12 +83,12 @@ ssl_cert: certificate.crt
 ssl_key: certificate.key
 ```
 
-All three parameters have to be set otherwise a signing request is built
-and `ca_host` must be set.
+> **_NOTE:_** All three parameters have to be set otherwise a signing request is built
+and `ca_host` must be defined.
 
-The role will copy the files from your ansible working host to
+The role will copy the files from your Ansible controller node to
 **/var/lib/icinga2/certs** on the remote host. File names are
-set to `cert_name` (by default FQDN).
+set to by the parameter `cert_name` (by default FQDN).
 
 ```
 icinga2_features:
@@ -87,10 +108,10 @@ icinga2_features:
 ### Feature variables
 
 * `ca_host: string`
-  * Use to decide where to gather the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value. 
+  * Use to decide where to gather the certificates. When set to **None**, Ansible will create a local Certificate Authority on the Host. Use **hostname** or **ipaddress** as value.
 
 * `force_newcert: boolean`
-  * Force new certificates on the destination hosts. 
+  * Force new certificates on the destination hosts.
 
 * `cert_name: string`
   * Common name of Icinga client/server instance. Default is **ansible_fqdn**.
@@ -115,4 +136,3 @@ icinga2_features:
     * `name: string`
     * `endpoints: list`
     * `global: boolean`
-

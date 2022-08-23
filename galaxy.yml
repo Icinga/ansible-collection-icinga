@@ -28,6 +28,8 @@ homepage: http://icinga.com
 issues: https://github.com/Icinga/ansible-collection-icinga/issues
 build_ignore:
   - yamllint.yaml
+  - Makefile
+  - .pylintrc
   - .cache
   - molecule
   - tests

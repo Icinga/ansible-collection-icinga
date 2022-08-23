@@ -3,7 +3,9 @@
 The collection includes two roles in the current version.
 
 * icinga.repos: Role to manage repositories
+  * [Documentation: doc/role-repos](doc/role-repos/role-repos.md)
 * icinga.icinga2: Role to install and manage Icinga 2 instances.
+  * [Documentation: doc/role-icinga2](doc/role-icinga2/role-icinga2.md)
 
 
 ---

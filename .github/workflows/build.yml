@@ -6,7 +6,10 @@ on:
       - '*'
     branches:
       - main
+      - '!doc/**'
   pull_request:
+    branches:
+      - '!doc/**'
 
 jobs:
   build-ansible29:

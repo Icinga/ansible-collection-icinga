@@ -45,6 +45,20 @@ icinga2_config_directories:
   - conf.d/commands/
 ```
 
+### Custom configuration files
+
+In some cases Icinga 2 DSL can be complex and uneasy to write into YAML format. For those scenarios you can provide own files on the
+Ansible controller node and let the role deploy the file to your instance.
+
+Create the custom file below an Ansible **files/** directory and use the variable **icinga2_custom_config**
+
+```
+icinga2_custom_config:
+  - name: myown_command.conf
+    path: zones.d/main/myown_command.conf
+    order: 10
+```
+
 ## Parser Rules
 
 The collection provides the possibility to deploy Icinga 2 configuration, this includes configuration to shape the instance and monitoring data to create a complete monitoring environment.

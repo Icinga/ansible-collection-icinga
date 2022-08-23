@@ -1,6 +1,9 @@
 # Role icinga.icinga.icinga2
 
-The collection provides several roles to install and configure Icinga 2. This
+The collection provides several roles to install and configure Icinga 2.
+
+* [Configure Features](features.md)
+* [Configure Monitoring Objects](objects.md)
 
 ## Variables
 
@@ -28,20 +31,6 @@ than **conf.d**. The folder needs to exist below /etc/icinga2. If it should be c
 icinga2_confd: true/false/<directory_name>
 ```
 
-### Custom configuration files
-
-In some cases Icinga 2 DSL can be complex and uneasy to write into YAML format. For those scenarios you can provide own files on the
-Ansible controller node and let the role deploy the file to your instance.
-
-Create the custom file below an Ansible **files/** directory and use the variable **icinga2_custom_config**
-
-```
-icinga2_custom_config:
-  - name: myown_command.conf
-    path: zones.d/main/myown_command.conf
-    order: 10
-```
-
 ### SELinux handling
 
 The Icinga 2 role will automatically detect via Ansible facts if SELinux is enabled on the system. If this is the case the package icinga2-selinux will be automatically installed.
@@ -51,4 +40,12 @@ If the package should be installed, even if SELinux is not enabled or somehow wr
 ```
 ansible_selinux:
   status: enabled
+```
+
+### Delegate Icinga ticket
+
+The role primarily delegates the ticket creation to the [Icinga ca host](features/feature-api.md). If the host is not listed with the same name in Ansible, you can set the name of the host in Ansible with **icinga2_delegate_host**.
+
+```
+icinga2_delegate_host: icinga-master
 ```

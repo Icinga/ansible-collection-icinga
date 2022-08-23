@@ -11,7 +11,7 @@ icinga2_features:
     port: 8086
     bucket: icinga2
     organization: monitoring
-    auth_toke: xyz666
+    auth_token: "changeme"
 ```
 
 ### Feature variables

@@ -25,7 +25,6 @@ Or if you are using Tower or AWX add the collection to your requirements file.
 ```
 collections:
   - name: icinga.icinga
-    version: 0.1.0
 ```
 
 ## Usage

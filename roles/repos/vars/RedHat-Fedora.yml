@@ -1,0 +1,8 @@
+---
+# Icinga does not provide a testing repository for every Fedora release
+icinga_repo_yum_stable_url: "http://packages.icinga.com/fedora/$releasever/release/"
+icinga_repo_yum_stable_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_testing_url: "http://packages.icinga.com/fedora/$releasever/testing/"
+icinga_repo_yum_testing_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_snapshot_url: "http://packages.icinga.com/fedora/$releasever/snapshot/"
+icinga_repo_yum_snapshot_key: "{{ icinga_repo_gpgkey }}"

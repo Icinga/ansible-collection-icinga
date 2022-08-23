@@ -14,8 +14,6 @@ on:
       - 'feature/**'
       - 'fix/**'
       - '!doc/**'
-      - 'feature/**'
-      - 'fix/**'
 
 jobs:
   build-ansible29:
@@ -28,7 +26,7 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian10]
+        distro: [centos7]
         python: ['3.8','3.10']
         ansible: ['2.9.10']
         scenario: [default]
@@ -71,7 +69,7 @@ jobs:
     strategy:
       # max-parallel: 4
       matrix:
-        distro: [centos7, centos8, debian10]
+        distro: [centos7, debian11]
         python: ['3.8', '3.9', '3.10']
         ansible: ['2.10.7', '2.11.8']
         scenario: [default]

@@ -15,3 +15,4 @@ icinga2_features:
   - name: mainlog
 icinga2_remote_objects: []
 _icinga2_custom_conf_paths: []
+icinga2_config_host: "{{ ansible_fqdn }}"

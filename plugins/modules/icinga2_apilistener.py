@@ -18,7 +18,6 @@ def main():
             cipher_list=dict(type='str'),
             tls_protocolmin=dict(type='str'),
             tls_handshake_timeout=dict(type='int'),
-            ca_fingerprint=dict(type='str'),
             access_control_allow_origin=dict(type='list', elements='str'),
             environment=dict(type='str'),
         )

@@ -52,8 +52,7 @@ Create Signing Request to get a certificate managed by the parameter `ca_host` a
 set to the master/server hostname, FQDN or IP, the node setup tries to connect
 via API an retrieve the trusted certificate.
 
-> **_NOTE:_**  Ticket creation will be delegated, the host should accessible via the name or
-can defined as icinga2_delegate_host to match the Ansible alias.
+> **_NOTE:_**  Ansible will delegate the ticket creation to the CA host. You can change this behaviour by setting 'icinga2_delegate_host' to match another Ansible alias.
 
 ```
 ca_host: icinga-server.localdomain

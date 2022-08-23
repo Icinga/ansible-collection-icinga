@@ -5,13 +5,14 @@
 By adding the variable `icinga2_objects` the role Icinga 2 will
 generate configuration files with objects included.
 
-This variable consists of Icinga 2 object attributes and attributes refering to the file created in the processs.
+This variable consists of Icinga 2 object attributes and attributes referring to the file created in the process.
 
-The second level of the dictionary tells on which host the configuration is created. All objects in the example below, will be created on the given host.: `host.example.org`.
+> **_NOTE:_** The second level of the dictionary defines on which host the configuration is created. All objects in the example below, will be gathered and deployed on the host.: `host.example.org`.
+In addition this variable can be logically defined at the **host_vars/agent** and are still deployed on the master **host.example.org**
 
 The `file` key will be used to control in which directory structure the object will be placed.
-In addition the `order` key will decide the order of the objects which are part of the file.
-The default for `order` is set to 10, so everything below that number will be in front of the file, all objects with the order above 10 will be placed later in the file.
+In addition the `order` key will define the order of the objects in the destination file.
+The default for `order` is set to **10**, so everything below that number will be in front of the file, all objects with the order above 10 will be placed later in the file.
 
 The `type` will be the original Icinga 2 object types, a list of all can be found in the documentation. [Icinga 2 Monitoring Objects](https://icinga.com/docs/icinga-2/latest/doc/09-object-types/#monitoring-objects)
 
@@ -43,6 +44,20 @@ icinga2_config_directories:
   - zones.d/main/hosts/
   - zones.d/main/services/
   - conf.d/commands/
+```
+
+### Custom configuration files
+
+In some cases Icinga 2 DSL can be complex and uneasy to write into YAML format. For those scenarios you can provide own files on the
+Ansible controller node and let the role deploy the file to your instance.
+
+Create the custom file below an Ansible **files/** directory and use the variable **icinga2_custom_config**
+
+```
+icinga2_custom_config:
+  - name: myown_command.conf
+    path: zones.d/main/myown_command.conf
+    order: 10
 ```
 
 ## Parser Rules

@@ -4,6 +4,7 @@
   set_fact:
     icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name |default(ansible_fqdn) }}"
     icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
+    icinga2_ca_host_port: "{{ icinga2_dict_features.api.ca_host_port | default(omit) }}"
     icinga2_ca_fingerprint: "{{ icinga2_dict_features.api.ca_fingerprint | default(omit) }}"
     icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert |default(False) }}"
     icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints |default([]) }}"
@@ -20,7 +21,11 @@
 - name: api feature cleanup arguments list
   set_fact:
     args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
+<<<<<<< HEAD
   when: idx.key not in ['ca_host', 'cert_name', 'ca_fingerprint', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert' ]
+=======
+  when: idx.key not in ['ca_host', 'icinga2_ca_host_port', 'cert_name', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert']
+>>>>>>> b207002a8e28ecd4b49e0407025e6097cc5b5838
   loop: "{{ icinga2_dict_features.api |dict2items }}"
   loop_control:
     loop_var: idx

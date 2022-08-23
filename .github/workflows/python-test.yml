@@ -2,10 +2,13 @@ name: Python Unittest
 on:
   push:
     tags:
-      - v*
+      - '*'
     branches:
       - main
+      - '!doc/**'
   pull_request:
+    branches:
+      - '!doc/**'
 
 jobs:
   unittest-py3:

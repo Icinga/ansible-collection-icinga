@@ -6,6 +6,11 @@
   with_items: "{{ groups['all'] }}"
   when: hostvars[item]['icinga2_objects'][ansible_fqdn] is defined
 
+- name: collect all config objects in play vars
+  set_fact:
+    tmp_objects: "{{ tmp_objects| default([]) + vars['icinga2_objects'][ansible_fqdn] }}"
+  when: vars['icinga2_objects'][ansible_fqdn] is defined
+
 - icinga2_object:
     args: "{{ item }}"
   with_items: "{{ tmp_objects }}"

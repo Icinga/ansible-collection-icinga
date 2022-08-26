@@ -12,7 +12,7 @@ description: >
   Including the official repositories, server, satellite and agent installations.
   Furthermore it can easily create and distribute monitoring configuration.
 license:
-  - GPL-3.0-or-later
+  - AGPL-3.0-or-later
 tags:
   - icinga2
   - monitoring

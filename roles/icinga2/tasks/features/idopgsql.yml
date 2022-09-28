@@ -24,10 +24,14 @@
       set_fact:
         psqlcmd: >-
           PGPASSWORD="{{ icinga2_dict_features.idopgsql.password }}"
-          psql {% if icinga2_dict_features.idopgsql.host| default('localhost') != 'localhost'  %} -h "{{ icinga2_dict_features.idopgsql.host }}" {%- endif %}
-          -U "{{ icinga2_dict_features.idopgsql.user |default('icinga2') }}"
-          {% if icinga2_dict_features.idopgsql.port is defined %} -p "{{ icinga2_dict_features.idopgsql.port }}" {%- endif %}
-          -d "{{ icinga2_dict_features.idopgsql.database |default('icinga2') }}"
+          psql
+          host={{ icinga2_dict_features.idopgsql.host| default('localhost') }}
+          port={{ icinga2_dict_features.idopgsql.port| default('5432') }}
+          user={{ icinga2_dict_features.idopgsql.user| default('icinga2') }}
+          dbname={{ icinga2_dict_features.idopgsql.database |default('icinga2') }}
+          {% if icinga2_dict_features.idopgsql.ssl_mode is defined %} sslmode={{ icinga2_dict_features.idopgsql.ssl_mode | default('require') }} {%- endif %}
+          {% if icinga2_dict_features.idopgsql.ssl_cert is defined %} sslcert={{ icinga2_dict_features.idopgsql.ssl_cert  }} {%- endif %}
+          {% if icinga2_dict_features.idopgsql.ssl_key is defined %} sslkey={{ icinga2_dict_features.idopgsql.ssl_key }} {%- endif %}
 
     - name: PostgreSQL check for IDO schema
       shell: >

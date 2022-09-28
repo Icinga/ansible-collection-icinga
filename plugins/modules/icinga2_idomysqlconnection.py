@@ -18,7 +18,7 @@ def main():
             user=dict(default='icinga2', type='str'),
             password=dict(required=True, type='str'),
             database=dict(default='icinga2', type='str'),
-            enable_ssl=dict(type='bool'),
+            ssl_mode=dict(type='str'),
             ssl_key=dict(type='str'),
             ssl_cert=dict(type='str'),
             ssl_ca=dict(type='str'),

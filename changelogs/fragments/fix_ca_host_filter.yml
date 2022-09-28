@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix bug in default filter for icinga2_ca_hos

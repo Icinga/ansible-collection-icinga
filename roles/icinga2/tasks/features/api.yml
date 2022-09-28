@@ -136,7 +136,7 @@
 
     - name: delegate ticket request to master
       shell: icinga2 pki ticket --cn "{{ icinga2_cert_name }}"
-      delegate_to: "{{ icinga2_delegate_host | default('icinga2_ca_host') }}"
+      delegate_to: "{{ icinga2_delegate_host | default(icinga2_ca_host) }}"
       register: icinga2_ticket
       when: icinga2_ca_host != 'none'
 

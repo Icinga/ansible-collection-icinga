@@ -33,3 +33,13 @@ releases:
       - Update documentation
       release_summary: This is the second major release
     release_date: '2022-08-23'
+  0.2.1:
+    changes:
+      bugfixes:
+      - Fix bug in default filter for icinga2_ca_host
+      - Fix non-idenpotence during feature disabling
+      release_summary: This is a bugfix release
+    fragments:
+    - fix_ca_host_filter.yml
+    - fix_idempotence_el.yml
+    release_date: '2022-09-29'

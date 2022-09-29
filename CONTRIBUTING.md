@@ -10,6 +10,19 @@ reviewed and merged if they suit some general guidelines:
 * For new functionality, proper tests are written
 * Changes should not solve certain problems on special environments
 
+## Changelog fragments
+
+This repository uses [Ansible Changelogs Fragments]. A basic changelog fragment is a .yaml or .yml file placed in the changelogs/fragments/ directory. Each file contains a yaml dict with keys like bugfixes or major_changes followed by a list of changelog entries of bugfixes or features.
+
+Each PR must use a new fragment file rather than adding to an existing one, so we can trace the change back to the PR that introduced it. Example:
+
+```
+cat changelogs/fragments/fix_issue_123.yml
+---
+bugfixes:
+  - Fixes issue with something that was caused by something else
+```
+
 ## Signing our CLA
 
 When creating a Pull Request (PR) within one of our projects on GitHub, you will be automatically asked to sign our [CLA]. You only have to sign the [CLA] once and it will apply to all of our projects.
@@ -34,3 +47,4 @@ tests as well.
 [pull request]: https://help.github.com/articles/using-pull-requests/
 [Molecule]: https://github.com/ansible-community/molecule/
 [CLA]: https://icinga.com/company/contributor-agreement/
+[Ansible Changelogs Fragments]: https://docs.ansible.com/ansible/latest/dev_guide/developing_collections_changelogs.html

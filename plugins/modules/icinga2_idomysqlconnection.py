@@ -1,5 +1,8 @@
 from ansible.module_utils.basic import AnsibleModule
 
+DOCUMENTATION = '''
+    name: icinga2_idomysqlconnection
+'''
 
 def main():
     module = AnsibleModule(

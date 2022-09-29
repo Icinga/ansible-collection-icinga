@@ -7,6 +7,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Antsibull-changelog
+changelogs/.plugin-cache.yaml
+
 # Distribution / packaging
 .Python
 build/

@@ -3,6 +3,9 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
+DOCUMENTATION = '''
+    name: icinga2_host
+'''
 
 def main():
     module = AnsibleModule(

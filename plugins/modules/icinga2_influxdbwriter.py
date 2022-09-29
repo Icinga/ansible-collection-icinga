@@ -1,5 +1,8 @@
 from ansible.module_utils.basic import AnsibleModule
 
+DOCUMENTATION = '''
+    name: icinga2_influxdbwriter
+'''
 
 def main():
     module = AnsibleModule(

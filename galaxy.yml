@@ -37,5 +37,6 @@ build_ignore:
   - .github
   - __pycache__
   - 'venv*'
+  - changelogs
   - .idea
   - '*.tar.gz'

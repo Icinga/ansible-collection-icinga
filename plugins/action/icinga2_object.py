@@ -43,18 +43,18 @@ class ActionModule(ActionBase):
         path = task_vars['icinga2_fragments_path'] + '/' + obj['file'] + '/'
         file_fragment = path + obj['order'] + '_' + object_type.lower() + '-' + obj['name']
 
-        file_args = dict()
-        file_args['state'] = 'directory'
-        file_args['path'] = path
-        file_module = self._execute_module(
-            module_name='file',
-            module_args=file_args,
-            task_vars=task_vars,
-            tmp=tmp
-        )
-        result = merge_hash(result, file_module)
-
         if obj['state'] != 'absent':
+            file_args = dict()
+            file_args['state'] = 'directory'
+            file_args['path'] = path
+            file_module = self._execute_module(
+                module_name='file',
+                module_args=file_args,
+                task_vars=task_vars,
+                tmp=tmp
+            )
+            result = merge_hash(result, file_module)
+
             varlist = list()  # list of variables from 'apply for'
 
             #

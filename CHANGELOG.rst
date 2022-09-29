@@ -5,6 +5,20 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
+v0.2.1
+======
+
+Release Summary
+---------------
+
+This is a bugfix release
+
+Bugfixes
+--------
+
+- Fix bug in default filter for icinga2_ca_host
+- Fix non-idenpotence during feature disabling
+
 v0.2.0
 ======
 

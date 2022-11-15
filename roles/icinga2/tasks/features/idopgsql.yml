@@ -32,6 +32,7 @@
           {% if icinga2_dict_features.idopgsql.ssl_mode is defined %} sslmode={{ icinga2_dict_features.idopgsql.ssl_mode | default('require') }} {%- endif %}
           {% if icinga2_dict_features.idopgsql.ssl_cert is defined %} sslcert={{ icinga2_dict_features.idopgsql.ssl_cert  }} {%- endif %}
           {% if icinga2_dict_features.idopgsql.ssl_key is defined %} sslkey={{ icinga2_dict_features.idopgsql.ssl_key }} {%- endif %}
+          {% if icinga2_dict_features.idopgsql.extra_options is defined %} {{ icinga2_dict_features.idopgsql.extra_options }} {%- endif %}
 
     - name: PostgreSQL check for IDO schema
       shell: >

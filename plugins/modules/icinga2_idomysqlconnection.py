@@ -25,6 +25,7 @@ def main():
             ssl_capath=dict(type='str'),
             ssl_cipher=dict(type='str'),
             table_prefix=dict(type='str'),
+            extra_options=dict(type='str'),
             instance_name=dict(type='str'),
             instance_description=dict(type='str'),
             enable_ha=dict(type='bool'),

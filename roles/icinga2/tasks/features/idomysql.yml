@@ -18,6 +18,8 @@
 - name: install on {{ ansible_os_family }}
   include_tasks: "features/idomysql/install_on_{{ ansible_os_family }}.yml"
 
+# Hint: For MySQL the client-side --ssl option is deprecated as of MySQL 5.7.11 and is removed in MySQL 8.0. For client programs, use --ssl-mode instead
+# However, MariaDB currently does not offer a --ssl-mode option, MariaDB enables --ssl automatically with other flags
 - name: MySQL import IDO schema
   block:
     - name: build mysql command
@@ -25,9 +27,15 @@
         mysqlcmd: >-
           mysql {% if icinga2_dict_features.idomysql.host| default('localhost') != 'localhost'  %} -h "{{ icinga2_dict_features.idomysql.host }}" {%- endif %}
           {% if icinga2_dict_features.idomysql.port is defined %} -P "{{ icinga2_dict_features.idomysql.port }}" {%- endif %}
-          -u "{{ icinga2_dict_features.idomysql.user |default('icinga2') }}"
-          -p"{{ icinga2_dict_features.idomysql.password }}"
-          "{{ icinga2_dict_features.idomysql.database |default('icinga2') }}"
+          {% if icinga2_dict_features.idomysql.ssl_mode is defined %} --ssl-mode "{{ icinga2_dict_features.idomysql.ssl_mode }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.ssl_ca is defined %} --ssl-ca "{{ icinga2_dict_features.idomysql.ssl_ca }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.ssl_cert is defined %} --ssl-cert "{{ icinga2_dict_features.idomysql.ssl_cert }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.ssl_key is defined %} --ssl-key "{{ icinga2_dict_features.idomysql.ssl_key }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.ssl_cipher is defined %} --ssl-cipher "{{ icinga2_dict_features.idomysql.ssl_cipher }}" {%- endif %}
+          {% if icinga2_dict_features.idomysql.extra_options is defined %} {{ icinga2_dict_features.idomysql.extra_options }} {%- endif %}
+          -u "{{ icinga2_dict_features.idomysql.user | default('icinga2') }}"
+          -p "{{ icinga2_dict_features.idomysql.password }}"
+          "{{ icinga2_dict_features.idomysql.database | default('icinga2') }}"
 
     - name: MySQL check for IDO schema
       shell: >

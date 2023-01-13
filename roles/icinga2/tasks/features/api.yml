@@ -162,7 +162,7 @@
         remote_src: yes
       when: icinga2_ca_host == 'none'
 
-- name: use self provided certificates
+- name: Use self generated certificates
   block:
     - set_fact:
         _tmp_crt:
@@ -173,7 +173,15 @@
           - src: "{{ icinga2_ssl_cert }}"
             dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
 
-    - name: pre generated certificates copy to icinga2 certs
+    - name: Ensure icinga2 certificate directory
+      file:
+        path: "{{ icinga2_cert_path }}"
+        state: directory
+        owner: "{{ icinga2_user }}"
+        group: "{{ icinga2_group }}"
+        mode: "0750"
+
+    - name: Copy self generated certificates to icinga2 certificate directory
       copy:
         remote_src: no
         src: "{{ _crt.src }}"

@@ -6,7 +6,6 @@
     dest: /etc/apt/trusted.gpg.d/icinga.asc
     mode: '0644'
     force: true
-    
 - name: Apt - add Icinga repository (stable)
   become: yes
   apt_repository:

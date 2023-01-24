@@ -1,7 +1,7 @@
 ---
 - name: Apt - add repository key
   become: yes
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ icinga_repo_apt_key }}"
     state: present
 - name: Apt - add Icinga repository (stable)

@@ -8,10 +8,14 @@
     mode: '0755'
 
 - name: Apt - add repository key
-  become: yes
-  apt_key:
+  ansible.builtin.get_url:
     url: "{{ icinga_repo_apt_key }}"
-    state: present
+    dest: "{{ icinga_repo_apt_keyring }}"
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+
 - name: Apt - add Icinga repository (stable)
   become: yes
   apt_repository:

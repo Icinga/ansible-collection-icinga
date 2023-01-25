@@ -1,4 +1,12 @@
 ---
+- name: Apt - ensure apt keyrings directory
+  file:
+    state: directory
+    path: /etc/apt/keyrings
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Apt - add repository key
   become: yes
   apt_key:

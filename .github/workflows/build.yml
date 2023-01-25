@@ -16,49 +16,6 @@ on:
       - '!doc/**'
 
 jobs:
-  build-ansible29:
-    runs-on: ubuntu-latest
-
-    env:
-      COLLECTION_NAMESPACE: icinga
-      COLLECTION_NAME: icinga
-
-    strategy:
-      # max-parallel: 4
-      matrix:
-        distro: [centos7]
-        python: ['3.8','3.10']
-        ansible: ['2.9.10']
-        scenario: [default]
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-
-      - name: Install dependencies ansible==2.9.10
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install 'ansible==${{ matrix.ansible }}'
-          python3 -m pip install -r requirements-test-2.9.0.txt
-
-      - name: Install collection
-        run: |
-          mkdir -p ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE
-          cp -a ../ansible-collection-$COLLECTION_NAME ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
-
-      - name: Test with molecule
-        run: |
-          ansible --version
-          molecule --version
-          molecule --debug test -s ${{ matrix.scenario }}
-        env:
-          MOLECULE_DISTRO: ${{ matrix.distro }}
-
   build-ansible210:
     runs-on: ubuntu-latest
 
@@ -67,9 +24,10 @@ jobs:
       COLLECTION_NAME: icinga
 
     strategy:
-      # max-parallel: 4
+      fail-fast: false
+      max-parallel: 1
       matrix:
-        distro: [centos7, debian11]
+        distro: [ubuntu2204]
         python: ['3.8', '3.9', '3.10']
         ansible: ['2.10.7', '2.11.8']
         scenario: [default]

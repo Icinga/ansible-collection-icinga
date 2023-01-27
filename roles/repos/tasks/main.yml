@@ -13,4 +13,4 @@
         - 'vars'
 
 - name: Add repositories
-  include: "{{ ansible_os_family }}.yml"
+  include_tasks: "{{ ansible_os_family }}.yml"

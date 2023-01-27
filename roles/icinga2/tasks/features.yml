@@ -25,4 +25,3 @@
 - name: configure features
   include_tasks: "features/{{ item.name }}.yml"
   loop: "{{ icinga2_features }}"
-  notify: reload icinga2 service

@@ -23,6 +23,6 @@
   when: icinga2_purge_features
 
 - name: configure features
-  include: "features/{{ item.name }}.yml"
+  include_tasks: "features/{{ item.name }}.yml"
   loop: "{{ icinga2_features }}"
   notify: reload icinga2 service

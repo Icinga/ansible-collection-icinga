@@ -15,10 +15,10 @@
         - 'vars'
 
 - name: install
-  include: install.yml
+  include_tasks: install.yml
 
 - name: configure
-  include: configure.yml
+  include_tasks: configure.yml
 
 - name: manage service
-  include: service.yml
+  include_tasks: service.yml

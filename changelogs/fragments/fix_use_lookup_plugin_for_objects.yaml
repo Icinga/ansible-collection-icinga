@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Use lookup plugin to load icinga2_objects to support existing variables

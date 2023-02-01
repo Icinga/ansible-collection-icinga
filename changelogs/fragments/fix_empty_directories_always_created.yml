@@ -1,0 +1,2 @@
+bugfixes:
+  - Prevent empty config directories to always be recreated

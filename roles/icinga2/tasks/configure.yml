@@ -28,6 +28,24 @@
 - name: objects
   include_tasks: objects.yml
 
+- name: ensure monitoring config directories
+  ansible.builtin.file:
+    path: "{{ icinga2_config_path }}/{{ item }}"
+    state: directory
+    owner: "{{ item.owner | default(icinga2_user) }}"
+    group: "{{ item.group | default(icinga2_group) }}"
+  loop: "{{ icinga2_config_directories }}"
+  when:
+    - icinga2_config_directories is defined
+    - item.split('/')[0] == 'conf.d' or item.split('/')[0] == 'zones.d' or item.split('/')[0] == icinga2_confd
+    # If multiple local configs folders can be defined this rule creates only
+    # the directories starting with defined folders.
+    # Related var looks like this:
+    # icinga2_local_config:
+    #  - conf.d
+    #  - my_own_config.d
+    #- item.split('/')[0] in icinga2_local_config or item.split('/')[0] == 'zones.d'
+
 - name: collect config fragments
   find:
     path: "{{ icinga2_fragments_path }}"
@@ -64,24 +82,6 @@
     file_type: directory
     pattern: '*.conf'
   register: result
-
-- name: ensure monitoring config directories
-  ansible.builtin.file:
-    path: "{{ icinga2_config_path }}/{{ item }}"
-    state: directory
-    owner: "{{ item.owner | default(icinga2_user) }}"
-    group: "{{ item.group | default(icinga2_group) }}"
-  loop: "{{ icinga2_config_directories }}"
-  when:
-    - icinga2_config_directories is defined
-    - item.split('/')[0] == 'conf.d' or item.split('/')[0] == 'zones.d' or item.split('/')[0] == icinga2_confd
-    # If multiple local configs folders can be defined this rule creates only
-    # the directories starting with defined folders.
-    # Related var looks like this:
-    # icinga2_local_config:
-    #  - conf.d
-    #  - my_own_config.d
-    #- item.split('/')[0] in icinga2_local_config or item.split('/')[0] == 'zones.d'
 
 - name: assemble config files
   ansible.builtin.assemble:

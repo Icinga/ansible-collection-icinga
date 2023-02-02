@@ -1,0 +1,3 @@
+---
+major_changes:
+  - Add the ability to use the Icinga Repository Subscription on RedHat based distributions

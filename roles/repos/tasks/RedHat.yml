@@ -3,31 +3,37 @@
   yum_repository:
     file: /etc/yum.repos.d/ICINGA-release
     name: icinga-stable-release
-    description: ICINGA (stable release for epel)
+    description: "{{ icinga_repo_yum_stable_description }}"
     baseurl: "{{ icinga_repo_yum_stable_url }}"
     gpgkey: "{{ icinga_repo_yum_stable_key }}"
     gpgcheck: yes
     enabled: "{{ icinga_repo_stable }}"
+    username: "{{ icinga_repo_subscription_username | default(omit) }}"
+    password: "{{ icinga_repo_subscription_password | default(omit) }}"
 
 - name: Yum - add Icinga repository (testing)
   yum_repository:
     file: /etc/yum.repos.d/ICINGA-testing
     name: icinga-testing-builds
-    description: ICINGA (testing builds for epel)
+    description: "{{ icinga_repo_yum_testing_description }}"
     baseurl: "{{ icinga_repo_yum_testing_url }}"
     gpgkey: "{{ icinga_repo_yum_testing_key }}"
     gpgcheck: yes
     enabled: "{{ icinga_repo_testing }}"
+    username: "{{ icinga_repo_subscription_username | default(omit) }}"
+    password: "{{ icinga_repo_subscription_password | default(omit) }}"
 
 - name: Yum - add Icinga repository (snapshot)
   yum_repository:
     file: /etc/yum.repos.d/ICINGA-snapshot
     name: icinga-snapshot-builds
-    description: ICINGA (snapshot builds for epel)
+    description: "{{ icinga_repo_yum_snapshot_description }}"
     baseurl: "{{ icinga_repo_yum_snapshot_url }}"
     gpgkey: "{{ icinga_repo_yum_snapshot_key }}"
     gpgcheck: yes
     enabled: "{{ icinga_repo_snapshot }}"
+    username: "{{ icinga_repo_subscription_username | default(omit) }}"
+    password: "{{ icinga_repo_subscription_password | default(omit) }}"
 
 - name: Yum - add EPEL repository
   yum_repository:

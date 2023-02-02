@@ -19,3 +19,10 @@ icinga_repo_stable: true
 icinga_repo_testing: false
 icinga_repo_snapshot: false
 ```
+
+To use the Icinga Repository Subscription:
+
+```
+icinga_repo_subscription_username: "Your username"
+icinga_repo_subscription_password: "Your password"
+```

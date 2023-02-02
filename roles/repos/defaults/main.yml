@@ -2,10 +2,13 @@
 # defaults file for icinga_repos
 icinga_repo_yum_stable_url: "http://packages.icinga.com/epel/$releasever/release/"
 icinga_repo_yum_stable_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_stable_description: "ICINGA (stable release for epel)"
 icinga_repo_yum_testing_url: "http://packages.icinga.com/epel/$releasever/testing/"
 icinga_repo_yum_testing_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_testing_description: "ICINGA (testing release for epel)"
 icinga_repo_yum_snapshot_url: "http://packages.icinga.com/epel/$releasever/snapshot/"
 icinga_repo_yum_snapshot_key: "{{ icinga_repo_gpgkey }}"
+icinga_repo_yum_snapshot_description: "ICINGA (snapshot release for epel)"
 
 icinga_repo_yum_epel_url: "http://download.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/$basearch"
 icinga_repo_yum_epel_key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"

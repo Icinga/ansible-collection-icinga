@@ -21,6 +21,7 @@
         - "subscription-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
         - "subscription-{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
         - "subscription-{{ ansible_os_family }}.yml"
+        - default.yml
       paths:
         - 'vars'
   when:

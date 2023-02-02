@@ -5,9 +5,13 @@ on:
       - '*'
     branches:
       - main
+      - 'feature/**'
+      - 'fix/**'
       - '!doc/**'
   pull_request:
     branches:
+      - 'feature/**'
+      - 'fix/**'
       - '!doc/**'
 
 jobs:

@@ -1,0 +1,3 @@
+---
+major_changes:
+  - Add a role for the installation of the monitoring plugins as listed in the Icinga Template Library

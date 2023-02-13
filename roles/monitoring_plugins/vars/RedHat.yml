@@ -1,0 +1,117 @@
+---
+
+icinga_monitoring_plugins_available_packages:
+  - name: apt
+    pkg_name: "nagios-plugins-apt"
+  - name: breeze
+    pkg_name: "nagios-plugins-breeze"
+  - name: by_ssh
+    pkg_name: "nagios-plugins-by_ssh"
+  - name: clamd
+    pkg_name: "nagios-plugins-tcp"
+  - name: dhcp
+    pkg_name: "nagios-plugins-dhcp"
+  - name: dig
+    pkg_name: "nagios-plugins-dig"
+  - name: disk
+    pkg_name: "nagios-plugins-disk"
+  - name: disk_smb
+    pkg_name: "nagios-plugins-disk_smb"
+  - name: dns
+    pkg_name: "nagios-plugins-dns"
+  - name: file_age
+    pkg_name: "nagios-plugins-file_age"
+  - name: flexlm
+    pkg_name: "nagios-plugins-flexlm"
+  - name: fping
+    pkg_name: "nagios-plugins-fping"
+  - name: fping4
+    pkg_name: "nagios-plugins-fping"
+  - name: fping6
+    pkg_name: "nagios-plugins-fping"
+  - name: ftp
+    pkg_name: "nagios-plugins-tcp"
+  - name: game
+    pkg_name: "nagios-plugins-game"
+  - name: hostalive
+    pkg_name: "nagios-plugins-ping"
+  - name: hostalive4
+    pkg_name: "nagios-plugins-ping"
+  - name: hostalive6
+    pkg_name: "nagios-plugins-ping"
+  - name: hpjd
+    pkg_name: "nagios-plugins-hpjd"
+  - name: http
+    pkg_name: "nagios-plugins-http"
+  - name: icmp
+    pkg_name: "nagios-plugins-icmp"
+  - name: imap
+    pkg_name: "nagios-plugins-tcp"
+  - name: ldap
+    pkg_name: "nagios-plugins-ldap"
+  - name: load
+    pkg_name: "nagios-plugins-load"
+  - name: mailq
+    pkg_name: "nagios-plugins-mailq"
+  - name: mysql
+    pkg_name: "nagios-plugins-mysql"
+  - name: mysql_query
+    pkg_name: "nagios-plugins-mysql"
+  - name: negate
+    pkg_name: "nagios-plugins"
+  - name: nrpe
+    pkg_name: "nagios-plugins-nrpe"
+  - name: nscp
+    pkg_name: "nagios-plugins-nt"
+  - name: ntp_peer
+    pkg_name: "nagios-plugins-ntp"
+  - name: ntp_time
+    pkg_name: "nagios-plugins-ntp"
+  - name: pgsql
+    pkg_name: "nagios-plugins-pgsql"
+  - name: ping
+    pkg_name: "nagios-plugins-ping"
+  - name: ping4
+    pkg_name: "nagios-plugins-ping"
+  - name: ping6
+    pkg_name: "nagios-plugins-ping"
+  - name: pop
+    pkg_name: "nagios-plugins-tcp"
+  - name: procs
+    pkg_name: "nagios-plugins-procs"
+  - name: radius
+    pkg_name: "nagios-plugins-radius"
+  - name: rpc
+    pkg_name: "nagios-plugins-rpc"
+  - name: simap
+    pkg_name: "nagios-plugins-tcp"
+  - name: smart
+    pkg_name: "nagios-plugins-ide_smart"
+  - name: smtp
+    pkg_name: "nagios-plugins-smtp"
+  - name: snmp
+    pkg_name: "nagios-plugins-snmp"
+  - name: snmpv3
+    pkg_name: "nagios-plugins-snmp"
+  - name: snmp-uptime
+    pkg_name: "nagios-plugins-snmp"
+  - name: spop
+    pkg_name: "nagios-plugins-tcp"
+  - name: ssh
+    pkg_name: "nagios-plugins-ssh"
+  - name: ssl
+    pkg_name: "nagios-plugins-tcp"
+  - name: ssmtp
+    pkg_name: "nagios-plugins-tcp"
+  - name: swap
+    pkg_name: "nagios-plugins-swap"
+  - name: tcp
+    pkg_name: "nagios-plugins-tcp"
+  - name: udp
+    pkg_name: "nagios-plugins-tcp"
+  - name: ups
+    pkg_name: "nagios-plugins-ups"
+  - name: uptime
+    pkg_name: "nagios-plugins-uptime"
+  - name: users
+    pkg_name: "nagios-plugins-users"

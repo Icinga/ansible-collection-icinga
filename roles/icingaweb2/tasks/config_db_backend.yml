@@ -1,0 +1,53 @@
+---
+- name: ICINGAWEB | Configure database backend for icingaweb
+  ansible.builtin.blockinfile:
+    dest: /etc/icingaweb2/resources.ini
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0640
+    marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGAWEB DB RESOURCES"
+    create: true
+    block: |
+      [icingaweb_db]
+      type = "db"
+      db = "pgsql"
+      host = "{{ icingaweb2_db_host }}"
+      port = "{{ icingaweb2_db_port }}"
+      dbname = "{{ icingaweb2_db_dbname }}"
+      username = "{{ icingaweb2_db_username }}"
+      password = "{{ icingaweb2_db_password }}"
+      charset = "utf8"
+      use_ssl = "1"
+
+- name: ICINGAWEB | Configure groups with DB backend
+  ansible.builtin.blockinfile:
+    dest: "/etc/icingaweb2/groups.ini"
+    marker: "; {mark} ANSIBLE MANAGED BLOCK DB GROUPS"
+    create: true
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0640
+    block: |
+      [icingaweb2]
+      backend = "db"
+      resource = "icingaweb_db"
+
+- name: ICINGAWEB | Configure database backend for icinga object
+  ansible.builtin.blockinfile:
+    dest: /etc/icingaweb2/resources.ini
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0640
+    marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGA DB RESOURCES"
+    create: true
+    block: |
+      [icinga2_ido]
+      type = "db"
+      db = "pgsql"
+      host = "{{ icingaweb2_icinga2_ido_host }}"
+      port = "{{ icingaweb2_icinga2_ido_port }}"
+      dbname = "{{ icingaweb2_icinga2_ido_dbname }}"
+      username = "{{ icingaweb2_icinga2_ido_username }}"
+      password = "{{ icingaweb2_icinga2_ido_password }}"
+      charset = "utf8"
+      use_ssl = "1"

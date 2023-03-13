@@ -30,7 +30,7 @@ jobs:
         distro: [ubuntu2204]
         python: ['3.8', '3.9', '3.10']
         ansible: ['2.10.7', '2.11.8']
-        scenario: [default]
+        scenario: [default, icingaweb2]
 
     steps:
       - name: Check out code

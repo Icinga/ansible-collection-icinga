@@ -1,0 +1,26 @@
+---
+- name: Load a variable file based on the OS type.
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: ICINGA2WEB | Install icingaweb (packages & co)
+  ansible.builtin.include_tasks: install.yml
+
+- name: ICINGA2WEB | Configure LDAP connection
+  ansible.builtin.include_tasks: config_user_ldap_backend.yml
+  when: icingaweb2_ldap_server is defined
+
+- name: ICINGA2WEB | Configure database (postgreSQL) connection
+  ansible.builtin.include_tasks: config_db_backend.yml
+
+- name: ICINGA2WEB | Configure user roles
+  ansible.builtin.include_tasks: config_user_roles.yml
+
+- name: ICINGA2WEB | Configure command transports
+  ansible.builtin.include_tasks: config_commandtransports.yml
+
+- name: ICINGA2WEB | Initialize database (load DDL)
+  ansible.builtin.include_tasks: initialize_database.yml
+  when: icingaweb2_initialize_database

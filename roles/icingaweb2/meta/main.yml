@@ -1,0 +1,18 @@
+galaxy_info:
+  author: |
+    - Julian Vanden Broeck <julian.vandenbroeck@dalibo.com>
+    - Jehan-Guillaume de Rorthais <jgdr@dalibo.com>
+  description: Role to install, configure or manage Icingaweb 2.
+  license: AGPL-3.0-only
+  min_ansible_version: 2.9
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+  galaxy_tags:
+    - icinga
+    - monitoring
+    - satellite
+    - icinga2
+    - icingaweb2
+dependencies: []

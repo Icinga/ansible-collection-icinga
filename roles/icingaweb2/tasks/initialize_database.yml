@@ -1,0 +1,45 @@
+---
+- name: ICINGAWEB | Check if table icingaweb_user exists
+  community.general.postgresql_query:
+    db: "{{ icingaweb2_db_dbname }}"
+    login_user: "{{ icingaweb2_db_username }}"
+    login_password: "{{ icingaweb2_db_password }}"
+    login_host: "{{ icingaweb2_db_host }}"
+    query: SELECT to_regclass('public.icingaweb_user')
+  register: query_check_user_table
+
+- name: ICINGAWEB | Initialize icingaweb database (create database and co)
+  community.general.postgresql_query:
+    db: "{{ icingaweb2_db_dbname }}"
+    login_user: "{{ icingaweb2_db_username }}"
+    login_password: "{{ icingaweb2_db_password }}"
+    login_host: "{{ icingaweb2_db_host }}"
+    path_to_script: /usr/share/icingaweb2/etc/schema/pgsql.schema.sql
+  when:
+    - not query_check_user_table['query_all_results'][0][0]['to_regclass']
+
+- name: ICINGAWEB | Check if internal local admin group exists into DB
+  community.general.postgresql_query:
+    db: "{{ icingaweb2_db_dbname }}"
+    login_user: "{{ icingaweb2_db_username }}"
+    login_password: "{{ icingaweb2_db_password }}"
+    login_host: "{{ icingaweb2_db_host }}"
+    query: SELECT id, name FROM icingaweb_group WHERE name = %s
+    positional_args:
+      - '{{ icingaweb2_icinga2_local_admin_group_name | string }}'
+  when: icingaweb2_create_local_admin_group
+  register: query_database_tempory_admin_group
+
+
+- name: ICINGAWEB | Create internal local admin group
+  community.general.postgresql_query:
+    db: "{{ icingaweb2_db_dbname }}"
+    login_user: "{{ icingaweb2_db_username }}"
+    login_password: "{{ icingaweb2_db_password }}"
+    login_host: "{{ icingaweb2_db_host }}"
+    query: "INSERT INTO public.icingaweb_group (name) VALUES (%s)"
+    positional_args:
+      - '{{ icingaweb2_icinga2_local_admin_group_name | string }}'
+  when:
+    - query_database_tempory_admin_group.rowcount == 0
+    - icingaweb2_create_local_admin_group

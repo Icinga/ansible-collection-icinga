@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    icinga_repo_scl: true
+  roles:
+    - {role: icinga.icinga.repos}
+    - {role: icinga.icinga.icingaweb2}

@@ -1,0 +1,50 @@
+---
+- name: ICINGAWEB | Configure
+  ansible.builtin.blockinfile:
+    dest: /etc/icingaweb2/authentication.ini
+    marker: "; {mark} ANSIBLE MANAGED BLOCK EXTERNAL AUTH"
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0650
+    create: true
+    block: |
+      [autologin]
+      backend = external
+
+- name: ICINGAWEB | Configure resources with LDAP backend
+  ansible.builtin.blockinfile:
+    dest: /etc/icingaweb2/resources.ini
+    marker: ";{mark} ANSIBLE MANAGED BLOCK LDAP RESOURCES"
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    group: icingaweb2
+    mode: 0650
+    create: true
+    block: |
+      [identity_openldap]
+      type        = ldap
+      hostname    = {{ icingaweb2_ldap_server }}
+      port        = 389
+      root_dn     = "{{ icingaweb2_ldap_root_dn }}"
+      bind_dn     = "{{ icingaweb2_ldap_bind_dn }}"
+      bind_pw     = "{{ icingaweb2_ldap_bind_pw }}"
+
+- name: ICINGAWEB | Configure groups and users with LDAP backend
+  ansible.builtin.blockinfile:
+    dest: "/etc/icingaweb2/{{ item }}.ini"
+    marker: "; {mark} ANSIBLE MANAGED BLOCK {{ item | upper }}"
+    create: true
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0650
+    block: |
+      [ldap_{{ item }}]
+      backend = "ldap"
+      resource = "identity_openldap"
+      group_class = "groupOfNames"
+      user_class = "person"
+      user_name_attribute = "uid"
+      group_name_attribute = "cn"
+  loop:
+    - groups
+    - authentication

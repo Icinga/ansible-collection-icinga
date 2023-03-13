@@ -1,0 +1,8 @@
+---
+- name: ICINGAWEB | Install icingaweb2 and dependecies
+  ansible.builtin.package:
+    name:
+      - icingaweb2
+      - icingaweb2-common
+      - python3-psycopg2
+    state: present

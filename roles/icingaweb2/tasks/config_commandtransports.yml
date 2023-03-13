@@ -1,0 +1,25 @@
+---
+- name: ICINGAWEB | Create monitoring module folder"
+  ansible.builtin.file:
+    path: "/etc/icingaweb2/modules/monitoring/"
+    state: directory
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0750
+
+- name: ICINGAWEB | Configure command transports (using incinga2 api)
+  ansible.builtin.blockinfile:
+    dest: /etc/icingaweb2/modules/monitoring/commandtransports.ini
+    create: true
+    owner: "{{ icingaweb2_webserver_user }}" 
+    group: icingaweb2
+    mode: 0750
+    marker: "; {mark} ANSIBLE MANAGED BLOCK COMMAND TRANSPORT SETUP"
+    block: |
+      ; FIXME: the fqdn of the icinga server should probably be parameterized
+      [{{ icingaweb2_icinga2_ido_host }}]
+      transport = "api"
+      host = "{{ icingaweb2_icinga2_ido_host }}"
+      port = "5665"
+      username = "root"
+      password = "{{ icinga2_api_user_password }}"

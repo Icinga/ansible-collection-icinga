@@ -1,13 +1,5 @@
 ---
 
-- name: Yum - install epel-release
-  become: yes
-  yum:
-    state: present
-    name: "epel-release"
-    update_cache: true
-  when: icinga_monitoring_plugins_epel
-
 - name: Yum - install requested packages
   become: yes
   yum:

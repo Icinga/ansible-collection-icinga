@@ -1,5 +1,15 @@
 ---
 
+- name: Activate epel repository
+  include_role:
+    name: icinga.icinga.repos
+  vars:
+    icinga_repo_epel: true
+    icinga_repo_stable: false
+    icinga_repo_testing: false
+    icinga_repo_snapshot: false
+  when: icinga_monitoring_plugins_epel
+
 - name: Yum - install requested packages
   become: yes
   yum:

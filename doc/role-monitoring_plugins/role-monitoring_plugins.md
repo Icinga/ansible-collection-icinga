@@ -5,10 +5,11 @@ The list is based on the section *"Plugin Check Commands for Monitoring Plugins"
 
 * [List of available check commands](check_command_list.md)
 
-> In order to install the monitoring plugins epel has to be available on RedHat based systems.  
-> You might use the role `icinga.icinga.repos` to enable epel or enable it by any other method you prefer.  
-
 ## Variables
+
+- `icinga_monitoring_plugins_epel: boolean`
+  Decides whether to activate the epel repository. Default: `false`
+  Epel needs to be available to install plugins on RHEL and derivatives.
 
 - `icinga_monitoring_plugins_crb: boolean`  
   Decides whether to run the equivalent of `dnf --enablerepo crb ...` when installing the necessary packages. Default: `false`  
@@ -65,7 +66,9 @@ Install check commands
 
 - hosts:
     - host1
+  become: yes
   vars:
+    icinga_monitoring_plugins_epel: true
     icinga_monitoring_plugins_crb: true
     icinga_monitoring_plugins_check_commands:
       - disk
@@ -86,6 +89,7 @@ Remove all check commands known to this role. Also remove unneeded dependencies.
 
 - hosts:
     - host1
+  become: yes
   vars:
     icinga_monitoring_plugins_autoremove: true
     icinga_monitoring_plugins_check_commands: []

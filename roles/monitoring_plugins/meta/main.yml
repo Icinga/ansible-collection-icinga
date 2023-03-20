@@ -16,4 +16,5 @@ galaxy_info:
   galaxy_tags:
     - icinga
     - monitoring
-  dependencies: []
+  dependencies:
+    - icinga.icinga.repos

@@ -36,13 +36,9 @@
     password: "{{ icinga_repo_subscription_password | default(omit) }}"
 
 - name: Yum - add EPEL repository
-  yum_repository:
-    file: /etc/yum.repos.d/epel-release
+  yum:
     name: epel-release
-    enabled: "{{ icinga_repo_epel }}"
-    description: EPEL Release
-    baseurl: "{{ icinga_repo_yum_epel_url }}"
-    gpgkey: "{{ icinga_repo_yum_epel_key }}"
+    state: present
   when: icinga_repo_epel
 
 - name: Yum - add SCL repositories

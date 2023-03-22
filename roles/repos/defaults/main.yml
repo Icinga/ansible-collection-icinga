@@ -10,9 +10,6 @@ icinga_repo_yum_snapshot_url: "http://packages.icinga.com/epel/$releasever/snaps
 icinga_repo_yum_snapshot_key: "{{ icinga_repo_gpgkey }}"
 icinga_repo_yum_snapshot_description: "ICINGA (snapshot release for epel)"
 
-icinga_repo_yum_epel_url: "http://download.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/$basearch"
-icinga_repo_yum_epel_key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
-
 icinga_repo_apt_key: "{{ icinga_repo_gpgkey }}"
 icinga_repo_apt_keyring: /etc/apt/keyrings/icinga-archive-keyring.asc
 icinga_repo_apt_stable_deb: "deb [signed-by={{ icinga_repo_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }} main"

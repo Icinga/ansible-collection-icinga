@@ -1,0 +1,117 @@
+---
+
+icinga_monitoring_plugins_available_packages:
+  - name: apt
+    pkg_name: "monitoring-plugins-basic"
+  - name: breeze
+    pkg_name: "monitoring-plugins-standard"
+  - name: by_ssh
+    pkg_name: "monitoring-plugins-basic"
+  - name: clamd
+    pkg_name: "monitoring-plugins-basic"
+  - name: dhcp
+    pkg_name: "monitoring-plugins-basic"
+  - name: dig
+    pkg_name: "monitoring-plugins-standard"
+  - name: disk
+    pkg_name: "monitoring-plugins-basic"
+  - name: disk_smb
+    pkg_name: "monitoring-plugins-standard"
+  - name: dns
+    pkg_name: "monitoring-plugins-standard"
+  - name: file_age
+    pkg_name: "monitoring-plugins-basic"
+  - name: flexlm
+    pkg_name: "monitoring-plugins-standard"
+  - name: fping
+    pkg_name: "monitoring-plugins-standard"
+  - name: fping4
+    pkg_name: "monitoring-plugins-standard"
+  - name: fping6
+    pkg_name: "monitoring-plugins-standard"
+  - name: ftp
+    pkg_name: "monitoring-plugins-basic"
+  - name: game
+    pkg_name: "monitoring-plugins-standard"
+  - name: hostalive
+    pkg_name: "monitoring-plugins-basic"
+  - name: hostalive4
+    pkg_name: "monitoring-plugins-basic"
+  - name: hostalive6
+    pkg_name: "monitoring-plugins-basic"
+  - name: hpjd
+    pkg_name: "monitoring-plugins-standard"
+  - name: http
+    pkg_name: "monitoring-plugins-basic"
+  - name: icmp
+    pkg_name: "monitoring-plugins-basic"
+  - name: imap
+    pkg_name: "monitoring-plugins-basic"
+  - name: ldap
+    pkg_name: "monitoring-plugins-standard"
+  - name: load
+    pkg_name: "monitoring-plugins-basic"
+  - name: mailq
+    pkg_name: "monitoring-plugins-standard"
+  - name: mysql
+    pkg_name: "monitoring-plugins-standard"
+  - name: mysql_query
+    pkg_name: "monitoring-plugins-standard"
+  - name: negate
+    pkg_name: "monitoring-plugins-common"
+  - name: nrpe
+    pkg_name: "nagios-nrpe-plugin"
+  - name: nscp
+    pkg_name: "monitoring-plugins-basic"
+  - name: ntp_peer
+    pkg_name: "monitoring-plugins-basic"
+  - name: ntp_time
+    pkg_name: "monitoring-plugins-basic"
+  - name: pgsql
+    pkg_name: "monitoring-plugins-standard"
+  - name: ping
+    pkg_name: "monitoring-plugins-basic"
+  - name: ping4
+    pkg_name: "monitoring-plugins-basic"
+  - name: ping6
+    pkg_name: "monitoring-plugins-basic"
+  - name: pop
+    pkg_name: "monitoring-plugins-basic"
+  - name: procs
+    pkg_name: "monitoring-plugins-basic"
+  - name: radius
+    pkg_name: "monitoring-plugins-standard"
+  - name: rpc
+    pkg_name: "monitoring-plugins-standard"
+  - name: simap
+    pkg_name: "monitoring-plugins-basic"
+  - name: smart
+    pkg_name: "monitoring-plugins-basic"
+  - name: smtp
+    pkg_name: "monitoring-plugins-basic"
+  - name: snmp
+    pkg_name: "monitoring-plugins-standard"
+  - name: snmpv3
+    pkg_name: "monitoring-plugins-standard"
+  - name: snmp-uptime
+    pkg_name: "monitoring-plugins-standard"
+  - name: spop
+    pkg_name: "monitoring-plugins-basic"
+  - name: ssh
+    pkg_name: "monitoring-plugins-basic"
+  - name: ssl
+    pkg_name: "monitoring-plugins-basic"
+  - name: ssmtp
+    pkg_name: "monitoring-plugins-basic"
+  - name: swap
+    pkg_name: "monitoring-plugins-basic"
+  - name: tcp
+    pkg_name: "monitoring-plugins-basic"
+  - name: udp
+    pkg_name: "monitoring-plugins-basic"
+  - name: ups
+    pkg_name: "monitoring-plugins-basic"
+  - name: uptime
+    pkg_name: "monitoring-plugins-contrib"
+  - name: users
+    pkg_name: "monitoring-plugins-basic"

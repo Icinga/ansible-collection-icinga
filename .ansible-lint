@@ -9,3 +9,4 @@ warn_list:
   - meta-no-info
   - new-line-at-end-of-file
   - no-changed-when
+  - trailing-spaces

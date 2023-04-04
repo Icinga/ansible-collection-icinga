@@ -10,7 +10,7 @@
         - "{{ ansible_os_family }}.yml"
         - default.yml
       paths:
-        - 'vars'
+        - "{{ role_path }}/vars"
 
 - name: Include OS specific vars regarding Icinga subscription
   include_vars: "{{ lookup('first_found', params) }}"
@@ -23,7 +23,7 @@
         - "subscription-{{ ansible_os_family }}.yml"
         - default.yml
       paths:
-        - 'vars'
+        - "{{ role_path }}/vars"
   when:
     - icinga_repo_subscription_username is defined
     - icinga_repo_subscription_password is defined

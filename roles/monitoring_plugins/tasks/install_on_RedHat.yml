@@ -39,6 +39,6 @@
     state: absent
     name: "{{ (unwanted_packages | difference('nagios-plugins')) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"
     autoremove: "{{ icinga_monitoring_plugins_autoremove }}"
-  when: 
+  when:
     - icinga_monitoring_plugins_remove
     - unwanted_packages

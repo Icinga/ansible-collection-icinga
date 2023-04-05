@@ -1,0 +1,9 @@
+---
+- name: Write configuration to /etc/icinga-redis/icinga-redis.conf
+  template:
+    src: icingadb-redis.conf.j2
+    dest: "{{ icingadb_redis_config_dir }}/icingadb-redis.conf"
+    owner: "{{ icingadb_redis_user }}"
+    group: "{{ icingadb_redis_group }}"
+    mode: 0640
+  notify: icingadb-redis-restart

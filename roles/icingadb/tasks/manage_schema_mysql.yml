@@ -1,0 +1,28 @@
+- name: MySQL import IcingaDB schema
+  block:
+    - name: build mysql command
+      set_fact:
+        mysqlcmd: >-
+          mysql {% if icingadb_database_host | default('localhost') != 'localhost'  %} -h "{{ icingadb_database_host }}" {%- endif %}
+          {% if icingadb_database_ca is defined %} --ssl-ca "{{ icingadb_database_ca }}" {%- endif %}
+          {% if icingadb_database_cert is defined %} --ssl-cert "{{ icingadb_database_cert }}" {%- endif %}
+          {% if icingadb_database_key is defined %} --ssl-key "{{ icingadb_database_key }}" {%- endif %}
+          -u "{{ icingadb_database_user | default('icingadb') }}"
+          -p"{{ icingadb_database_password }}"
+          "{{ icingadb_database_name | default('icingadb') }}"
+
+    - name: MySQL check for IDO schema
+      shell: >
+        {{ mysqlcmd }}
+        -Ns -e "select version from icingadb_schema"
+      failed_when: false
+      changed_when: false
+      check_mode: false
+      register: db_schema
+
+    - name: MySQL import IDO schema
+      shell: >
+        {{ mysqlcmd }}
+        < {{ icingadb_database_schema }}
+      when: db_schema.rc != 0
+  when: icingadb_database_import_schema| default(False)

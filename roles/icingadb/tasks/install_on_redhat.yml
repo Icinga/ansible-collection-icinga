@@ -1,0 +1,5 @@
+---
+- name: RedHat - Install IcingaDB packages
+  yum:
+    name: "{{ icingadb_packages }}"
+    state: present

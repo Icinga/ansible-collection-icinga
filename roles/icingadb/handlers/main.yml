@@ -1,0 +1,4 @@
+- name: icingadb-restart
+  service:
+    name: "{{ icingadb_service_name }}"
+    state: restarted

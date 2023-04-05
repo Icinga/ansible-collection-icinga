@@ -1,0 +1,26 @@
+---
+- name: Include OS specific vars
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - "{{ role_path }}/vars"
+
+- name: Include OS specific installation
+  include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+
+- name: Include Tasks to configure IcingaDB
+  include_tasks: manage_config.yml
+
+- name: Include Tasks to import DB Schema
+  include_tasks: "manage_schema_{{ icingadb_database_type | lower }}.yml"
+  when: icingadb_database_import_schema
+
+- name: Include Tasks to manage IcingaDB Service
+  include_tasks: manage_service.yml

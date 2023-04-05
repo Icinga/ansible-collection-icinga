@@ -1,0 +1,5 @@
+---
+- name: Debian - Install IcingaDB packages
+  apt:
+    name: "{{ icingadb_packages }}"
+    state: present

@@ -62,3 +62,8 @@
     - geerlingguy.mysql
     - icingadb
     - icingadb_redis
+  post_tasks:
+    - ansible.builtin.command: systemctl status icingadb-redis-server.service
+      register: _out
+    - ansible.builtin.debug:
+      var: _out

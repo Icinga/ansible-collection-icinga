@@ -66,4 +66,4 @@
     - ansible.builtin.command: systemctl status icingadb-redis-server.service
       register: _out
     - ansible.builtin.debug:
-      var: _out
+        var: _out

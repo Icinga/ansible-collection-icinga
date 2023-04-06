@@ -6,8 +6,6 @@ icingadb_database_port: 3306
 icingadb_database_name: icingadb
 icingadb_database_user: icingadb
 icingadb_database_password: icingadb
-icingadb_redis_host: 127.0.0.1
-icingadb_redis_port: 6380
 icingadb_mysql_max_open_conns: 50
 icingadb_logging_level: info
 icingadb_metrics_host: false

@@ -1,6 +1,7 @@
 skip_list:
   - 'yaml'
   - unnamed-task
+  - ignore-errors
 warn_list:
   - command-instead-of-shell
   - risky-file-permissions

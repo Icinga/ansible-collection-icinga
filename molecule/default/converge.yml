@@ -3,6 +3,7 @@
 - name: Converge
   hosts: all
   vars:
+    icingadb_database_import_schema: true
     mysql_innodb_file_format: barracuda
     mysql_innodb_large_prefix: 1
     mysql_innodb_file_per_table: 1

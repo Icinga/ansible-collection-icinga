@@ -15,7 +15,7 @@ platforms:
 provisioner:
   name: ansible
   options:
-    debug: True
+    vvvv: True
   inventory:
     link:
       host_vars: host_vars/

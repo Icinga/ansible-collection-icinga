@@ -7,6 +7,10 @@
     mysql_innodb_file_format: barracuda
     mysql_innodb_large_prefix: 1
     mysql_innodb_file_per_table: 1
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python-mysqldb
     mysql_users:
       - name: icingadb
         host: "%"

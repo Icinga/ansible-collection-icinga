@@ -10,7 +10,7 @@
     mysql_packages:
       - mariadb-client
       - mariadb-server
-      - python-mysqldb
+      - python3-mysqldb
     mysql_users:
       - name: icingadb
         host: "%"

@@ -15,7 +15,7 @@ platforms:
 provisioner:
   name: ansible
   options:
-    vvvv: True
+    vvv: True
   inventory:
     link:
       host_vars: host_vars/

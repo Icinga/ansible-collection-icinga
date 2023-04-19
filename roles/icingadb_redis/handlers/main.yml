@@ -1,5 +1,6 @@
 ---
 - name: icingadb-redis-restart
+  ignore_errors: true
   service:
     name: "{{ icingadb_redis_service_name }}"
     state: restarted

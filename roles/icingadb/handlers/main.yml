@@ -1,5 +1,4 @@
 - name: icingadb-restart
-  ignore_errors: yes
   service:
     name: "{{ icingadb_service_name }}"
     state: restarted

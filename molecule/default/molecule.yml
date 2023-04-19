@@ -14,6 +14,8 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  options:
+    vvv: True
   inventory:
     link:
       host_vars: host_vars/

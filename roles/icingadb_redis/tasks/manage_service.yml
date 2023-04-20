@@ -1,6 +1,5 @@
 ---
 - name: Ensure IcingaDB Redis Service is running
-  ignore_errors: yes
   service:
     state: started
     enabled: yes

@@ -1,4 +1,4 @@
-- name: Service icingadb-restart
+- name: icingadb-restart
   ansible.builtin.service:
     name: "{{ icingadb_service_name }}"
     state: restarted

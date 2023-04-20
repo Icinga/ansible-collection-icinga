@@ -1,5 +1,0 @@
-ansible-base==2.10.17
-ansible-lint==5.4.0
-molecule==4.0.3
-molecule-docker
-pytest-testinfra

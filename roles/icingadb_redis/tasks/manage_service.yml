@@ -1,6 +1,6 @@
 ---
 - name: Ensure IcingaDB Redis Service is running
-  service:
+  ansible.builtin.service:
     state: started
     enabled: yes
     name: "{{ icingadb_redis_service_name }}"

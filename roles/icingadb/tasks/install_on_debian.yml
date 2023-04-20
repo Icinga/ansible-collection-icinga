@@ -1,5 +1,4 @@
----
 - name: Debian - Install IcingaDB packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ icingadb_packages }}"
     state: present

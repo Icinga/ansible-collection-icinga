@@ -1,7 +1,8 @@
 - name: MySQL import IcingaDB schema
+  when: icingadb_database_import_schema| default(False)
   block:
-    - name: build mysql command
-      set_fact:
+    - name: Build mysql command
+      ansible.builtin.set_fact:
         mysqlcmd: >-
           mysql {% if icingadb_database_host | default('localhost') != 'localhost'  %} -h "{{ icingadb_database_host }}" {%- endif %}
           {% if icingadb_database_ca is defined %} --ssl-ca "{{ icingadb_database_ca }}" {%- endif %}
@@ -12,7 +13,7 @@
           "{{ icingadb_database_name | default('icingadb') }}"
 
     - name: MySQL check for IDO schema
-      shell: >
+      ansible.builtin.shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icingadb_schema"
       failed_when: false
@@ -21,8 +22,7 @@
       register: db_schema
 
     - name: MySQL import IDO schema
-      shell: >
+      ansible.builtin.shell: >
         {{ mysqlcmd }}
         < {{ icingadb_database_schema }}
       when: db_schema.rc != 0
-  when: icingadb_database_import_schema| default(False)

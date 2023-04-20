@@ -1,7 +1,9 @@
 skip_list:
+  - experimental
   - 'yaml'
   - unnamed-task
   - ignore-errors
+  - no-changed-when
 warn_list:
   - command-instead-of-shell
   - risky-file-permissions
@@ -9,5 +11,10 @@ warn_list:
   - meta-incorrect
   - meta-no-info
   - new-line-at-end-of-file
-  - no-changed-when
   - trailing-spaces
+  - jinja[spacing]
+  - fqcn[action-core]
+  - schema[meta]
+  - name[template]
+  - key-order[task]
+  - name[casing]

@@ -27,10 +27,10 @@ This role installs and configures the IcingaDB. In addition it can also import t
   * Defines wether to use TLS for the IcingaDB connection.
 
 * `icingadb_database_cert: string`
-  * Defines the path to the certificate for the connection.
+  * Defines the path to the certificate for the tls connection.
 
 * `icingadb_database_key: string`
-  * Defines the path to the certificate key for the connection.
+  * Defines the path to the certificate key for the tls connection.
 
 
 

@@ -20,6 +20,6 @@ galaxy_info:
     - master
     - icinga2
     - icingadb
-    - icingadb-redis
+    - redis
     - redis
 dependencies: []

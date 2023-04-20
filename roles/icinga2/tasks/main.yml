@@ -12,7 +12,7 @@
         - "{{ ansible_os_family }}.yml"
         - default.yml
       paths:
-        - 'vars'
+        - "{{ role_path }}/vars"
 
 - name: install
   include_tasks: install.yml

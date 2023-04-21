@@ -4,7 +4,7 @@
     path: "/etc/icingaweb2/modules/monitoring/"
     state: directory
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0750
 
 - name: ICINGAWEB | Configure command transports (using incinga2 api)
@@ -12,7 +12,7 @@
     dest: /etc/icingaweb2/modules/monitoring/commandtransports.ini
     create: true
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0750
     marker: "; {mark} ANSIBLE MANAGED BLOCK COMMAND TRANSPORT SETUP"
     block: |

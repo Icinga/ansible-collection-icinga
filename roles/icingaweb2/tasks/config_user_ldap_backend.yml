@@ -4,7 +4,7 @@
     dest: /etc/icingaweb2/authentication.ini
     marker: "; {mark} ANSIBLE MANAGED BLOCK EXTERNAL AUTH"
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0650
     create: true
     block: |
@@ -16,8 +16,7 @@
     dest: /etc/icingaweb2/resources.ini
     marker: ";{mark} ANSIBLE MANAGED BLOCK LDAP RESOURCES"
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0650
     create: true
     block: |
@@ -35,7 +34,7 @@
     marker: "; {mark} ANSIBLE MANAGED BLOCK {{ item | upper }}"
     create: true
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0650
     block: |
       [ldap_{{ item }}]

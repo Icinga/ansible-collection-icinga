@@ -12,3 +12,4 @@ icingaweb2_icinga2_ido_username: icinga2
 icingaweb2_icinga2_ido_password: changeme
 icingaweb2_icinga2_local_admin_group_name: icinga_local_admin
 icingaweb2_initialize_database: false
+icingaweb2_webserver_group: icingaweb2

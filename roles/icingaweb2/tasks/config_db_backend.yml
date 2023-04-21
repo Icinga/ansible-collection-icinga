@@ -3,7 +3,7 @@
   ansible.builtin.blockinfile:
     dest: /etc/icingaweb2/resources.ini
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGAWEB DB RESOURCES"
     create: true
@@ -25,7 +25,7 @@
     marker: "; {mark} ANSIBLE MANAGED BLOCK DB GROUPS"
     create: true
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     block: |
       [icingaweb2]
@@ -36,7 +36,7 @@
   ansible.builtin.blockinfile:
     dest: /etc/icingaweb2/resources.ini
     owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGA DB RESOURCES"
     create: true

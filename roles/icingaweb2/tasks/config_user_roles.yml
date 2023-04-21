@@ -2,8 +2,8 @@
 - name: ICINGAWEB | Configure roles.ini (add roles and filters)
   become: true
   ansible.builtin.copy:
-    owner: "{{ icingaweb2_webserver_user }}" 
-    group: icingaweb2
+    owner: "{{ icingaweb2_webserver_user }}"
+    group: "{{ icingaweb2_webserver_group }}"
     mode: 0660
     dest: /etc/icingaweb2/roles.ini
     content: |

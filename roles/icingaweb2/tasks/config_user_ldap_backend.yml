@@ -21,9 +21,9 @@
     create: true
     block: |
       [identity_openldap]
-      type        = ldap
+      type        = {{ icingaweb2_ldap_type }}
       hostname    = {{ icingaweb2_ldap_server }}
-      port        = 389
+      port        = {{ icingaweb2_ldap_port }}
       root_dn     = "{{ icingaweb2_ldap_root_dn }}"
       bind_dn     = "{{ icingaweb2_ldap_bind_dn }}"
       bind_pw     = "{{ icingaweb2_ldap_bind_pw }}"
@@ -40,10 +40,10 @@
       [ldap_{{ item }}]
       backend = "ldap"
       resource = "identity_openldap"
-      group_class = "groupOfNames"
-      user_class = "person"
-      user_name_attribute = "uid"
-      group_name_attribute = "cn"
+      group_class = "{{ icingaweb2_ldap_group_class|default('groupOfNames') }}"
+      user_class = "{{ icingaweb2_ldap_user_class|default('person') }}"
+      user_name_attribute = "{{ icingaweb2_ldap_user_name_attribute|default('uid') }}"
+      group_name_attribute = "{{ icingaweb2_ldap_group_name_attribute|default('cn') }}"
   loop:
     - groups
     - authentication

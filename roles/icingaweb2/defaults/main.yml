@@ -1,16 +1,20 @@
 ---
-icinga2_api_user_password: changeme
+icinga2_api_username: root
+icinga2_api_password: changeme
 icingaweb2_db_type: pgsql
 icingaweb2_db_host: localhost
 icingaweb2_db_port: 5432
 icingaweb2_db_dbname: icingaweb
 icingaweb2_db_username: icingaweb
 icingaweb2_db_password: changeme
+icingaweb2_icinga2_ido_db_type: pgsql
+icingaweb2_icinga2_ido_db_host: localhost
+icingaweb2_icinga2_ido_db_port: 5432
+icingaweb2_icinga2_ido_db_dbname: icinga2
+icingaweb2_icinga2_ido_db_username: icinga2
+icingaweb2_icinga2_ido_db_password: changeme
 icingaweb2_icinga2_ido_host: localhost
-icingaweb2_icinga2_ido_port: 5432
-icingaweb2_icinga2_ido_dbname: icinga2
-icingaweb2_icinga2_ido_username: icinga2
-icingaweb2_icinga2_ido_password: changeme
+icingaweb2_icinga2_ido_port: 5665
 icingaweb2_icinga2_local_admin_group_name: icinga_local_admin
 icingaweb2_initialize_database: false
 icingaweb2_webserver_group: icingaweb2

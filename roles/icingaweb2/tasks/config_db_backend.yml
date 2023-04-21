@@ -43,11 +43,11 @@
     block: |
       [icinga2_ido]
       type = "db"
-      db = "pgsql"
-      host = "{{ icingaweb2_icinga2_ido_host }}"
-      port = "{{ icingaweb2_icinga2_ido_port }}"
-      dbname = "{{ icingaweb2_icinga2_ido_dbname }}"
-      username = "{{ icingaweb2_icinga2_ido_username }}"
-      password = "{{ icingaweb2_icinga2_ido_password }}"
+      db = "{{ icingaweb2_icinga2_ido_db_type }}"
+      host = "{{ icingaweb2_icinga2_ido_db_host }}"
+      port = "{{ icingaweb2_icinga2_ido_db_port }}"
+      dbname = "{{ icingaweb2_icinga2_ido_db }}"
+      username = "{{ icingaweb2_icinga2_ido_db_username }}"
+      password = "{{ icingaweb2_icinga2_ido_db_password }}"
       charset = "utf8"
       use_ssl = "1"

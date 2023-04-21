@@ -2,7 +2,7 @@
 - name: ICINGAWEB | Configure database backend for icingaweb
   ansible.builtin.blockinfile:
     dest: /etc/icingaweb2/resources.ini
-    owner: "{{ icingaweb2_webserver_user }}" 
+    owner: "{{ icingaweb2_webserver_user }}"
     group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGAWEB DB RESOURCES"
@@ -10,7 +10,7 @@
     block: |
       [icingaweb_db]
       type = "db"
-      db = "pgsql"
+      db = "{{ icingaweb2_db_type }}"
       host = "{{ icingaweb2_db_host }}"
       port = "{{ icingaweb2_db_port }}"
       dbname = "{{ icingaweb2_db_dbname }}"
@@ -24,7 +24,7 @@
     dest: "/etc/icingaweb2/groups.ini"
     marker: "; {mark} ANSIBLE MANAGED BLOCK DB GROUPS"
     create: true
-    owner: "{{ icingaweb2_webserver_user }}" 
+    owner: "{{ icingaweb2_webserver_user }}"
     group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     block: |
@@ -35,7 +35,7 @@
 - name: ICINGAWEB | Configure database backend for icinga object
   ansible.builtin.blockinfile:
     dest: /etc/icingaweb2/resources.ini
-    owner: "{{ icingaweb2_webserver_user }}" 
+    owner: "{{ icingaweb2_webserver_user }}"
     group: "{{ icingaweb2_webserver_group }}"
     mode: 0640
     marker: ";{mark} ANSIBLE MANAGED BLOCK ICINGA DB RESOURCES"

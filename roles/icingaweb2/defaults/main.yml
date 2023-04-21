@@ -1,5 +1,6 @@
 ---
 icinga2_api_user_password: changeme
+icingaweb2_db_type: pgsql
 icingaweb2_db_host: localhost
 icingaweb2_db_port: 5432
 icingaweb2_db_dbname: icingaweb

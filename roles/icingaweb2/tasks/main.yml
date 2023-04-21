@@ -22,5 +22,5 @@
   ansible.builtin.include_tasks: config_commandtransports.yml
 
 - name: ICINGA2WEB | Initialize database (load DDL)
-  ansible.builtin.include_tasks: initialize_database.yml
+  ansible.builtin.include_tasks: initialize_database_{{ icingaweb2_db_type }}.yml
   when: icingaweb2_initialize_database

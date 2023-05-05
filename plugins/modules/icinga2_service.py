@@ -26,7 +26,7 @@ def main():
             check_timeout=dict(type='str'),
             check_interval=dict(type='str'),
             retry_interval=dict(type='str'),
-            enable_notification=dict(type='bool'),
+            enable_notifications=dict(type='bool'),
             enable_active_checks=dict(type='bool'),
             enable_passive_checks=dict(type='bool'),
             enable_event_handler=dict(type='bool'),

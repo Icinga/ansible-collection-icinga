@@ -1,0 +1,20 @@
+- name: Ensure IcingaDB config directory exists
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir}}/icingadb"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"
+
+- name: Manage Icinga DB Web configuration
+  ansible.builtin.template:
+    src: "config.ini.j2"
+    dest: "{{ icingaweb2_modules_config_dir }}/icingadb/{{ _file }}.ini"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"
+  loop:
+    - config
+    - resources
+  loop_control:
+    loop_var: _file

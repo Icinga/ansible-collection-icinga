@@ -1,0 +1,74 @@
+- name: Ensure fragments exists
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_fragments_path }}/{{ item }}"
+    owner: root
+    group: "{{ icingaweb2_group }}"
+  loop:
+    - resources
+    - authentication
+
+- name: Create icingaweb2 config files
+  ansible.builtin.template:
+    src: "modules_config.ini.j2"
+    dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"
+  loop:
+    - config
+    - authentication
+    - groups
+  vars:
+    _i2_config_hash: "{{ vars['icingaweb2_' + item] }}"
+
+- name: Prepare config hash
+  ansible.builtin.set_fact:
+    _i2_config_hash:
+      icingaweb2_db:
+        type: db
+        db: "{{ icingaweb2_db['type'] | ternary('mysql', 'pgsql') }}"
+        host: "{{ icingaweb2_db['host'] }}"
+        dbname: "{{ icingaweb2_db['name'] }}"
+        username: "{{ icingaweb2_db['user'] }}"
+        password: "{{ icingaweb2_db['password'] }}"
+        charset: "{{ icingaweb2_db['charset'] | default(omit) }}"
+        use_ssl: "{{ '1' if icingaweb2_db['ssl_cert'] is defined else '0' }}"
+        ssl_cert: "{{ icingaweb2_db['ssl_cert'] | default(omit) }}"
+        ssl_key: "{{ icingaweb2_db['ssl_key'] | default(omit) }}"
+        ssl_ca: "{{ icingaweb2_db['ssl_ca'] | default(omit) }}"
+        ssl_cipher: "{{ icingaweb2_db['ssl_cipher'] | default(omit) }}"
+        ssl_capath: "{{ icingaweb2_db['ssl_capath'] | default(omit) }}"
+  when: icingaweb2_db is defined
+
+- name: Manage icingaweb_db config
+  ansible.builtin.template:
+    src: modules_config.ini.j2
+    dest: "{{ icingaweb2_fragments_path }}/resources/resources_01"
+    owner: root
+    group: "{{ icingaweb2_group }}"
+  when: icingaweb2_db is defined
+
+- name: Set resources facts
+  ansible.builtin.set_fact:
+    _i2_config_hash: "{{ icingaweb2_resources }}"
+  when: icingaweb2_resources is defined
+
+- name: Manage Resources
+  ansible.builtin.template:
+    src: modules_config.ini.j2
+    dest: "{{ icingaweb2_fragments_path }}/resources/resources_02"
+    owner: root
+    group: "{{ icingaweb2_group }}"
+  when: icingaweb2_resources is defined
+
+- name: Assemble resources.ini
+  ansible.builtin.assemble:
+    dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
+    src: "{{ icingaweb2_fragments_path }}/{{ item }}"
+    group: "{{ icingaweb2_group }}"
+    owner: "{{ icingaweb2_httpd_user }}"
+  loop:
+    - resources
+
+# {{ icingaweb2_db | ansible.builtin.combine(icingaweb2_db, append_rp)}}

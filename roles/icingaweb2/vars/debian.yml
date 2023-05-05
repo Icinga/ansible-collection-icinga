@@ -1,0 +1,2 @@
+icingaweb2_httpd_user: www-data
+icingaweb2_fragments_path: /var/tmp/icingaweb

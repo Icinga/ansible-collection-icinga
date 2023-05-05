@@ -1,0 +1,9 @@
+{% macro generate_ini(config) %}
+{% for section, options in config.items() %}
+
+[{{ section }}]
+{% for option, value in options.items() %}
+{{ option }} = {{ value }}
+{% endfor %}
+{% endfor %}
+{% endmacro %}

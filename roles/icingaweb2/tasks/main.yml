@@ -1,0 +1,33 @@
+---
+- name: Include OS specific vars
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family | lower }}-{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+        - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+        - "{{ ansible_os_family | lower }}-{{ ansible_distribution | lower }}.yml"
+        - "{{ ansible_os_family | lower }}.yml"
+        - default.yml
+      paths:
+        - "{{ role_path }}/vars"
+
+- name: Gather module packages
+  ansible.builtin.set_fact:
+    icingaweb2_packages: "{{ icingaweb2_packages + [ icingaweb2_module_packages[item.key] ] }}"
+  loop: "{{ icingaweb2_modules | dict2items }}"
+  when: icingaweb2_module_packages[item.key] is defined and item.value.enabled is true
+
+- name: Include OS specific installation
+  ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+
+- name: Manage Icinga Web 2 config
+  ansible.builtin.include_tasks: "manage_icingaweb_config.yml"
+
+- name: Manage Icinga Web 2 DB
+  ansible.builtin.include_tasks: "manage_icingaweb_{{ icingaweb2_db.type | ternary('mysql', 'pgsql') }}_db.yml"
+
+- name: Manage Module
+  ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"
+  loop: "{{ icingaweb2_modules | dict2items }}"
+  when: item.value.enabled is true

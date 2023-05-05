@@ -1,0 +1,78 @@
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    icingaweb2_admin_username: admin
+    icingaweb2_admin_password: admin
+    icingadb_database_import_schema: true
+    icingaweb2_db_import_schema: true
+    mysql_innodb_file_format: barracuda
+    mysql_innodb_large_prefix: 1
+    mysql_innodb_file_per_table: 1
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python3-mysqldb
+    mysql_users:
+      - name: icingadb
+        host: "%"
+        password: icingadb
+        priv: "icingadb.*:ALL"
+      - name: icingaweb2
+        host: "%"
+        password: icingaweb2
+        priv: "icingaweb2.*:ALL"
+    mysql_databases:
+      - name: icingaweb2
+      - name: foobar
+      - name: icingadb
+        collation: utf8mb4_general_ci
+        encoding: utf8mb4
+    icinga2_confd: false
+    icinga2_features:
+      - name: perfdata
+        host_perfdata_path: "/var/spool/icinga2/perfdata/host-perfdata"
+        service_perfdata_path: "/var/spool/icinga2/perfdata/service-perfdata"
+      - name: gelf
+        host: localhost
+        port: 12201
+      - name: elasticsearch
+        host: localhost
+        port: 9200
+        index: "icinga2"
+        enable_send_perfdata: true
+        flush_interval: 10
+        flush_threshold: 1024
+      - name: opentsdb
+        host: localhost
+        port: 4242
+      - name: icingadb
+        host: 127.0.0.1
+      - name: notification
+      - name: checker
+      - name: influxdb2
+        host: 127.0.0.1
+        port: 8086
+        organization: monitoring
+        bucket: icinga2
+        auth_token: testtoken123
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main/commands
+      - zones.d/main/hosts
+      - zones.d/main/services
+  collections:
+    - icinga.icinga
+  roles:
+    - repos
+    - icinga2
+    - geerlingguy.mysql
+    - icingaweb2

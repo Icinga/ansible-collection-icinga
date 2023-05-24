@@ -1,0 +1,13 @@
+- name: Zypper - install package icinga2
+  zypper:
+    name: icinga2
+    state: present
+- name: Zypper - install package icinga2-selinux
+  zypper:
+    name: icinga2-selinux
+    state: present
+  when: ansible_selinux is defined and ansible_selinux.status == "enabled"
+- name: Zypper - install dep
+  zypper:
+    name: libboost_regex1_66_0
+    state: present

@@ -25,7 +25,7 @@
   ansible.builtin.include_tasks: "manage_icingaweb_config.yml"
 
 - name: Manage Icinga Web 2 DB
-  ansible.builtin.include_tasks: "manage_icingaweb_{{ icingaweb2_db.type | ternary('mysql', 'pgsql') }}_db.yml"
+  ansible.builtin.include_tasks: "manage_icingaweb_{{ icingaweb2_db.type }}_db.yml"
 
 - name: Manage Module
   ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"

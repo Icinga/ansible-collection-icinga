@@ -6,18 +6,13 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
-- name: Manage Icinga DB Web configuration
-  ansible.builtin.template:
-    src: "icingadb_config.ini.j2"
-    dest: "{{ icingaweb2_modules_config_dir }}/icingadb/{{ _file }}.ini"
-    owner: "{{ icingaweb2_httpd_user }}"
-    group: "{{ icingaweb2_group }}"
-    mode: "0660"
-  loop:
-    - commandtransports
-    - config
-    - redis
+- name: Create icingadb-web config files
+  include_tasks: manage_icingadbweb_config.yml
+  loop: "{{ _files }}"
   loop_control:
     loop_var: _file
   vars:
-    _icingadb_config: "{{ vars['icingaweb2_modules']['icingadb_web'][_file] }}"
+    _files:
+      - commandtransports
+      - config
+      - redis

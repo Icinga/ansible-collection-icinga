@@ -7,6 +7,7 @@
   loop:
     - resources
     - authentication
+    - roles
 
 - name: Create icingaweb2 config files
   ansible.builtin.template:
@@ -18,7 +19,6 @@
   loop:
     - config
     - authentication
-    - groups
   vars:
     _i2_config_hash: "{{ vars['icingaweb2_' + item] }}"
 
@@ -41,34 +41,74 @@
         ssl_capath: "{{ icingaweb2_db['ssl_capath'] | default(omit) }}"
   when: icingaweb2_db is defined
 
-- name: Manage icingaweb_db config
-  ansible.builtin.template:
-    src: modules_config.ini.j2
-    dest: "{{ icingaweb2_fragments_path }}/resources/resources_01"
-    owner: root
-    group: "{{ icingaweb2_group }}"
-  when: icingaweb2_db is defined
-
-- name: Set resources facts
-  ansible.builtin.set_fact:
-    _i2_config_hash: "{{ icingaweb2_resources }}"
-  when: icingaweb2_resources is defined
-
-- name: Manage Resources
-  ansible.builtin.template:
-    src: modules_config.ini.j2
-    dest: "{{ icingaweb2_fragments_path }}/resources/resources_02"
-    owner: root
-    group: "{{ icingaweb2_group }}"
-  when: icingaweb2_resources is defined
-
 - name: Assemble resources.ini
+  when: icingaweb2_db is defined or icingaweb2_resources is defined
+  block:
+    - name: Manage icingaweb_db resource config
+      ansible.builtin.template:
+        src: modules_config.ini.j2
+        dest: "{{ icingaweb2_fragments_path }}/resources/resources_01"
+        owner: root
+        group: "{{ icingaweb2_group }}"
+      when: icingaweb2_db is defined
+
+    - name: Set resources facts
+      ansible.builtin.set_fact:
+        _i2_config_hash: "{{ icingaweb2_resources }}"
+      when: icingaweb2_resources is defined
+
+    - name: Manage Resources
+      ansible.builtin.template:
+        src: modules_config.ini.j2
+        dest: "{{ icingaweb2_fragments_path }}/resources/resources_02"
+        owner: root
+        group: "{{ icingaweb2_group }}"
+      when: icingaweb2_resources is defined
+
+- name: Assemble roles.ini
+  when: icingaweb2_admin_password is defined or icingaweb2_roles is defined
+  block:
+    - name: Build variable
+      ansible.builtin.set_fact:
+        _i2_config_hash:
+          default_admins:
+            users:
+              - "{{ icingaweb2_admin_username }}"
+            permissions:
+              - "*"
+
+    - name: Manage icingaweb2_admin privileges
+      ansible.builtin.template:
+        src: modules_config.ini.j2
+        dest: "{{ icingaweb2_fragments_path }}/roles/roles_01"
+        owner: root
+        group: "{{ icingaweb2_group }}"
+      when: icingaweb2_admin_password is defined
+
+    - name: Build variable
+      ansible.builtin.set_fact:
+        _i2_config_hash: "{{ icingaweb2_roles }}"
+      when: icingaweb2_roles is defined
+      
+    - name: Manage icingaweb2_admin privileges
+      ansible.builtin.template:
+        src: modules_config.ini.j2
+        dest: "{{ icingaweb2_fragments_path }}/roles/roles_02"
+        owner: root
+        group: "{{ icingaweb2_group }}"
+      when: icingaweb2_roles is defined
+
+
+- name: Assemble configuration files
   ansible.builtin.assemble:
     dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
     src: "{{ icingaweb2_fragments_path }}/{{ item }}"
     group: "{{ icingaweb2_group }}"
     owner: "{{ icingaweb2_httpd_user }}"
+    mode: 0660
   loop:
     - resources
+    - roles
+
 
 # {{ icingaweb2_db | ansible.builtin.combine(icingaweb2_db, append_rp)}}

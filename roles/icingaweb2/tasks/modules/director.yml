@@ -1,0 +1,25 @@
+- name: Ensure Director config directory exists
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir}}/director"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"
+
+- name: Manage Icinga Director configuration
+  ansible.builtin.template:
+    src: "config.ini.j2"
+    dest: "{{ icingaweb2_modules_config_dir }}/director/{{ _file }}.ini"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"
+  loop:
+    - resources
+    - config
+  loop_control:
+    loop_var: _file
+
+- name: Enable Module
+  ansible.builtin.include_tasks: "modules/enable_module.yml"
+  vars:
+    _module: director

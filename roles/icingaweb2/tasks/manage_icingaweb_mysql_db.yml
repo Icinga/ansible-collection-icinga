@@ -46,6 +46,7 @@
         {{ _tmp_mysqlcmd }}
         < /usr/share/icingaweb2/schema/mysql.schema.sql
       when: _icingaweb2_db_schema.rc != 0
+      run_once: yes
   when: icingaweb2_db_import_schema | default(False)
 
 - name: Ensure Icinga Web User

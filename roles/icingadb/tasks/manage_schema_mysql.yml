@@ -26,3 +26,4 @@
         {{ mysqlcmd }}
         < {{ icingadb_database_schema }}
       when: db_schema.rc != 0
+      run_once: yes

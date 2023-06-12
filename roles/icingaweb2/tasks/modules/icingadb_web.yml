@@ -7,7 +7,7 @@
     mode: "2770"
 
 - name: Create icingadb-web config files
-  include_tasks: manage_icingadbweb_config.yml
+  ansible.builtin.include_tasks: manage_icingadbweb_config.yml
   loop: "{{ _files }}"
   loop_control:
     loop_var: _file

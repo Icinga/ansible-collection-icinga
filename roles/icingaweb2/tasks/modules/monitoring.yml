@@ -1,0 +1,4 @@
+- name: Enable Module
+  ansible.builtin.include_tasks: "modules/enable_module.yml"
+  vars:
+    _module: monitoring

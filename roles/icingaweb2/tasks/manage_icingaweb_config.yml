@@ -89,7 +89,7 @@
       ansible.builtin.set_fact:
         _i2_config_hash: "{{ icingaweb2_roles }}"
       when: icingaweb2_roles is defined
-      
+
     - name: Manage icingaweb2_admin privileges
       ansible.builtin.template:
         src: modules_config.ini.j2

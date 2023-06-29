@@ -16,7 +16,7 @@
   ansible.builtin.set_fact:
     icingaweb2_packages: "{{ icingaweb2_packages + [ icingaweb2_module_packages[item.key] ] }}"
   loop: "{{ icingaweb2_modules | dict2items }}"
-  when: icingaweb2_module_packages[item.key] is defined and item.value.enabled is true and item.value.source == "package"
+  when: icingaweb2_modules is defined and icingaweb2_module_packages[item.key] is defined and item.value.enabled is true and item.value.source == "package"
 
 - name: Include OS specific installation
   ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"

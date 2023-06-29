@@ -2,6 +2,9 @@
   hosts: all
   become: true
   vars:
+    icingaweb2_modules:
+      monitoring:
+        enabled: true
     icingaweb2_roles:
       my_admins:
         users:

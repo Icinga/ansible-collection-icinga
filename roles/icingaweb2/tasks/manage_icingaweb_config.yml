@@ -1,3 +1,27 @@
+- name: Set permissions on icingaweb config
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_config_dir }}"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
+- name: Set permissions on enabledModules
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_config_dir }}/enabledModules"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
+- name: Set permissions on enabledModules
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_config_dir }}/modules"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
 - name: Ensure fragments exists
   ansible.builtin.file:
     state: directory
@@ -15,7 +39,7 @@
     dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
     owner: "{{ icingaweb2_httpd_user }}"
     group: "{{ icingaweb2_group }}"
-    mode: "0660"
+    mode: "0770"
   loop:
     - config
     - authentication
@@ -105,7 +129,7 @@
     src: "{{ icingaweb2_fragments_path }}/{{ item }}"
     group: "{{ icingaweb2_group }}"
     owner: "{{ icingaweb2_httpd_user }}"
-    mode: 0660
+    mode: 0770
   loop:
     - resources
     - roles

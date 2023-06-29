@@ -1,7 +1,7 @@
 - name: Ensure IcingaDB config directory exists
   ansible.builtin.file:
     state: directory
-    dest: "{{ icingaweb2_modules_config_dir}}/icingadb"
+    dest: "{{ icingaweb2_modules_config_dir }}/icingadb"
     owner: "{{ icingaweb2_httpd_user }}"
     group: "{{ icingaweb2_group }}"
     mode: "0660"

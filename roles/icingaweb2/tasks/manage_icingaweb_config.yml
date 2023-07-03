@@ -43,6 +43,7 @@
   loop:
     - config
     - authentication
+    - groups
   vars:
     _i2_config_hash: "{{ vars['icingaweb2_' + item] }}"
 

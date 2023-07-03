@@ -28,7 +28,16 @@
   ansible.builtin.include_tasks: "manage_icingaweb_{{ icingaweb2_db.type }}_db.yml"
   when: icingaweb2_db is defined
 
-- name: Manage Module
+- name: Configure modules
   ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"
   loop: "{{ icingaweb2_modules | dict2items }}"
-  when: item.value.enabled is true
+
+- name: Manage enabled/disabled modules
+  ansible.builtin.file:
+    src: "{{ icingaweb2_config.global.module_path }}/{{ item.key }}"
+    dest: "{{ icingaweb2_config_dir }}/enabledModules/{{ item.key }}"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    state: "{{ 'link' if item.value.enabled else 'absent' }}"
+    force: yes
+  loop: "{{ icingaweb2_modules | dict2items }}"

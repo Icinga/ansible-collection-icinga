@@ -1,0 +1,11 @@
+- name: Set file content as hash
+  ansible.builtin.set_fact:
+    _i2_config_hash: "{{ vars['icingaweb2_modules']['icingadb_web'][_file] }}"
+
+- name: Write config file {{ _file }}.ini
+  ansible.builtin.template:
+    src: "modules_config.ini.j2"
+    dest: "{{ icingaweb2_modules_config_dir }}/icingadb/{{ _file }}.ini"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "0660"

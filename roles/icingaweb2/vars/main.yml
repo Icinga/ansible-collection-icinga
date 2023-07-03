@@ -1,4 +1,4 @@
 ---
 icingaweb2_module_packages:
-  icingadb_web: icingadb-web
+  icingadb: icingadb-web
   director: icinga-director

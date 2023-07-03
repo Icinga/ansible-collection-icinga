@@ -18,8 +18,3 @@
     - config
   loop_control:
     loop_var: _file
-
-- name: Enable Module
-  ansible.builtin.include_tasks: "modules/enable_module.yml"
-  vars:
-    _module: director

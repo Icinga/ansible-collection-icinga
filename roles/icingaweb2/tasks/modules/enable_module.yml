@@ -1,4 +1,0 @@
-- name: Enable module {{ _module }}
-  ansible.builtin.shell:
-    cmd: "{{ icingaweb2_cli }} module enable {{ _module }}"
-    creates: "/etc/icingaweb2/enabledModules/{{ _module }}"

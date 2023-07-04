@@ -1,4 +1,4 @@
-- name: Ensure monitoring config directory exists
+- name: Module Monitoring | Ensure config directory
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir}}/monitoring"
@@ -6,7 +6,7 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
-- name: Manage config files
+- name: Module Monitoring | Manage config files
   ansible.builtin.include_tasks: manage_module_config.yml
   loop: "{{ _files }}"
   loop_control:

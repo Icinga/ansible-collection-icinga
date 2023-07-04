@@ -1,4 +1,4 @@
-- name: Ensure IcingaDB module config directory exists
+- name: Module IcingaDB | Ensure config directory
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/icingadb"
@@ -6,7 +6,7 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
-- name: Create IcingaDB module config files
+- name: Module IcingaDB | Manage config files
   ansible.builtin.include_tasks: manage_module_config.yml
   loop: "{{ _files }}"
   loop_control:

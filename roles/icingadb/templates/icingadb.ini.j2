@@ -34,6 +34,21 @@ redis:
 {% if icingadb_redis_password is defined %}
   password: {{ icingadb_redis_password }}
 {% endif %}
+{% if icingadb_redis_tls is defined %}
+  tls: {{ icingadb_redis_tls }}
+{% endif %}
+{% if icingadb_redis_cert is defined %}
+  cert: {{ icingadb_redis_cert }}
+{% endif %}
+{% if icingadb_redis_key is defined %}
+  key: {{ icingadb_redis_key }}
+{% endif %}
+{% if icingadb_redis_ca is defined %}
+  ca: {{ icingadb_redis_ca }}
+{% endif %}
+{% if icingadb_redis_tls_insecure is defined %}
+  insecure: {{ icingadb_redis_insecure }}
+{% endif %}
 
 logging:
 {% if icingadb_logging_level is defined %}

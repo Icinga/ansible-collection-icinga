@@ -1,3 +1,11 @@
+icinga2_objects:
+  icinga-default:
+    - name: root
+      type: ApiUser
+      file: conf.d/apiusers.conf
+      password: root
+      permissions:
+        - '*'
 # icinga2_custom_config:
 #   - name: icinga2_command
 #     path: zones.d/main/commands/custom_commands.conf

@@ -2,9 +2,64 @@
   hosts: all
   become: true
   vars:
+    icingaweb2_resources:
+      director_db:
+        type: db
+        db: mysql
+        host: localhost
+        dbname: directordb
+        username: directordb
+        password: directordb
+        charset: utf8
+      icinga_ido:
+        type: db
+        db: mysql
+        host: localhost
+        dbname: icinga
+        username: icinga
+        password: icinga
+        use_ssl: 0
+        charset: utf8
     icingaweb2_modules:
-      monitoring:
+      director:
         enabled: true
+        source: package
+        import_schema: true
+        run_kickstart: true
+        kickstart:
+          config:
+            endpoint: "{{ ansible_fqdn }}"
+            host: 127.0.0.1
+            username: root
+            password: root
+        config:
+          db:
+            resource: director_db
+      icingadb:
+        enabled: true
+        source: package
+        commandtransports:
+          instance01:
+            transport: api
+            host: 127.0.0.1
+            username: root
+            password: root
+        config:
+          icingadb:
+            resource: icingadb
+          redis:
+            tls: '0'
+        redis:
+          redis1:
+            host: "192.168.56.200"
+          redis2:
+            host: "192.168.56.201"
+      monitoring:
+        enabled: false
+        backends:
+          icinga2_ido_mysql:
+            type: ido
+            resource: icinga_ido
     icingaweb2_roles:
       my_admins:
         users:
@@ -33,6 +88,10 @@
       - mariadb-server
       - python3-mysqldb
     mysql_users:
+      - name: directordb
+        host: "%"
+        password: directordb
+        priv: "directordb.*:ALL"
       - name: icingadb
         host: "%"
         password: icingadb
@@ -41,13 +100,18 @@
         host: "%"
         password: icingaweb
         priv: "icingaweb.*:ALL"
+      - name: icinga
+        host: "%"
+        password: icinga
+        priv: "icinga.*:ALL"
     mysql_databases:
       - name: icingaweb
-      - name: foobar
+      - name: icinga
+      - name: directordb
       - name: icingadb
         collation: utf8mb4_general_ci
         encoding: utf8mb4
-    icinga2_confd: false
+    icinga2_confd: true
     icinga2_features:
       - name: perfdata
         host_perfdata_path: "/var/spool/icinga2/perfdata/host-perfdata"
@@ -67,6 +131,12 @@
         port: 4242
       - name: icingadb
         host: 127.0.0.1
+      - name: idomysql
+        host: localhost
+        database: icinga
+        user: icinga
+        password: icinga
+        import_schema: true
       - name: notification
       - name: checker
       - name: influxdb2
@@ -92,6 +162,6 @@
     - icinga.icinga
   roles:
     - repos
-    #- icinga2
     - geerlingguy.mysql
+    - icinga2
     - icingaweb2

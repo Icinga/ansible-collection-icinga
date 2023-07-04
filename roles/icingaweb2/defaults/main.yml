@@ -15,7 +15,7 @@ icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
 #       password: director
 #       dbname: director
 #       charset: utf8
-#   icingadb_web:
+#   icingadb:
 #     enabled: false
 #     source: package
 #     config:

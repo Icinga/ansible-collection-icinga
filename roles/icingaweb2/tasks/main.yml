@@ -34,10 +34,10 @@
 
 - name: Manage enabled/disabled modules
   ansible.builtin.file:
-    src: "{{ icingaweb2_config.global.module_path }}/{{ item.key }}"
+    src: "{{ icingaweb2_config.global.module_path + '/' + item.key if item.value.enabled|bool == true else omit }}"
     dest: "{{ icingaweb2_config_dir }}/enabledModules/{{ item.key }}"
     owner: "{{ icingaweb2_httpd_user }}"
     group: "{{ icingaweb2_group }}"
-    state: "{{ 'link' if item.value.enabled else 'absent' }}"
+    state: "{{ 'link' if item.value.enabled|bool == true else 'absent' }}"
     force: yes
   loop: "{{ icingaweb2_modules | dict2items }}"

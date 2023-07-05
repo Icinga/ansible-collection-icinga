@@ -14,7 +14,7 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
-- name: Set permissions on enabledModules
+- name: Set permissions on modules
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_config_dir }}/modules"

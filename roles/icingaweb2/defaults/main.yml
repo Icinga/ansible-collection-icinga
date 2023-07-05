@@ -1,33 +1,6 @@
 icingaweb2_config_dir: /etc/icingaweb2
 icingaweb2_group: icingaweb2
 icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
-# icingaweb2_modules:
-#   director:
-#     enabled: false
-#     source: package
-#     config:
-#       resource: Director DB
-#     resources:
-#       type: db
-#       db: mysql
-#       host: localhost
-#       username: director
-#       password: director
-#       dbname: director
-#       charset: utf8
-#   icingadb:
-#     enabled: false
-#     source: package
-#     config:
-#       icingadb:
-#         resource: icingadb
-#       redis:
-#         tls: '0'
-#     redis:
-#       redis1:
-#         host: "192.168.56.200"
-#       redis2:
-#         host: "192.168.56.201"
 
 icingaweb2_groups:
   icingaweb2:

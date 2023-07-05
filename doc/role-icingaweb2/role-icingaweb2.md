@@ -27,3 +27,23 @@ icingaweb2_db:
 
 * `icingaweb2_admin_<username|password>: string`
   * Set the username and password for the first admin user for Icinga Web 2.
+
+#### Resources
+
+Besides the standard Icinga Web 2 database you may configure additional resources for IcingaDB or automated imports.
+
+```
+icingaweb2_resources:
+  icinga_ido:
+    type: db
+    db: mysql
+    host: localhost
+    dbname: icinga
+    username: icinga
+    password: icinga
+    use_ssl: 0
+    charset: utf8
+  my_ldap:
+    type: ldap
+    [...]
+```

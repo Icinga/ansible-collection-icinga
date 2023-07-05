@@ -28,7 +28,7 @@ jobs:
       max-parallel: 1
       matrix:
         distro: [ubuntu2204]
-        python: ['3.8', '3.9', '3.10']
+        python: ['3.9', '3.10']
         ansible: ['2.13.10', '2.14.7']
         scenario: [default]
 

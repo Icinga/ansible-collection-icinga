@@ -16,7 +16,7 @@ on:
       - '!doc/**'
 
 jobs:
-  build-ansible210:
+  build:
     runs-on: ubuntu-latest
 
     env:
@@ -29,7 +29,7 @@ jobs:
       matrix:
         distro: [ubuntu2204]
         python: ['3.8', '3.9', '3.10']
-        ansible: ['2.10.7', '2.11.8']
+        ansible: ['2.13', '2.14']
         scenario: [default]
 
     steps:

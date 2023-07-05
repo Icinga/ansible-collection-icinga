@@ -1,0 +1,39 @@
+icingaweb2_config_dir: /etc/icingaweb2
+icingaweb2_group: icingaweb2
+icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
+
+icingaweb2_groups:
+  icingaweb2:
+    backend: db
+    resource: icingaweb2_db
+
+icingaweb2_authentication:
+  icingaweb2:
+    backend: db
+    resource: icingaweb2_db
+
+# icingaweb2_resources:
+#   icinga_ido:
+#     type: db
+#     db: mysql
+#     host: localhost
+#     dbname: icinga
+#     username: icinga
+#     password: icinga
+#     use_ssl: 0
+#     charset: utf8
+
+icingaweb2_config:
+  global:
+    show_stacktraces: 1
+    show_application_state_messages: 1
+    config_backend: ini
+    module_path: /usr/share/icingaweb2/modules
+  logging:
+    log: syslog
+    level: ERROR
+    application: icingaweb2
+    facility: user
+  themes:
+    default: Icinga
+icingaweb2_cli: icingacli

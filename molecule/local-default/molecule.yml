@@ -1,0 +1,21 @@
+dependency:
+  name: galaxy
+
+
+driver:
+  name: vagrant
+
+platforms:
+  - name: icinga-default
+    box: ubuntu/jammy64
+    memory: 512
+    cpus: 1
+    interfaces:
+      - network_name: private_network
+        ip: 192.168.56.213
+
+provisioner:
+  name: ansible
+  inventory:
+    link:
+      host_vars: host_vars/

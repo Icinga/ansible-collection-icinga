@@ -24,7 +24,7 @@
           {% if icingaweb2_db['ssl_mode'] is defined %} --ssl-mode "{{ icingaweb2_db['ssl_mode'] }}" {%- endif %}
           {% if icingaweb2_db['ssl_ca'] is defined %} --ssl-ca "{{ icingaweb2_db['ssl_ca'] }}" {%- endif %}
           {% if icingaweb2_db['ssl_cert'] is defined %} --ssl-cert "{{ icingaweb2_db['ssl_cert'] }}" {%- endif %}
-          {% if icingaweb2_db['ssl_key'] is defined %} --ssl-key "{{ icingaweb2_db['ssl_key']}}" {%- endif %}
+          {% if icingaweb2_db['ssl_key'] is defined %} --ssl-key "{{ icingaweb2_db['ssl_key'] }}" {%- endif %}
           {% if icingaweb2_db['ssl_cipher'] is defined %} --ssl-cipher "{{ icingaweb2_db['ssl_cipher'] }}" {%- endif %}
           {% if icingaweb2_db['ssl_extra_options'] is defined %} {{ icingaweb2_db['ssl_extra_options'] }} {%- endif %}
           -u "{{ icingaweb2_priv_db_user | default(icingaweb2_db['user']) }}"

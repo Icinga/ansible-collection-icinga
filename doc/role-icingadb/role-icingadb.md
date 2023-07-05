@@ -5,7 +5,7 @@ This role installs and configures the IcingaDB daemon. In addition it can also i
 It serves as the official, more performant successor to Icinga IDO. More information about its purpose and design can be found [in the official documentation](https://icinga.com/docs/icinga-db/latest/doc/01-About/).
 
 
-> :information_source: In many scenarios you want to install the [icingadb-redis role](../role-icingadb_redis/) together with this role. It is part of this collection, too.
+> :information_source: In many scenarios you want to install the [icingadb_redis role](../role-icingadb_redis/) together with this role. It is part of this collection, too.
 
 ## Variables
 

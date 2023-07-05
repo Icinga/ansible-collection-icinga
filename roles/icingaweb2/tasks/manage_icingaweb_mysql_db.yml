@@ -1,5 +1,4 @@
-#- name: Manage DB resources
-#  ansible.builtin.include_tasks:
+---
 
 - name: Check Database Credentials
   ansible.builtin.assert:

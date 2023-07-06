@@ -1,0 +1,22 @@
+---
+- name: Include OS specific vars
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - "{{ role_path }}/vars"
+
+- name: Include OS specific installation
+  ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+
+- name: Manage IcingaDB Redis configuration
+  ansible.builtin.include_tasks: "manage_config.yml"
+
+- name: Manage IcingaDB Redis service
+  ansible.builtin.include_tasks: "manage_service.yml"

@@ -1,0 +1,6 @@
+---
+- name: RedHat - install icingadb packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ icingadb_redis_packages }}"

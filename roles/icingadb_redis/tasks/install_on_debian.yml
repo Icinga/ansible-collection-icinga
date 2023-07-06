@@ -1,0 +1,6 @@
+---
+- name: Debian - Install IcingaDB Redis packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ icingadb_redis_packages }}"

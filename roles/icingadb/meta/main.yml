@@ -1,0 +1,26 @@
+galaxy_info:
+  author: |
+    - Thilo Wening <thilo.wening@netways.de>
+    - Daniel Bodky <daniel.bodky@netways.de>
+  description: Role to install, configure or manage IcingaDB.
+  license: Apache-2.0
+  min_ansible_version: 2.9
+  platforms:
+    - name: EL
+      versions: ['7']
+    - name: Debian
+      versions: ['buster','bullseye']
+    - name: Ubuntu
+      versions: ['jammy']
+  galaxy_tags:
+    - icinga
+    - monitoring
+    - satellite
+    - agent
+    - server
+    - master
+    - icinga2
+    - icingadb
+    - redis
+    - redis
+dependencies: []

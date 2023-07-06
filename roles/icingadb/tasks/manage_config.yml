@@ -1,0 +1,9 @@
+---
+- name: Write configuration to /etc/icingadb/config.yml
+  ansible.builtin.template:
+    src: icingadb.ini.j2
+    dest: "{{ icingadb_config_dir }}/config.yml"
+    owner: "{{ icingadb_user }}"
+    group: "{{ icingadb_group }}"
+    mode: 0640
+  notify: icingadb-restart

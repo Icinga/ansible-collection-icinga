@@ -16,7 +16,7 @@ on:
       - '!doc/**'
 
 jobs:
-  build:
+  icinga-default-scenario:
     runs-on: ubuntu-latest
 
     env:
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2

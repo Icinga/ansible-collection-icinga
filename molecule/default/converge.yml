@@ -3,6 +3,21 @@
 - name: Converge
   hosts: all
   vars:
+    icingadb_database_import_schema: true
+    mysql_innodb_file_format: barracuda
+    mysql_innodb_large_prefix: 1
+    mysql_innodb_file_per_table: 1
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python3-mysqldb
+    mysql_users:
+      - name: icingadb
+        host: "%"
+        password: icingadb
+        priv: "icingadb.*:ALL"
+    mysql_databases:
+      - name: icingadb
     icinga2_confd: false
     icinga2_features:
       - name: perfdata
@@ -46,10 +61,9 @@
       - zones.d/main/services
   collections:
     - icinga.icinga
-  tasks:
-    - name: "Include Icinga Repos"
-      include_role:
-        name: repos
-    - name: "Include Icinga 2"
-      include_role:
-        name: icinga2
+  roles:
+    - repos
+    - icinga2
+    - geerlingguy.mysql
+    - icingadb
+    - icingadb_redis

@@ -1,15 +1,19 @@
 ---
+# Database Settings
 icingadb_database_import_schema: false
+
+# Redis Settings
 icingadb_redis_host: 127.0.0.1
 icingadb_redis_port: 6380
-icingadb_mysql_max_open_conns: 50
+
+# Logging settings
 icingadb_logging_level: info
-icingadb_metrics_host: false
-icingadb_metrics_port: false
-icingadb_user: icingadb
-icingadb_group: icingadb
+
+# Variables for icingadb role
 icingadb_config_dir: /etc/icingadb
 icingadb_service_name: icingadb
+icingadb_group: icingadb
+icingadb_user: icingadb
 icingadb_database_schema: "/usr/share/icingadb/schema/{{ icingadb_database_type }}/schema.sql"
 icingadb_packages:
   - icingadb

@@ -1,11 +1,5 @@
 ---
 icingadb_database_import_schema: false
-icingadb_database_type: mysql
-icingadb_database_host: 127.0.0.1
-icingadb_database_port: 3306
-icingadb_database_name: icingadb
-icingadb_database_user: icingadb
-icingadb_database_password: icingadb
 icingadb_redis_host: 127.0.0.1
 icingadb_redis_port: 6380
 icingadb_mysql_max_open_conns: 50
@@ -16,6 +10,6 @@ icingadb_user: icingadb
 icingadb_group: icingadb
 icingadb_config_dir: /etc/icingadb
 icingadb_service_name: icingadb
-icingadb_database_schema: /usr/share/icingadb/schema/mysql/schema.sql
+icingadb_database_schema: "/usr/share/icingadb/schema/{{ icingadb_database_type }}/schema.sql"
 icingadb_packages:
   - icingadb

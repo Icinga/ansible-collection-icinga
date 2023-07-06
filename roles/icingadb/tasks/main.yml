@@ -20,7 +20,7 @@
 
 - name: Include Tasks to import DB Schema
   ansible.builtin.include_tasks: "manage_schema_{{ icingadb_database_type | lower }}.yml"
-  when: icingadb_database_import_schema
+  when: icingadb_database_import_schema and icingadb_database_type is defined
 
 - name: Include Tasks to manage IcingaDB Service
   ansible.builtin.include_tasks: manage_service.yml

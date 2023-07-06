@@ -1,0 +1,6 @@
+---
+- name: RedHat - Install Icinga Web 2 packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ icingaweb2_packages }}"

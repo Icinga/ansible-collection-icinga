@@ -1,0 +1,14 @@
+{% macro generate_ini(config) %}
+{% for section, options in config.items() %}
+
+[{{ section }}]
+{% for option, value in options.items() %}
+{% if value is iterable and (value is not string and value is not mapping) %}
+{{ option }} = "{{ value | join(', ') }}"
+{% elif value is string and "=" in value %}
+{% else %}
+{{ option }} = {{ value }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endmacro %}

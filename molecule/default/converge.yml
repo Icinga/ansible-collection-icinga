@@ -66,4 +66,4 @@
     - icinga2
     - geerlingguy.mysql
     - icingadb
-    #- icingadb_redis
+    - icingadb_redis

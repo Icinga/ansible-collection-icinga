@@ -1,6 +1,10 @@
 ---
 # Database Settings
 icingadb_database_import_schema: false
+icingadb_database_host: 127.0.0.1
+icingadb_database_name: icingadb
+icingadb_database_user: icingadb
+icingadb_database_password: icingadb
 
 # Redis Settings
 icingadb_redis_host: 127.0.0.1

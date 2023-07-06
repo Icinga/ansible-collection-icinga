@@ -24,11 +24,12 @@ For more information on the respective settings please see [the official documen
 | `icingadb_database_key` | `String` | Defines the path to the certificate key for client key authentication. | **n/a** |
 | `icingadb_database_name` | `String` | Defines the database to connect to. | `icingadb` |
 | `icingadb_database_password` | `String` | Defines the database password to connect with. | `icingadb` |
-| `icingadb_database_port` | `int` | Defines the database port to connect to. | `3306` |
+| `icingadb_database_port` | `int` | Defines the database port to connect to. | **n/a** |
 | `icingadb_database_tls` | `bool` | Defines whether to use TLS for the IcingaDB connection or not. | **n/a** |
 | `icingadb_database_tls_insecure` | `bool` | Defines whether to skip TLS verification or not. | **n/a** |
-| `icingadb_database_type` | `mysql\|pgsql` | Defines database type set in `icingadb.conf`. |  `mysql` |
+| `icingadb_database_type` | `mysql\|pgsql` | Defines database type set in `icingadb.conf`. |  **n/a** |
 | `icingadb_database_user` | `String` | Defines database user set in `icingadb.conf`. | `icingadb` |
+| `icingadb_database_sslmode` | `String` | Defines postgresql sslmode | **n/a** |
 
 ### Redis configuration
 
@@ -58,7 +59,7 @@ The following variables are used for the IcingaDB setup and are not directly rel
 | Variable | Type | Description | Default |
 |----------|------|-------------|---------|
 | `icingadb_config_dir` | `String` | Defines the directory where the IcingaDB configuration is stored. | `/etc/icingadb` |
-| `icingadb_database_schema` | `String` | Defines the path to the schema file. | `/usr/share/icingadb/schema/mysql.sql` |
+| `icingadb_database_schema` | `String` | Defines the path to the schema file. | `/usr/share/icingadb/schema/{{ icingadb_database_type }}/schema.sql` |
 | `icingadb_group` | `String` | Defines the group membership for the IcingaDB user. | `icingadb` |
 | `icingadb_packages` | `List` | Defines the packages to install for IcingaDB. | `[icingadb]` |
 | `icingadb_service_name` | `String` | Defines the name of the IcingaDB service. | `icingadb` |

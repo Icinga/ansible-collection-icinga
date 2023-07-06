@@ -4,7 +4,7 @@ database:
 {% if icingadb_database_type is defined %}
   type: {{ icingadb_database_type }}
 {% endif %}
-  host: {{ icingadb_database_host | default('localhost') }}
+  host: {{ icingadb_database_host | default('127.0.0.1') }}
 {% if icingadb_database_port is defined %}
   port: {{ icingadb_database_port }}
 {% endif %}

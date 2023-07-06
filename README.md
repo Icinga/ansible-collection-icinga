@@ -13,8 +13,10 @@ Collection to setup and manage components of the Icinga software stack.
   * [Features](doc/role-icinga2/features.md)
 * [Role: icinga.icinga.icingadb](doc/role-icingadb/role-icingadb.md)
 * [Role: icinga.icinga.icingadb_redis](doc/role-icingadb_redis/role-icingadb_redis.md)
+* [Role: icinga.icinga.icingaweb2](doc/role-icingaweb2/role-icingaweb2.md)
 * [Role: icinga.icinga.monitoring_plugins](doc/role-monitoring_plugins/role-monitoring_plugins.md)
   * [List of Available Check Commands](doc/role-monitoring_plugins/check_command_list.md)
+
 
 ## Installation
 

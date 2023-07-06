@@ -1,0 +1,167 @@
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    icingaweb2_resources:
+      director_db:
+        type: db
+        db: mysql
+        host: localhost
+        dbname: directordb
+        username: directordb
+        password: directordb
+        charset: utf8
+      icinga_ido:
+        type: db
+        db: mysql
+        host: localhost
+        dbname: icinga
+        username: icinga
+        password: icinga
+        use_ssl: 0
+        charset: utf8
+    icingaweb2_modules:
+      director:
+        enabled: true
+        source: package
+        import_schema: true
+        run_kickstart: true
+        kickstart:
+          config:
+            endpoint: "{{ ansible_fqdn }}"
+            host: 127.0.0.1
+            username: root
+            password: root
+        config:
+          db:
+            resource: director_db
+      icingadb:
+        enabled: true
+        source: package
+        commandtransports:
+          instance01:
+            transport: api
+            host: 127.0.0.1
+            username: root
+            password: root
+        config:
+          icingadb:
+            resource: icingadb
+          redis:
+            tls: '0'
+        redis:
+          redis1:
+            host: "192.168.56.200"
+          redis2:
+            host: "192.168.56.201"
+      monitoring:
+        enabled: false
+        backends:
+          icinga2_ido_mysql:
+            type: ido
+            resource: icinga_ido
+    icingaweb2_roles:
+      my_admins:
+        users:
+          - blubber
+          - robby
+        permissions:
+          - "config/*"
+          - "module/monitoring"
+          - "monitoring/commands/schedule-check"
+        'monitoring/filter/objects': "host_name=*win*"
+    icingaweb2_db:
+      type: mysql
+      name: icingaweb
+      host: 127.0.0.1
+      user: icingaweb
+      password: icingaweb
+    icingaweb2_admin_username: admin
+    icingaweb2_admin_password: admin
+    icingaweb2_db_import_schema: true
+    icingadb_database_import_schema: true
+    mysql_innodb_file_format: barracuda
+    mysql_innodb_large_prefix: 1
+    mysql_innodb_file_per_table: 1
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python3-mysqldb
+    mysql_users:
+      - name: directordb
+        host: "%"
+        password: directordb
+        priv: "directordb.*:ALL"
+      - name: icingadb
+        host: "%"
+        password: icingadb
+        priv: "icingadb.*:ALL"
+      - name: icingaweb
+        host: "%"
+        password: icingaweb
+        priv: "icingaweb.*:ALL"
+      - name: icinga
+        host: "%"
+        password: icinga
+        priv: "icinga.*:ALL"
+    mysql_databases:
+      - name: icingaweb
+      - name: icinga
+      - name: directordb
+      - name: icingadb
+        collation: utf8mb4_general_ci
+        encoding: utf8mb4
+    icinga2_confd: true
+    icinga2_features:
+      - name: perfdata
+        host_perfdata_path: "/var/spool/icinga2/perfdata/host-perfdata"
+        service_perfdata_path: "/var/spool/icinga2/perfdata/service-perfdata"
+      - name: gelf
+        host: localhost
+        port: 12201
+      - name: elasticsearch
+        host: localhost
+        port: 9200
+        index: "icinga2"
+        enable_send_perfdata: true
+        flush_interval: 10
+        flush_threshold: 1024
+      - name: opentsdb
+        host: localhost
+        port: 4242
+      - name: icingadb
+        host: 127.0.0.1
+      - name: idomysql
+        host: localhost
+        database: icinga
+        user: icinga
+        password: icinga
+        import_schema: true
+      - name: notification
+      - name: checker
+      - name: influxdb2
+        host: 127.0.0.1
+        port: 8086
+        organization: monitoring
+        bucket: icinga2
+        auth_token: testtoken123
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main/commands
+      - zones.d/main/hosts
+      - zones.d/main/services
+  collections:
+    - icinga.icinga
+  roles:
+    - repos
+    - geerlingguy.mysql
+    - icinga2
+    - icingaweb2

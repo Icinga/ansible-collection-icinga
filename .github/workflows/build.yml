@@ -29,7 +29,7 @@ jobs:
       matrix:
         distro: [ubuntu2204]
         python: ['3.9', '3.10']
-        ansible: ['2.14']
+        ansible: ['2.13.10', '2.14.7']
         scenario: [default]
 
     steps:

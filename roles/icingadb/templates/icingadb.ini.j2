@@ -1,14 +1,16 @@
 # {{ ansible_managed }}
 
 database:
+{% if icingadb_database_type is defined %}
   type: {{ icingadb_database_type }}
-  host: {{ icingadb_database_host }}
+{% endif %}
+  host: {{ icingadb_database_host | default('localhost') }}
 {% if icingadb_database_port is defined %}
   port: {{ icingadb_database_port }}
 {% endif %}
-  database: {{ icingadb_database_name }}
-  user: {{ icingadb_database_user }}
-  password: {{ icingadb_database_password }}
+  database: {{ icingadb_database_name | default('icingadb') }}
+  user: {{ icingadb_database_user | default('icingadb') }}
+  password: {{ icingadb_database_password | default('icingadb') }}
 {% if icingadb_database_tls is defined %}
   tls: {{ icingadb_database_tls }}
 {% endif %}

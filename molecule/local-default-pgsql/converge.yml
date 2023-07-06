@@ -1,0 +1,76 @@
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    icingadb_database_type: pgsql
+    icingadb_database_host: 127.0.0.1
+    icingadb_database_name: icingadb
+    icingadb_database_user: icingadb
+    icingadb_database_password: icingadb
+    icingaweb2_admin_username: admin
+    icingaweb2_admin_password: admin
+    icingadb_database_import_schema: true
+    icingaweb2_db_import_schema: true
+    icingaweb2_db:
+      type: pgsql
+      name: icingaweb
+      host: 127.0.0.1
+      user: icingaweb
+      password: icingaweb
+    postgresql_users:
+      - name: icingaweb
+        password: icingaweb
+        db: icingaweb
+        priv: ALL
+      - name: icingadb
+        password: icingadb
+        role_attr_flags: LOGIN
+        db: icingadb
+        priv: ALL
+    postgresql_databases:
+      - name: icingaweb
+      - name: icingadb
+    postgresql_hba_entries:
+      - type: local
+        database: all
+        user: all
+        auth_method: trust
+      - type: host
+        database: all
+        user: all
+        auth_method: trust
+        address: '127.0.0.1/32'
+      - type: host
+        database: icingaweb
+        user: icingaweb
+        auth_method: trust
+        address: '127.0.0.1/32'
+      - type: host
+        database: icingadb
+        user: icingadb
+        address: '127.0.0.1/32'
+        auth_method: trust
+    icinga2_confd: false
+    icinga2_features:
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+    icinga2_config_directories:
+      - zones.d/main/commands
+      - zones.d/main/hosts
+      - zones.d/main/services
+  collections:
+    - icinga.icinga
+  roles:
+    #- repos
+    #- geerlingguy.postgresql
+    #- icinga2
+    - icingadb
+    #- icingadb_redis
+    #- icingaweb2

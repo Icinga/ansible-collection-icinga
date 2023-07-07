@@ -139,3 +139,6 @@ dmypy.json
 
 # PyCharm Editor
 .idea/
+
+# Vagrant
+.vagrant/

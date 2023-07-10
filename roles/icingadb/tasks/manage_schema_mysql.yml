@@ -16,7 +16,7 @@
       ansible.builtin.shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icingadb_schema"
-      failed_when: _db_schema.stderr | length > 0
+      failed_when: false
       changed_when: false
       check_mode: false
       register: _db_schema

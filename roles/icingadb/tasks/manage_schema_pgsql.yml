@@ -20,7 +20,7 @@
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -c "select version from icingadb_schema"
-      failed_when: _db_schema.stderr | length > 0
+      failed_when: false
       changed_when: false
       check_mode: false
       register: _db_schema

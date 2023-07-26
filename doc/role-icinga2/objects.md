@@ -207,6 +207,19 @@ vars.attr["key1"] = {
 
 ### Examples:
 
+#### Host Template
+
+```
+icinga2_objects:
+[...]
+    - name: generic-host
+      type: Host
+      file: zones.d/main/hosts/template.conf
+      check_command: hostalive
+      check_interval: 3m
+      template: true
+```
+
 #### Host
 
 ```
@@ -236,6 +249,20 @@ icinga2_objects:
       display_name: Linux Server
       assign:
         - host.vars.os == Linux
+```
+
+#### Service Template
+
+```
+icinga2_objects:
+[...]
+    - name: generic-service
+      type: Service
+      file: zones.d/main/services/template.conf
+      check_interval: 300s
+      retry_interval: 30s
+      order: 1
+      template: true
 ```
 
 #### Service Apply
@@ -363,6 +390,18 @@ icinga2_objects:
     file: zones.d/main/downtime.conf
     ranges:
         "sunday": "10:00-11:00"
+```
+
+#### Notification Template
+
+```
+icinga2_objects:
+[...]
+  - name: notification-template
+    type: Notification
+    command: generic-notification
+    file: zones.d/main/notification/template.conf
+    template: true
 ```
 
 #### Notification

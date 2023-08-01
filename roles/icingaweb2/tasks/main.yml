@@ -30,6 +30,7 @@
 
 - name: Configure modules
   ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"
+  when: icingaweb2_modules is defined
   loop: "{{ icingaweb2_modules | dict2items }}"
 
 - name: Manage enabled/disabled modules
@@ -40,4 +41,5 @@
     group: "{{ icingaweb2_group }}"
     state: "{{ 'link' if item.value.enabled|bool == true else 'absent' }}"
     force: yes
+  when: icingaweb2_modules is defined
   loop: "{{ icingaweb2_modules | dict2items }}"

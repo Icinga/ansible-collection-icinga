@@ -1,9 +1,10 @@
 - name: Yum - install package icinga2
-  yum:
+  ansible.builtin.yum:
     name: "{{ icinga2_packages }}"
     state: present
+    
 - name: Yum - install package icinga2-selinux
-  yum:
+  ansible.builtin.yum:
     name: icinga2-selinux
     state: present
   when: ansible_selinux is defined and ansible_selinux.status == "enabled"

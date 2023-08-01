@@ -52,7 +52,7 @@
     _i2_config_hash:
       icingaweb2_db:
         type: db
-        db: "{{ icingaweb2_db['type'] | ternary('mysql', 'pgsql') }}"
+        db: "{{ icingaweb2_db['type'] | default('mysql') }}"
         host: "{{ icingaweb2_db['host'] }}"
         dbname: "{{ icingaweb2_db['name'] }}"
         username: "{{ icingaweb2_db['user'] }}"

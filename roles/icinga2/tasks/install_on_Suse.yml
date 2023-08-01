@@ -1,7 +1,7 @@
 ---
 - name: Zypper - install package icinga2
   community.general.zypper:
-    name: icinga2
+    name: "{{ icinga2_packages }}"
     state: present
 
 - name: Zypper - install package icinga2-selinux

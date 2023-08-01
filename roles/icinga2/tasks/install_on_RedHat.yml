@@ -1,6 +1,6 @@
 - name: Yum - install package icinga2
   yum:
-    name: icinga2
+    name: "{{ icinga2_packages }}"
     state: present
 - name: Yum - install package icinga2-selinux
   yum:

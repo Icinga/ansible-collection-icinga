@@ -1,7 +1,6 @@
 ---
 - name: Debian - Install Icinga Web 2 packages
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ icingaweb2_packages }}"
     state: present
     update_cache: True
-  loop: "{{ icingaweb2_packages }}"

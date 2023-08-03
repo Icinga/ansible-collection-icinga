@@ -1,5 +1,5 @@
 ---
 - name: Apt - install package icinga2
-  apt:
-    pkg: icinga2
+  ansible.builtin.apt:
+    pkg: "{{ icinga2_packages }}"
     state: present

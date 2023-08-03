@@ -1,4 +1,5 @@
 ---
+icinga2_packages: ["icinga2"]
 icinga2_user: icinga
 icinga2_group: icinga
 icinga2_config_path: /etc/icinga2

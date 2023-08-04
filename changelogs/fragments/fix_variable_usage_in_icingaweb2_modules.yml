@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix variable usage in icingaweb2_modules dict thx @Alpha041087

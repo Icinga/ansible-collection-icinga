@@ -1,5 +1,5 @@
 - name: MySQL import IcingaDB schema
-  when: icingadb_database_import_schema| default(False)
+  when: icingadb_database_import_schema | default(False)
   block:
     - name: Build mysql command
       ansible.builtin.set_fact:

@@ -46,6 +46,6 @@
 
 - name: Module Director | Ensure daemon is running
   ansible.builtin.service:
-    name: icinga-director.service
+    name: "{{ icingaweb2_director_service }}"
     state: started
     enabled: yes

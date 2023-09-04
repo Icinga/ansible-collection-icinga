@@ -374,7 +374,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             data = None
 
         self.display.vvv('Using filter: \'{}\''.format(data))
-        print(data)
 
         response = s.post(self.api_url + '/objects/hosts', data=data)
 

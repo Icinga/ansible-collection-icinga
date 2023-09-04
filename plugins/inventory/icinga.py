@@ -216,15 +216,27 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
 
     def _create_in_filter(self, key, values):
-        filter_string_base = '(\\"{}\\" in host.{})'
-        sub_filter         = list()
+        filter_string_base  = '(\\"{}\\" in host.{})'
+        sub_filter          = list()
+        sub_filter_positive = list()
+        sub_filter_negative = list()
 
         for value in values:
             tmp_string = filter_string_base.format(value, key)
-            sub_filter.append(tmp_string)
+            if value.startswith('!'):
+                tmp_string = '!{}'.format(tmp_string.replace('!', ''))
+                sub_filter_negative.append(tmp_string)
+            else:
+                sub_filter_positive.append(tmp_string)
 
-        sub_filter_string = '||'.join(sub_filter)
-        sub_filter_string = '({})'.format(sub_filter_string)
+        if sub_filter_positive:
+            sub_filter_positive_string = '({})'.format('||'.join(sub_filter_positive))
+            sub_filter = sub_filter + [sub_filter_positive_string]
+        if sub_filter_negative:
+            sub_filter_negative_string = '({})'.format('&&'.join(sub_filter_negative))
+            sub_filter = sub_filter + [sub_filter_negative_string]
+
+        sub_filter_string = '&&'.join(sub_filter)
 
         return sub_filter_string
 

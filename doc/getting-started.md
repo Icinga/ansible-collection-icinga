@@ -7,6 +7,12 @@ The collection includes two roles in the current version.
 * icinga.icinga2: Role to install and manage Icinga 2 instances.
   * [Documentation: doc/role-icinga2](role-icinga2/role-icinga2.md)
 
+---
+
+The collection includes a plugin that allows you to use Icinga as an inventory source for Ansible.
+
+* icinga.icinga.icinga: Ansible Inventory Plugin to fetch hosts from Icinga.
+  * [Documentation: doc/plugins/inventory/icinga-inventory-plugin.md](plugins/inventory/icinga-inventory-plugin.md)
 
 ---
 **NOTE**

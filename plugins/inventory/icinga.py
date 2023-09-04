@@ -63,7 +63,6 @@ DOCUMENTATION = '''
         description:
           - The hosts' attribute to set as C(ansible_user).
         type: string
-        default: vars.ansible_user
       want_ipv4:
         description:
           - Whether C(ansible_host) should be set to the host's C(address) attribute.
@@ -392,7 +391,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
             # Add groups and make current host a member based on its 'groups' attribute
             for group in host_vars['groups']:
-                group_name = to_safe_group_name(self.group_prefix + group)
+                group_name = to_safe_group_name(self.group_prefix + 'group_' + group)
                 self.inventory.add_group(group_name)
                 self.inventory.add_host(host_name, group_name)
 
@@ -405,14 +404,12 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 self.inventory.set_variable(host_name, '{}{}'.format(self.vars_prefix, key), value)
 
             # Set 'ansible_host' to IP address if requested
-            if self.want_ipv4:
-                if host_vars['address']:
-                    self.inventory.set_variable(host_name, 'ansible_host', host_vars['address'])
-                    self.display.vvv('Set attribute \'address\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
-            elif self.want_ipv6:
-                if host_vars['address6']:
-                    self.inventory.set_variable(host_name, 'ansible_host', host_vars['address6'])
-                    self.display.vvv('Set attribute \'address6\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
+            if self.want_ipv4 and host_vars['address']:
+                self.inventory.set_variable(host_name, 'ansible_host', host_vars['address'])
+                self.display.vvv('Set attribute \'address\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
+            elif self.want_ipv6 and host_vars['address6']:
+                self.inventory.set_variable(host_name, 'ansible_host', host_vars['address6'])
+                self.display.vvv('Set attribute \'address6\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
 
             # Set 'ansible_user' if requested and defined on the Icinga 2 host
             if self.ansible_user:

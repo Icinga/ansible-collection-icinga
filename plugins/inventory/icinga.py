@@ -93,6 +93,11 @@ DOCUMENTATION = '''
               - Custom filter(s) that will be passed as is.
             type: list
             elements: string
+          vars:
+            description:
+              - Restrict list of hosts based on custom variables.
+            type: list
+            elements: string
 '''
 
 EXAMPLES = '''
@@ -448,9 +453,12 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _validate_url(self, url):
         valid = False
 
-        parsed_url = urlparse(url)
-        if parsed_url.scheme and parsed_url.netloc:
-            valid = True
+        try:
+            parsed_url = urlparse(url)
+            if parsed_url.scheme and parsed_url.netloc and parsed_url.path == '/v1':
+                valid = True
+        except:
+            pass
 
         return valid
 

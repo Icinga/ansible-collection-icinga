@@ -423,6 +423,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 try:
                     ansible_user_value = self._get_recursive_sub_element(host_vars, self.ansible_user)
                 except:
+                    self.display.vvv('Could not set \'{}\' as \'ansible_user\' for host \'{}\'.'.format(self.ansible_user, host_name))
                     pass
 
                 # Set 'ansible_user'

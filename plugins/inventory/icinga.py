@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=consider-using-f-string,super-with-arguments,attribute-defined-outside-init,too-many-instance-attributes
 
+
+from urllib.parse import urlparse
+from requests.auth import HTTPBasicAuth
+from requests.exceptions import SSLError, RequestException
+import requests
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable, to_safe_group_name
-from ansible.module_utils._text import to_bytes, to_text, to_native
+from ansible.module_utils._text import to_bytes, to_text
 from ansible.errors import AnsibleError
 from ansible.parsing.yaml.objects import AnsibleSequence, AnsibleMapping
 
@@ -115,10 +121,6 @@ password: changeme
 '''
 
 
-import requests
-from urllib.parse import urlparse
-from requests.auth import HTTPBasicAuth
-from requests.exceptions import SSLError, ConnectionError
 
 #class InventoryModule(BaseInventoryPlugin):
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
@@ -159,11 +161,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         for index, key in enumerate(final_keys):
             try:
                 new_d = new_d[key]
-            except IndexError as error_msg:
-                self.display.vvvv('Structure \'{}\' has no index \'{}\' for sub-structure \'{}\'.'.format(d, index, new_d))
+            except IndexError:
+                self.display.vvvv(f'Structure \'{d}\' has no index \'{index}\' for sub-structure \'{new_d}\'.')
                 raise
-            except (KeyError, TypeError) as error_msg:
-                self.display.vvvv('Strucutre \'{}\' has no key \'{}\' for sub-structure \'{}\'.'.format(d, key, new_d))
+            except (KeyError, TypeError):
+                self.display.vvvv(f'Strucutre \'{d}\' has no key \'{key}\' for sub-structure \'{new_d}\'.')
                 raise
 
         return new_d
@@ -198,13 +200,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 for sub_key in self.filters['vars']:
                     if sub_key not in valid_vars_keys:
                         valid_filter = False
-                        invalid_keys.append('vars.{}'.format(sub_key))
+                        invalid_keys.append(f'vars.{sub_key}')
 
         else:
             valid_filter = False
 
         if invalid_keys:
-            raise AnsibleError('The following keys are not valid for \'filters\': {}'.format(invalid_keys))
+            raise AnsibleError(f'The following keys are not valid for \'filters\': {invalid_keys}')
 
         return valid_filter
 
@@ -249,7 +251,6 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         # Combine both with a logical 'and'
         # E.g.: name must match (A or B or C) AND must match (NOT D and NOT E)
         filter_string_base  = 'match(\\"{}\\", host.{})'
-        filter_string       = None
         sub_filter          = list()
         sub_filter_positive = list()
         sub_filter_negative = list()
@@ -285,13 +286,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         for key, value in self.filters.items():
             # Skip / ignore if an empty key has been passed
             if not value:
-                self.display.vvv('Ignoring empty key \'{}\''.format(key))
+                self.display.vvv(f'Ignoring empty key \'{key}\'.')
                 continue
 
             # Make sure every key within filters is considered a list, cast string to single entry list
-            if type(value) == AnsibleMapping:
+            if isinstance(value, AnsibleMapping):
                 value = dict(value)
-            elif type(value) == AnsibleSequence:
+            elif isinstance(value, AnsibleSequence):
                 value = [to_text(val) for val in value]
             else:
                 value = [to_text(value)]
@@ -300,7 +301,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             if key == 'custom':
                 for entry in value:
                     sub_filters.append(entry)
-                continue
+                sub_filter_string = '({})'.format(')&&('.join(value))
 
             # Special treatment for groups
             # Overwrite the filter_string
@@ -314,20 +315,20 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                     for attribute_key, attribute_values in attributes.items():
                         # Skip / ignore if an empty key has been passed
                         if not attribute_values:
-                            self.display.vvv('Ignoring empty key \'{}\''.format('vars.{}'.format(attribute_key)))
+                            self.display.vvv(f'Ignoring empty key \'vars.{attribute_key}\'.')
                             continue
 
                         # Make sure 'attribute_values' is considered a list, cast string to single entry list
-                        if type(attribute_values) == AnsibleSequence:
+                        if isinstance(attribute_values, AnsibleSequence):
                             attribute_values = [to_text(val) for val in attribute_values]
                         else:
                             attribute_values = [to_text(attribute_values)]
 
                         # Choose correct filter
                         if sub_key == 'match':
-                            tmp_string = self._create_match_filter('vars.{}'.format(attribute_key), attribute_values)
+                            tmp_string = self._create_match_filter(f'vars.{attribute_key}', attribute_values)
                         elif sub_key == 'in':
-                            tmp_string = self._create_in_filter('vars.{}'.format(attribute_key), attribute_values)
+                            tmp_string = self._create_in_filter(f'vars.{attribute_key}', attribute_values)
 
                         local_filter_list.append(tmp_string)
 
@@ -351,13 +352,11 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         # Validate connection via API URL
         try:
             s.get(self.api_url)
-        except SSLError as error_msg:
+        except SSLError:
             self.display.vvv('SSL Error: You may want to trust the certificate or pass \'validate_certs: false\'')
             raise
-        except ConnectionError as error_msg:
-            #self.display.vvv('Connection to \'{}\' failed.'.format(self.api_url))
-            raise
-        except Exception as error_msg:
+        except RequestException:
+            self.display.vvv('Error accessing \'{self.api_url}\'.')
             raise
 
         # Create filter
@@ -367,12 +366,12 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         else:
             data = None
 
-        self.display.vvv('Using filter: \'{}\''.format(data))
+        self.display.vvv(f'Using filter: \'{data}\'')
 
         response = s.post(self.api_url + '/objects/hosts', data=data)
 
         if response.status_code != 200:
-            raise ValueError('Something went wrong. HTTP status code: \'{}\'. Icinga 2\'s API most likely did not understand the filter!'.format(response.status_code))
+            raise ValueError(f'Something went wrong. HTTP status code: \'{response.status_code}\'. Icinga 2\'s API most likely did not understand the filter!')
 
         hosts = response.json()['results']
         return hosts
@@ -381,8 +380,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _populate_inventory(self, hosts):
         # Always add keyed groups for attribute 'zone'
         zone_wanted = True
-        for kg in self.keyed_groups:
-            if 'key' in kg and kg['key'] == 'zone':
+        for keyed_group in self.keyed_groups:
+            if 'key' in keyed_group and keyed_group['key'] == 'zone':
                 zone_wanted = False
                 break
 
@@ -406,25 +405,23 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
             # Set attributes as host variables
             for key, value in host_vars.items():
-                self.inventory.set_variable(host_name, '{}{}'.format(self.vars_prefix, key), value)
+                self.inventory.set_variable(host_name, f'{self.vars_prefix}{key}', value)
 
             # Set 'ansible_host' to IP address if requested
             if self.want_ipv4 and host_vars['address']:
                 self.inventory.set_variable(host_name, 'ansible_host', host_vars['address'])
-                self.display.vvv('Set attribute \'address\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
+                self.display.vvv(f'Set attribute \'address\' as \'ansible_host\' for host \'{host_name}\'.')
             elif self.want_ipv6 and host_vars['address6']:
                 self.inventory.set_variable(host_name, 'ansible_host', host_vars['address6'])
-                self.display.vvv('Set attribute \'address6\' as \'ansible_host\' for host \'{}\'.'.format(host_name))
+                self.display.vvv(f'Set attribute \'address6\' as \'ansible_host\' for host \'{host_name}\'.')
 
             # Set 'ansible_user' if requested and defined on the Icinga 2 host
             if self.ansible_user:
                 ansible_user_value = None
-                ansible_user_key   = ""
                 try:
                     ansible_user_value = self._get_recursive_sub_element(host_vars, self.ansible_user)
-                except:
-                    self.display.vvv('Could not set \'{}\' as \'ansible_user\' for host \'{}\'.'.format(self.ansible_user, host_name))
-                    pass
+                except (IndexError, KeyError, TypeError):
+                    self.display.vvv(f'Could not set \'{self.ansible_user}\' as \'ansible_user\' for host \'{host_name}\'.')
 
                 # Set 'ansible_user'
                 if ansible_user_value:
@@ -447,7 +444,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
             parsed_url = urlparse(url)
             if parsed_url.scheme and parsed_url.netloc and parsed_url.path == '/v1':
                 valid = True
-        except:
+        except ValueError:
             pass
 
         return valid
@@ -460,7 +457,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self._read_config_data(path)
 
         # Set attributes based on parsed file
-        self.icinga_url      = self.get_option('url')
+        self.icinga_url      = self.get_option('url').strip('/')
         self.icinga_port     = self.get_option('port')
         self.icinga_user     = self.get_option('user')
         self.icinga_password = self.get_option('password')
@@ -479,9 +476,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.strict          = self.get_option('strict')
 
         # Build API URL and validate
-        self.api_url         = '{}:{}/v1'.format(self.icinga_url.strip('/'), self.icinga_port)
+        self.api_url         = f'{self.icinga_url}:{self.icinga_port}/v1'
         if not self._validate_url(self.api_url):
-            raise ValueError('\'{}\' is not a valid URL.'.format(self.api_url))
+            raise ValueError(f'\'{self.api_url}\' is not a valid URL.')
 
         # Check if cache is available and should be used
         cache_key            = self.get_cache_key(path)

@@ -124,17 +124,6 @@ from requests.exceptions import SSLError, ConnectionError
 class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     NAME = 'icinga'
 
-    def __init__(self):
-        super(InventoryModule, self).__init__()
-        self.api_url         = None
-        self.icinga_url      = None
-        self.icinga_port     = None
-        self.icinga_user     = None
-        self.icinga_password = None
-        self.validate_certs  = True
-        self.filter_string   = None
-
-
     def verify_file(self, path):
         ''' return true/false if this is possibly a valid file for this plugin to consume '''
         valid = False
@@ -190,7 +179,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         self.session.verify  = self.validate_certs
         return self.session
 
-    
+
     def _validate_filter(self):
         valid_filter    = True
         valid_keys      = [ 'name', 'group', 'zone', 'custom', 'vars' ]
@@ -264,7 +253,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         sub_filter          = list()
         sub_filter_positive = list()
         sub_filter_negative = list()
-        
+
         for value in values:
             tmp_string = filter_string_base.format(value, key)
             if value.startswith('!'):
@@ -283,7 +272,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         sub_filter_string = '&&'.join(sub_filter)
 
         return sub_filter_string
-                
+
 
     def _create_filter(self):
         filter_string = ''
@@ -464,7 +453,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
 
     def parse(self, inventory, loader, path, cache=True):
-        super(InventoryModule, self).parse(inventory, loader, path)
+        super(InventoryModule, self).parse(inventory, loader, path, cache)
 
         # Read config options from file for futher use
         self._read_config_data(path)

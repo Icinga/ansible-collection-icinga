@@ -118,6 +118,30 @@ plugin: icinga.icinga.icinga
 url: https://icinga.example.com
 user: ansibleinventory
 password: changeme
+validate_certs: false
+filters:
+  # Only get hosts with 'zone' attribute equal to 'main' or 'sat*'
+  zone:
+    - main
+    - sat*
+  # Only get hosts which are part of the group 'linux_hosts'
+  group:
+    - linux_hosts
+  vars:
+    is:
+      # Only get hosts whose variable 'ansible_managed' is set to true
+      ansible_managed: true
+    in:
+      # Only get hosts who have 'dns' or 'database' in their array variable 'services'
+      services:
+        - dns
+        - database
+# Set Ansible's variable 'ansible_user' equal to the host's variable 'ansible_user'
+ansible_user_var: vars.ansible_user
+# Create groups with name 'icinga_os' + '_{VALUE OF VARIABLE}' and add hosts accordingly
+keyed_groups:
+  - prefix: "icinga_os"
+    key: vars.operating_system
 '''
 
 

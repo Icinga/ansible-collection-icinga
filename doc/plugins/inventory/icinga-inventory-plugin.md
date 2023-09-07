@@ -555,7 +555,20 @@ Supplying multiple filters will use logic AND to combine them.
 The last subkey you can use is 'vars'. It behaves slightly differently since one cannot anticipate the variables other people might use.  
 Therefore you have to manually decide on the filter and the custom variable to be used.
 
-Currently the '**match**' and '**in**' filters are supported. As before all their subkeys have to match with only one entry that has to match while none of the negated entries are allowed to match.
+Currently the '**match**', '**in**' and '**is**' filters are supported. As before all their subkeys have to match with only one entry that has to match while none of the negated entries are allowed to match.
+
+The '**is**' is filter is special in that regard that here you are supposed to only pass one value to it. If multiple values are passed, only the first value in the list will be used.  
+Also, negation is only allowed for 'set' and 'null' using the '**is**' filter.
+
+The following values are accepted:
+- true
+- false
+- set
+- !set
+- null
+- !null
+
+The value 'set' allows to check if the value of variable either evaluates to `true` or is set, meaning the variable **has** a value that is not `false` and not `null`.
 
 Example:
 
@@ -578,9 +591,11 @@ filters:
       services:
         - 'dns'
         - 'database'
+    is:
+      ansible_managed: true
 ```
 
-This results in the following filter: `((match(\"debian\", host.vars.linux_distribution)||match(\"centos\", host.vars.linux_distribution)||match(\"rhel\", host.vars.linux_distribution)||match(\"suse\", host.vars.linux_distribution))&&(!match(\"ubuntu\", host.vars.linux_distribution))&&((\"dns\" in host.vars.services)||(\"database\" in host.vars.services)))`
+This results in the following filter: `((match(\"debian\", host.vars.linux_distribution)||match(\"centos\", host.vars.linux_distribution)||match(\"rhel\", host.vars.linux_distribution)||match(\"suse\", host.vars.linux_distribution))&&(!match(\"ubuntu\", host.vars.linux_distribution))&&((\"dns\" in host.vars.services)||(\"database\" in host.vars.services))&&(host.vars.ansible_managed==true))`
 
 Prettier version:
 
@@ -596,6 +611,10 @@ Prettier version:
   &&
   (
     (\"dns\" in host.vars.services)||(\"database\" in host.vars.services)
+  )
+  &&
+  (
+    host.vars.ansible_managed==true
   )
 )
 ```

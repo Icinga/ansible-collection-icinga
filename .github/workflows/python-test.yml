@@ -57,8 +57,13 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Install dependencies
+        run: |
+          python -m pip install "ansible-core==2.14.7"
+
       - name: Test with unittest
         run: |
           python -m unittest -v tests.unittestpy3.test_data
+          python -m unittest -v tests.unittestpy3.test_inventory
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}#

@@ -289,9 +289,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         elif value == '!set':
             filter_string = '!' + set_or_true_filter_string.format(key)
         # 'null' results in 'none' if passed wihtout string enclosure
-        elif value == 'none' or value == 'null':
+        elif value in [ 'none', 'null' ]:
             filter_string = null_filter_string.format(key)
-        elif value == '!none' or value == '!null':
+        elif value in [ '!none', '!null' ]:
             filter_string = '!' + null_filter_string.format(key)
         else:
             # Only allow 'true', 'false', 'set', '!set', 'null' and '!null'

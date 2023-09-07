@@ -593,6 +593,7 @@ filters:
         - 'database'
     is:
       ansible_managed: true
+      ansible_user: set
 ```
 
 This results in the following filter: `((match(\"debian\", host.vars.linux_distribution)||match(\"centos\", host.vars.linux_distribution)||match(\"rhel\", host.vars.linux_distribution)||match(\"suse\", host.vars.linux_distribution))&&(!match(\"ubuntu\", host.vars.linux_distribution))&&((\"dns\" in host.vars.services)||(\"database\" in host.vars.services))&&(host.vars.ansible_managed==true))`
@@ -615,6 +616,10 @@ Prettier version:
   &&
   (
     host.vars.ansible_managed==true
+  )
+  &&
+  (
+    host.vars.ansible_user
   )
 )
 ```

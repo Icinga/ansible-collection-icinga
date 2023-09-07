@@ -185,7 +185,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
     def _validate_filter(self):
         valid_filter    = True
         valid_keys      = [ 'name', 'group', 'zone', 'custom', 'vars' ]
-        valid_vars_keys = [ 'match', 'in' ]
+        valid_vars_keys = [ 'match', 'in', 'is' ]
         invalid_keys    = list()
 
         if self.filters:
@@ -211,8 +211,15 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         return valid_filter
 
 
-    def _create_in_filter(self, key, values):
-        filter_string_base  = '(\\"{}\\" in host.{})'
+    def _create_filter_general(self, filter_string_base, key, values):
+        # Creates a filter for multiple list entries for a given key
+        # Handles logical concatenation and negation
+        # For each key at least on entry in the list must match their hosts according attribute
+        # The kind of filter ('match', 'in', 'is') is passed to this function
+
+        # Create filters for positive matches logically combined by 'or', and negated matches logically combined by 'and'
+        # Combine both with a logical 'and'
+        # E.g.: name must match (A or B or C) AND must match (NOT D and NOT E)
         sub_filter          = list()
         sub_filter_positive = list()
         sub_filter_negative = list()
@@ -237,41 +244,48 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
         return sub_filter_string
 
 
+    def _create_is_filter(self, key, values):
+        true_filter_string          = '(host.{}==true)'
+        false_filter_string         = '(host.{}==false)'
+        null_filter_string          = '(host.{}==null)'
+        set_or_true_filter_string   = '(host.{})'
+
+        values = [value.lower() for value in values]
+        # Only allow one value passed to a key of the 'is' filter
+        if len(values) > 1:
+            self.display.vvv(f'Multiple values provided to a key of the \'is\' filter. Only using first value \'{values[0]}\'.')
+        value = values[0]
+
+        if value == 'true':
+            filter_string = true_filter_string.format(key)
+        elif value == 'false':
+            filter_string = false_filter_string.format(key)
+        elif value == 'set':
+            filter_string = set_or_true_filter_string.format(key)
+        elif value == '!set':
+            filter_string = '!' + set_or_true_filter_string.format(key)
+        # 'null' results in 'none' if passed wihtout string enclosure
+        elif value == 'none' or value == 'null':
+            filter_string = null_filter_string.format(key)
+        elif value == '!none' or value == '!null':
+            filter_string = '!' + null_filter_string.format(key)
+        else:
+            # Only allow 'true', 'false', 'set', '!set', 'null' and '!null'
+            self.display.vvv('Valid values for the \'is\' filter are: \'true\', \'false\', \'set\', \'!set\', \'null\' and \'!null\'.')
+            raise ValueError(f'\'{value}\' is not valid value for the \'is\' filter')
+
+        return filter_string
+
+
+    def _create_in_filter(self, key, values):
+        filter_string_base = '(\\"{}\\" in host.{})'
+        sub_filter_string  = self._create_filter_general(filter_string_base, key, values)
+        return sub_filter_string
+
+
     def _create_match_filter(self, key, values):
-        # Creates a filter for multiple list entries for a given key
-        # Handles logical concatenation and negation
-        # For each at least on entry in the list must match their hosts according attribute
-        # Example:
-        # name:
-        #   - "*sat*"
-        #   - "main"
-        # This means that all hosts whose name fits at least one of those list entries must be matched
-
-        # Create filters for positive matches logically combined by 'or', and negated matches logically combined by 'and'
-        # Combine both with a logical 'and'
-        # E.g.: name must match (A or B or C) AND must match (NOT D and NOT E)
-        filter_string_base  = 'match(\\"{}\\", host.{})'
-        sub_filter          = list()
-        sub_filter_positive = list()
-        sub_filter_negative = list()
-
-        for value in values:
-            tmp_string = filter_string_base.format(value, key)
-            if value.startswith('!'):
-                tmp_string = '!{}'.format(tmp_string.replace('!', ''))
-                sub_filter_negative.append(tmp_string)
-            else:
-                sub_filter_positive.append(tmp_string)
-
-        if sub_filter_positive:
-            sub_filter_positive_string = '({})'.format('||'.join(sub_filter_positive))
-            sub_filter = sub_filter + [sub_filter_positive_string]
-        if sub_filter_negative:
-            sub_filter_negative_string = '({})'.format('&&'.join(sub_filter_negative))
-            sub_filter = sub_filter + [sub_filter_negative_string]
-
-        sub_filter_string = '&&'.join(sub_filter)
-
+        filter_string_base = 'match(\\"{}\\", host.{})'
+        sub_filter_string  = self._create_filter_general(filter_string_base, key, values)
         return sub_filter_string
 
 
@@ -314,7 +328,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                 for sub_key, attributes in value.items():
                     for attribute_key, attribute_values in attributes.items():
                         # Skip / ignore if an empty key has been passed
-                        if not attribute_values:
+                        if not attribute_values and sub_key != 'is':
                             self.display.vvv(f'Ignoring empty key \'vars.{attribute_key}\'.')
                             continue
 
@@ -329,6 +343,8 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
                             tmp_string = self._create_match_filter(f'vars.{attribute_key}', attribute_values)
                         elif sub_key == 'in':
                             tmp_string = self._create_in_filter(f'vars.{attribute_key}', attribute_values)
+                        elif sub_key == 'is':
+                            tmp_string = self._create_is_filter(f'vars.{attribute_key}', attribute_values)
 
                         local_filter_list.append(tmp_string)
 

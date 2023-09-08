@@ -174,12 +174,13 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
         # Remove empty entries and cast numbers to integers
         for key in keys:
-            if key:
-                if key.isdigit():
-                    key = int(key)
-                else:
-                    key = key.strip('\'').strip('"')
-                final_keys.append(key)
+            if not key:
+                continue
+            if key.isdigit():
+                key = int(key)
+            else:
+                key = key.strip('\'').strip('"')
+            final_keys.append(key)
 
         # Recurse into structure
         for index, key in enumerate(final_keys):
@@ -387,7 +388,7 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
 
     def _get_hosts(self):
-        s   = self._get_session()
+        s = self._get_session()
 
         # Validate connection via API URL
         try:
@@ -401,10 +402,9 @@ class InventoryModule(BaseInventoryPlugin, Cacheable, Constructable):
 
         # Create filter
         filter_string = self._create_filter()
+        data = None
         if filter_string:
             data = '{ "filter": "' + filter_string + '" }'
-        else:
-            data = None
 
         self.display.vvv(f'Using filter: \'{data}\'')
 

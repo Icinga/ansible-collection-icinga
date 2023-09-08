@@ -1,5 +1,6 @@
 # Icinga as an Inventory Source for Ansible
 
+- [Requirements](#requirements)
 - [Variables](#variables)
 - [Using Constructed Inventory and Cache](#using-constructed-inventory-and-cache)
 - [Filter Options](#filter-options)
@@ -248,6 +249,11 @@ icinga-master | SUCCESS => {
     }
 }
 ```
+
+## Requirements
+
+This inventory plugin needs
+- Python `requests` library to make API calls to Icinga 2
 
 ## Variables
 

@@ -4,7 +4,11 @@ import sys
 sys.path.insert(0,'plugins/inventory')
 
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, MagicMock, call
+
+import requests
+from ansible.parsing.yaml.objects import AnsibleSequence, AnsibleMapping
+
 
 from icinga import InventoryModule
 
@@ -202,6 +206,8 @@ class TestInventoryPlugin(unittest.TestCase):
 
                   ( 'test_variable', ['!None'], '!(host.test_variable==null)' ),
                   ( 'test_variable', ['!none'], '!(host.test_variable==null)' ),
+
+                  ( 'test_variable', [ '!set', 'True', 'False', 'set'], '!(host.test_variable)' ),
                 ]
 
         test_module = InventoryModule()
@@ -296,3 +302,241 @@ class TestInventoryPlugin(unittest.TestCase):
         for key, values, expected in items:
             actual = test_module._create_match_filter(key, values)
             self.assertEqual(expected, actual)
+
+
+    def test_create_filter(self):
+        test_module = InventoryModule()
+        # Cannot pass an AnsibleMapping right now
+        test_module.filters = {
+                                "name": AnsibleSequence([ "satellite" ]),
+                                "group": AnsibleSequence([ "testgroup1", "testgroup2" ]),
+                                "zone": AnsibleSequence([ "zone1", "zone2", "yetanotherzone" ]),
+                                "custom": AnsibleSequence([ 'match(\\"some_custom_filter\\", host.name)' ]),
+                                "vars": AnsibleMapping({ "match": { "operating_system": "win*"}}),
+                              }
+
+        test_module._validate_filter = MagicMock(return_value=True)
+        actual   = test_module._create_filter()
+        expected = r'((match(\"satellite\", host.name)))&&(((\"testgroup1\" in host.groups)||(\"testgroup2\" in host.groups)))&&((match(\"zone1\", host.zone)||match(\"zone2\", host.zone)||match(\"yetanotherzone\", host.zone)))&&(match(\"some_custom_filter\", host.name))&&((match(\"some_custom_filter\", host.name)))&&((match(\"win*\", host.vars.operating_system)))'
+        self.assertEqual(expected, actual)
+
+
+
+
+    def test_populate_inventory(self):
+        test_module = InventoryModule()
+        test_module.inventory = MagicMock()
+        test_module.inventory.add_host = MagicMock()
+        test_module.inventory.add_group = MagicMock()
+        test_module.inventory.set_variable = MagicMock()
+        test_module._set_composite_vars = MagicMock()
+        test_module._add_host_to_composed_groups = MagicMock()
+        test_module._add_host_to_keyed_groups = MagicMock()
+        test_module._add_host_to_composed_groups = MagicMock()
+
+        # Set object attributes
+        test_module.vars_prefix  = 'icinga_'
+        test_module.want_ipv4    = True
+        test_module.want_ipv6    = True
+        test_module.ansible_user = 'vars.ansible_user'
+        test_module.keyed_groups = [ { "prefix": "icinga_os", "key": "vars['operating_system']" } ]
+        test_module.group_prefix = 'icinga_'
+        test_module.compose      = None
+        test_module.groups       = None
+        test_module.strict       = False
+
+        test_hosts = [
+                       {
+                         "name": "dummy_host1",
+                         "attrs": {
+                           "address": "127.0.0.1",
+                           "address6": "",
+                           "groups": [ "testgroup1", "testgroup2" ],
+                           "zone": "master",
+                         },
+                       },
+                       {
+                         "name": "dummy_host2",
+                         "attrs": {
+                           "address": "",
+                           "address6": "::1",
+                           "command_endpoint": "",
+                           "groups": [ "testgroup1", "testgroup3" ],
+                           "templates": [ "dummy_host2", "Default Host" ],
+                           "vars": {
+                             "operating_system": "linux",
+                             "distribution": "debian",
+                             "ansible_user": "myansibleuser",
+                           },
+                           "zone": "satellite1",
+                         },
+                       },
+                       {
+                         "name": "dummy_host3",
+                         "attrs": {
+                           "address": "",
+                           "address6": "",
+                           "groups": [],
+                           "zone": "anotherzone",
+                         },
+                       },
+                     ]
+
+        calls_add_group    = [
+                               call('icinga_group_testgroup1'),
+                               call('icinga_group_testgroup2'),
+                               call('icinga_group_testgroup1'),
+                               call('icinga_group_testgroup3'),
+                             ]
+        calls_add_host     = [
+                               call('dummy_host1', 'icinga_group_testgroup1'),
+                               call('dummy_host1', 'icinga_group_testgroup2'),
+                               call('dummy_host2', 'icinga_group_testgroup1'),
+                               call('dummy_host2', 'icinga_group_testgroup3'),
+                               call('dummy_host3')
+                             ]
+        calls_set_variable = [
+                               call('dummy_host1', 'icinga_address', '127.0.0.1'),
+                               call('dummy_host1', 'icinga_address6', ''),
+                               call('dummy_host1', 'icinga_groups', ['testgroup1', 'testgroup2']),
+                               call('dummy_host1', 'icinga_zone', 'master'),
+                               call('dummy_host1', 'ansible_host', '127.0.0.1'),
+                               call('dummy_host2', 'icinga_address', ''),
+                               call('dummy_host2', 'icinga_address6', '::1'),
+                               call('dummy_host2', 'icinga_command_endpoint', ''),
+                               call('dummy_host2', 'icinga_groups', ['testgroup1', 'testgroup3']),
+                               call('dummy_host2', 'icinga_templates', ['dummy_host2', 'Default Host']),
+                               call('dummy_host2', 'icinga_vars', {'operating_system': 'linux', 'distribution': 'debian', 'ansible_user': 'myansibleuser'}),
+                               call('dummy_host2', 'icinga_zone', 'satellite1'),
+                               call('dummy_host2', 'ansible_host', '::1'),
+                               call('dummy_host2', 'ansible_user', 'myansibleuser'),
+                               call('dummy_host3', 'icinga_address', ''),
+                               call('dummy_host3', 'icinga_address6', ''),
+                               call('dummy_host3', 'icinga_groups', []),
+                               call('dummy_host3', 'icinga_zone', 'anotherzone'),
+                             ]
+        calls_composite    = [
+                               call( None,
+                                     { 'address': '127.0.0.1',
+                                       'address6': '',
+                                       'groups': ['testgroup1', 'testgroup2'],
+                                       'zone': 'master'
+                                     },
+                                     'dummy_host1',
+                                     strict=False
+                                   ),
+                               call( None,
+                                     { 'address': '',
+                                       'address6': '::1',
+                                       'command_endpoint': '',
+                                       'groups': ['testgroup1', 'testgroup3'],
+                                       'templates': ['dummy_host2', 'Default Host'],
+                                       'vars': {
+                                         'operating_system': 'linux',
+                                         'distribution': 'debian',
+                                         'ansible_user': 'myansibleuser'
+                                       },
+                                       'zone': 'satellite1'
+                                     },
+                                     'dummy_host2',
+                                     strict=False
+                                   ),
+                               call( None,
+                                     { 'address': '',
+                                       'address6': '',
+                                       'groups': [],
+                                       'zone': 'anotherzone',
+                                     },
+                                     'dummy_host3',
+                                     strict=False,
+                                   ),
+                             ]
+        calls_composed     = [
+                               call( None,
+                                     { 'address': '127.0.0.1',
+                                       'address6': '',
+                                       'groups': ['testgroup1', 'testgroup2'],
+                                       'zone': 'master'
+                                     },
+                                     'dummy_host1',
+                                     strict=False),
+                               call( None,
+                                     { 'address': '',
+                                       'address6': '::1',
+                                       'command_endpoint': '',
+                                       'groups': ['testgroup1', 'testgroup3'],
+                                       'templates': ['dummy_host2', 'Default Host'],
+                                       'vars': {
+                                         'operating_system': 'linux',
+                                         'distribution': 'debian',
+                                         'ansible_user': 'myansibleuser'
+                                       },
+                                       'zone': 'satellite1'
+                                     },
+                                     'dummy_host2',
+                                     strict=False),
+                               call( None,
+                                     { 'address': '',
+                                       'address6': '',
+                                       'groups': [],
+                                       'zone': 'anotherzone'
+                                     },
+                                     'dummy_host3',
+                                     strict=False),
+                             ]
+        calls_keyed        = [
+                               call([
+                                     {'prefix': 'icinga_os',
+                                      'key': "vars['operating_system']"},
+                                     {'prefix': 'icinga_zone',
+                                      'key': 'zone'}
+                                    ],
+                                    {'address': '127.0.0.1',
+                                     'address6': '',
+                                     'groups': ['testgroup1', 'testgroup2'],
+                                     'zone': 'master'
+                                    },
+                                    'dummy_host1',
+                                    strict=False
+                                  ),
+                               call([
+                                     {'prefix': 'icinga_os',
+                                      'key': "vars['operating_system']"},
+                                     {'prefix': 'icinga_zone',
+                                      'key': 'zone'}
+                                    ],
+                                    {'address': '',
+                                     'address6': '::1',
+                                     'command_endpoint': '',
+                                     'groups': ['testgroup1', 'testgroup3'],
+                                     'templates': ['dummy_host2', 'Default Host'],
+                                     'vars': {
+                                       'operating_system': 'linux',
+                                       'distribution': 'debian',
+                                       'ansible_user': 'myansibleuser'
+                                     },
+                                     'zone': 'satellite1'},
+                                     'dummy_host2',
+                                     strict=False),
+                               call([
+                                     {'prefix': 'icinga_os',
+                                      'key': "vars['operating_system']"},
+                                     {'prefix': 'icinga_zone',
+                                      'key': 'zone'}
+                                    ],
+                                    {'address': '',
+                                     'address6': '',
+                                     'groups': [],
+                                     'zone': 'anotherzone'},
+                                     'dummy_host3',
+                                     strict=False),
+                             ]
+
+        test_module._populate_inventory(test_hosts)
+        # Assertions
+        test_module.inventory.add_group.assert_has_calls(calls_add_group, any_order=False)
+        test_module.inventory.add_host.assert_has_calls(calls_add_host, any_order=False)
+        test_module.inventory.set_variable.assert_has_calls(calls_set_variable, any_order=False)
+        test_module._set_composite_vars.assert_has_calls(calls_composite, any_order=False)
+        test_module._add_host_to_composed_groups.assert_has_calls(calls_composed, any_order=False)
+        test_module._add_host_to_keyed_groups.assert_has_calls(calls_keyed, any_order=False)

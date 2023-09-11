@@ -86,10 +86,11 @@ class TestInventoryPlugin(unittest.TestCase):
                        'vars.bad_key',
                        'vars.index_test["0"].test',
                        'vars.numeric_key[0]',
+                       'vars.index_test[100]',
                      ]
 
         for search_string in fail_cases:
-            with self.assertRaises((KeyError, TypeError)) as context:
+            with self.assertRaises((IndexError, KeyError, TypeError)) as context:
                 test_module._get_recursive_sub_element(test_dict, search_string)
 
 
@@ -306,19 +307,26 @@ class TestInventoryPlugin(unittest.TestCase):
 
 
     def test_create_filter(self):
+        self.maxDiff = None
         test_module = InventoryModule()
         # Cannot pass an AnsibleMapping right now
         test_module.filters = {
-                                "name": AnsibleSequence([ "satellite" ]),
+                                "name": "satellite",
                                 "group": AnsibleSequence([ "testgroup1", "testgroup2" ]),
                                 "zone": AnsibleSequence([ "zone1", "zone2", "yetanotherzone" ]),
                                 "custom": AnsibleSequence([ 'match(\\"some_custom_filter\\", host.name)' ]),
-                                "vars": AnsibleMapping({ "match": { "operating_system": "win*"}}),
+                                "vars": AnsibleMapping({ "match": { "operating_system": "win*"}, "in": { "services": None }}),
                               }
 
         test_module._validate_filter = MagicMock(return_value=True)
         actual   = test_module._create_filter()
         expected = r'((match(\"satellite\", host.name)))&&(((\"testgroup1\" in host.groups)||(\"testgroup2\" in host.groups)))&&((match(\"zone1\", host.zone)||match(\"zone2\", host.zone)||match(\"yetanotherzone\", host.zone)))&&(match(\"some_custom_filter\", host.name))&&((match(\"some_custom_filter\", host.name)))&&((match(\"win*\", host.vars.operating_system)))'
+        self.assertEqual(expected, actual)
+
+        # Test with empty return filter if given filter is invalid
+        test_module._validate_filter = MagicMock(return_value=False)
+        actual   = test_module._create_filter()
+        expected = ''
         self.assertEqual(expected, actual)
 
 

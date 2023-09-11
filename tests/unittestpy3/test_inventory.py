@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import patch, Mock, MagicMock, call
 
 import requests
+from requests.exceptions import SSLError, RequestException
 from ansible.parsing.yaml.objects import AnsibleSequence, AnsibleMapping
 
 
@@ -540,3 +541,54 @@ class TestInventoryPlugin(unittest.TestCase):
         test_module._set_composite_vars.assert_has_calls(calls_composite, any_order=False)
         test_module._add_host_to_composed_groups.assert_has_calls(calls_composed, any_order=False)
         test_module._add_host_to_keyed_groups.assert_has_calls(calls_keyed, any_order=False)
+
+
+    @patch('icinga.InventoryModule')
+    def test_get_hosts(self, mock_init):
+
+        class mocked_get_session_good():
+            def get(*args, **kwargs):
+                return True
+            def post(*args, **kwargs):
+                m = Mock()
+                m.status_code = 200
+                m.json.return_value = { "results": [] }
+                return m
+
+        class mocked_get_session_sslerror():
+            def get(*args, **kwargs):
+                raise SSLError
+
+        class mocked_get_session_requestexception():
+            def get(*args, **kwargs):
+                raise RequestException
+
+        class mocked_get_session_bad_status_code():
+            def get(*args, **kwargs):
+                return True
+            def post(*args, **kwargs):
+                m = Mock()
+                m.status_code = 404
+                m.json.return_value = { "error": 404, "status": "No objects found." }
+                return m
+
+        # Should succeed and return hosts (empty list)
+        mock_init._get_session.return_value = mocked_get_session_good()
+        expected = list()
+        actual   = InventoryModule._get_hosts(mock_init)
+        self.assertEqual(actual, expected)
+
+        # Should raise SSLError
+        mock_init._get_session.return_value = mocked_get_session_sslerror()
+        with self.assertRaises(SSLError) as context:
+            InventoryModule._get_hosts(mock_init)
+
+        # Should raise RequestException
+        mock_init._get_session.return_value = mocked_get_session_requestexception()
+        with self.assertRaises(RequestException) as context:
+            InventoryModule._get_hosts(mock_init)
+
+        # Should raise ValueError
+        mock_init._get_session.return_value = mocked_get_session_bad_status_code()
+        with self.assertRaises(ValueError) as context:
+            InventoryModule._get_hosts(mock_init)

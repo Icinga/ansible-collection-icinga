@@ -38,6 +38,7 @@
         {{ _tmp_pgsqlcmd }}
         -w -f /usr/share/icingaweb2/schema/pgsql.schema.sql
       when: _icingaweb2_db_schema.rc != 0
+      run_once: yes
   when: icingaweb2_db_import_schema | default(False)
 
 - name: Ensure Icinga Web User
@@ -56,6 +57,7 @@
         echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" | {{ _tmp_pgsqlcmd }} -w
       when: '"(0 rows)" in _icingaweb2_db_user.stdout_lines'
+      run_once: yes
   when:
     - icingaweb2_admin_username is defined
     - icingaweb2_admin_password is defined

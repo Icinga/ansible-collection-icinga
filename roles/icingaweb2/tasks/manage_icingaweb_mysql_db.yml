@@ -64,6 +64,7 @@
         echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" |  {{ _tmp_mysqlcmd }} -Ns
       when: _icingaweb2_db_user.stdout_lines | length <= 0
+      run_once: yes
   when:
     - icingaweb2_admin_username is defined
     - icingaweb2_admin_password is defined

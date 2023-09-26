@@ -71,14 +71,12 @@
       - zones.d/main/commands
       - zones.d/main/hosts
       - zones.d/main/services
-  collections:
-    - icinga.icinga
   roles:
-    - repos
-    - icinga2
+    - icinga.icinga.repos
+    - icinga.icinga.icinga2
     - geerlingguy.mysql
-    - icingadb
-    - icingadb_redis
+    - icinga.icinga.icingadb
+    - icinga.icinga.icingadb_redis
   post_tasks:
     - include_role:
-        name: icingaweb2
+        name: icinga.icinga.icingaweb2

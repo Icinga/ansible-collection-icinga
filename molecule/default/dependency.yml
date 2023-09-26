@@ -3,4 +3,4 @@ dependency:
   options:
     role-file: requirements.yml
   env:
-    ANSIBLE_ROLES_PATH: /usr/share/ansible/roles
+    ANSIBLE_ROLES_PATH: .ansible/roles

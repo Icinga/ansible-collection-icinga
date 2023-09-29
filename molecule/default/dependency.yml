@@ -2,3 +2,5 @@ dependency:
   name: galaxy
   options:
     role-file: requirements.yml
+  env:
+    ANSIBLE_ROLES_PATH: .ansible/roles

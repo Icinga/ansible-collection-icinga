@@ -9,8 +9,8 @@
       host: 127.0.0.1
       user: icingaweb
       password: icingaweb
-    icingaweb2_database_import_schema: true
-    icingadb_database_import_schema: true
+    icingaweb2_database_import_schema: false
+    icingadb_database_import_schema: false
     mysql_innodb_file_format: barracuda
     mysql_innodb_large_prefix: 1
     mysql_innodb_file_per_table: 1
@@ -74,17 +74,17 @@
   collections:
     - icinga.icinga
   pre_tasks:
-    - include_role:
+    - ansible.builtin.include_role:
         name: repos
-    - include_role:
-        name: geerlingguy.mysql
-    - include_role:
+    # - ansible.builtin.include_role:
+    #     name: geerlingguy.mysql
+    - ansible.builtin.include_role:
         name: icinga2
-    - include_role:
+    - ansible.builtin.include_role:
         name: icingadb
-    - include_role:
+    - ansible.builtin.include_role:
         name: icingadb_redis
 
   post_tasks:
-    - include_role:
+    - ansible.builtin.include_role:
         name: icingaweb2

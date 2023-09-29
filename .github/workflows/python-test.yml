@@ -8,6 +8,8 @@ on:
       - 'feature/**'
       - 'fix/**'
       - '!doc/**'
+    paths:
+      - 'plugins/**'
   pull_request:
     branches:
       - 'feature/**'

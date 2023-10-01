@@ -16,7 +16,7 @@ jobs:
       COLLECTION_NAMESPACE: icinga
       COLLECTION_NAME: icinga
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.tag }}
 

@@ -1,2 +1,0 @@
-major_changes:
-  - 'Add TLS support to import schema for mysql and psql features'

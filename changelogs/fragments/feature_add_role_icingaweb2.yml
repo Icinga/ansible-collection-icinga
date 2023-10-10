@@ -1,5 +1,0 @@
----
-major_changes:
-  - Add a role for the installation and configuration of icingaweb2.
-  - Manage Module IcingaDB
-  - Manage Module Icinga Director

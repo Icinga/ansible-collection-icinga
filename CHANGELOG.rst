@@ -5,6 +5,37 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
+v0.3.0
+======
+
+Major Changes
+-------------
+
+- Add Installation on Suse Systems
+- Add TLS support to import schema for mysql and psql features
+- Add a role for the installation and configuration of icingadb.
+- Add a role for the installation and configuration of icingadb_redis.
+- Add a role for the installation and configuration of icingaweb2.
+- Add a role for the installation of the monitoring plugins as listed in the Icinga Template Library
+- Add the ability to use the Icinga Repository Subscription on RedHat based distributions
+- Manage Module Icinga Director
+- Manage Module IcingaDB
+
+Minor Changes
+-------------
+
+- Role Repos: Change manual epel handling to package #151
+- The icinga2 role wrongly include parent vars file instead of its own #148
+
+Bugfixes
+--------
+
+- Changed parameter enable_notification to enable_notifications
+- Fix variable usage in icingaweb2_modules dict thx @Alpha041087
+- Fixed usage of pgsql commands and imports thx @Alpha041087
+- Prevent empty config directories to always be recreated
+- Use lookup plugin to load icinga2_objects to support existing variables
+
 v0.2.1
 ======
 

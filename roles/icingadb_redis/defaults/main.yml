@@ -10,7 +10,7 @@ icingadb_redis_packages:
 icingadb_redis_protected_mode: 'yes'
 icingadb_redis_binds:
   - "127.0.0.1"
-  - "::1"
+  - "-::1"
 icingadb_redis_port: 6380
 icingadb_redis_tcp_backlog: 511
 icingadb_redis_timeout: 0

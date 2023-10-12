@@ -2,3 +2,4 @@
 icingaweb2_module_packages:
   icingadb: icingadb-web
   director: icinga-director
+  graphite: icinga-graphite-web

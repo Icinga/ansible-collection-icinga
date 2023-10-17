@@ -71,6 +71,13 @@
       - zones.d/main/commands
       - zones.d/main/hosts
       - zones.d/main/services
+    icingaweb2_modules:
+      businessprocess:
+        enabled: true
+        source: package
+        custom_process_files:
+          - name: test.conf
+            src_path: test.conf
   collections:
     - icinga.icinga
   pre_tasks:

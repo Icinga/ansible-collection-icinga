@@ -10,6 +10,14 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
+- name: Module Graphite | Ensure processes directory
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/processes"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
 # - name: Module Business Process Modelling | Ensure Process Directory
 
 - name: Module Business Process Modeling | Manage process files

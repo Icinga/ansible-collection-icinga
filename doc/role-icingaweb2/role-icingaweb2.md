@@ -7,6 +7,23 @@ The role icingaweb2 installs and configures Icinga Web 2 and its modules.
 * [IcingaDB](./module-icingadb.md)
 * [Monitoring](./module-monitoring.md)
 
+Custom modules can either be installed via package or git repository.
+Therefore set the variable `source` with either `package` or a string consisting `git,repository_url,tag/version/branch` 
+If no `tag/version/branch` is set the default `HEAD` will be used.
+
+Furthermore it's possible to differentiate between your own custom modules (for example custom themes) and Icinga specific modules.
+
+If you want to manage the config by yourself or the module doesn't need further configuration set the variable `manage_config` to `true` otherwise it needs to be set to `false`
+
+Example:
+```
+icingaweb2_modules:
+  my_theme:
+    enabled: true
+    manage_config: true
+    source: git,https://github.com/slalomsk8er/icingaweb2-theme-solarized.git,v1.0.0
+```
+
 ## Variables
 
 ### Icinga Web 2 DB Configuration
@@ -47,3 +64,5 @@ icingaweb2_resources:
     type: ldap
     [...]
 ```
+
+

@@ -5,5 +5,4 @@ icingaweb2_module_packages:
   businessprocess: icinga-businessprocess
 #  vspheredb: icingaweb2-module-vspheredb
 
-icingaweb2_source_packages: 
-  test-modul: test
+

@@ -29,18 +29,18 @@
 
 - name: Debug icingaweb2_packages
   debug:
-      msg: "{{ (item.value.source | split(', ') | last) }}"
+      msg: "{{ (item.value.source | split (',') )[2] | default('HEAD') }}"
   loop: "{{ icingaweb2_git_packages }}"
-  # when: item.value.source.startswith('git')
+  when: item.value.source.startswith('git')
       # msg: "{{ icingaweb2_git_packages['test_module']['value'] }}"
 
 - name: Install Icingaweb2 Module from Git
   ansible.builtin.git:
-    repo: "{{ (item.value.source | split(', '))[1] }}"
+    repo: "{{ (item.value.source | split(','))[1] }}"
     dest: "{{ icingaweb2_config['global']['module_path'] }}/{{ item.key }}"
-    version: "{{ ((item.value.source | split(', ') | last) | default('HEAD')) }}"
+    version: "{{ (item.value.source | split(',') | last) if (item.value.source | split(',') | length) == 3 else 'HEAD'  }}"
   loop: "{{ icingaweb2_git_packages }}"
-  when: icingaweb2_modules is defined and item.value.enabled is true and item.value.source.startswith("git")
+  when: icingaweb2_modules is defined and item.value.enabled is true and (item.value.source | split(','))[0] == "git" 
 
 - name: Manage Icinga Web 2 config
   ansible.builtin.include_tasks: "manage_icingaweb_config.yml"
@@ -51,8 +51,7 @@
 
 - name: Configure modules
   ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"
-  when: icingaweb2_modules is defined 
-  # and item.value.custom is false
+  when: icingaweb2_modules is defined and (item.value.custom is false or item.value.custom is not defined)
   loop: "{{ icingaweb2_modules | dict2items }}"
 
 - name: Manage enabled/disabled modules

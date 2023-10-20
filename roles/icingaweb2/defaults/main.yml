@@ -28,7 +28,7 @@ icingaweb2_config:
   global:
     show_stacktraces: 1
     show_application_state_messages: 1
-    config_backend: ini
+    config_resource: icingaweb2_db
     module_path: /usr/share/icingaweb2/modules
   logging:
     log: syslog

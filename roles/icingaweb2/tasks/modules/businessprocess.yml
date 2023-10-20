@@ -1,0 +1,28 @@
+- name: Module Icinga Business Process Modeling | Ensure config directory
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
+- name: Module Icinga Business Process Modeling | Ensure processes directory
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/processes"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+  
+- name: Module Icinga Business Process Modeling | Copy Process
+  ansible.builtin.copy:
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    src: "files/{{ _file.src_path }}"
+    dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/processes/{{ _file.name }}"
+  when: vars['icingaweb2_modules'][_module]['custom_process_files'] is defined
+  loop: "{{ vars['icingaweb2_modules'][_module]['custom_process_files'] }}"
+  loop_control:
+    loop_var: _file
+  vars:
+    _module: "{{ item.key }}"

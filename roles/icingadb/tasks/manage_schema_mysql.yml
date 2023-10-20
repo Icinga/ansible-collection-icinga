@@ -12,7 +12,7 @@
           -p"{{ icingadb_database_password }}"
           "{{ icingadb_database_name | default('icingadb') }}"
 
-    - name: MySQL check for IDO schema
+    - name: MySQL check for IcingaDB schema
       ansible.builtin.shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icingadb_schema"
@@ -21,7 +21,7 @@
       check_mode: false
       register: _db_schema
 
-    - name: MySQL import IDO schema
+    - name: MySQL import IcingaDB schema
       ansible.builtin.shell: >
         {{ mysqlcmd }}
         < {{ icingadb_database_schema }}

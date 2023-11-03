@@ -7,6 +7,7 @@
         - "{{ ansible_os_family }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_lsb.id }}.yml"
         - "{{ ansible_os_family }}.yml"
         - default.yml
       paths:
@@ -27,20 +28,6 @@
   when:
     - icinga_repo_subscription_username is defined
     - icinga_repo_subscription_password is defined
-
-- name: Include Raspbian with arch armhf OS specific vars
-  when: ansible_lsb.id == "Raspbian"
-  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - "{{ ansible_lsb.id }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_lsb.id }}-{{ ansible_distribution_major_version }}.yml"
-        - "{{ ansible_lsb.id }}-{{ ansible_distribution }}.yml"
-        - "{{ ansible_lsb.id }}.yml"
-        - default.yml
-      paths:
-        - "{{ role_path }}/vars"
 
 - name: Add repositories
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"

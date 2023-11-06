@@ -127,7 +127,7 @@ This is a example on how to install Icinga 2 server with Icinga Web 2 and Icinga
       host: 127.0.0.1
       user: icingaweb
       password: icingaweb
-    icingaweb2_database_import_schema: true
+    icingaweb2_db_import_schema: true
 
     icingadb_database_type: mysql
     icingadb_database_host: localhost

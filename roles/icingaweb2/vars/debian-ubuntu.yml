@@ -1,3 +1,4 @@
 icingaweb2_httpd_user: www-data
 icingaweb2_fragments_path: /var/tmp/icingaweb
 icingaweb2_packages: ["icingaweb2","icingacli","libapache2-mod-php"]
+

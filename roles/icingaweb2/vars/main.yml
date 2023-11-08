@@ -2,4 +2,6 @@
 icingaweb2_module_packages:
   icingadb: icingadb-web
   director: icinga-director
+
   businessprocess: icinga-businessprocess
+icingaweb2_git_packages: []

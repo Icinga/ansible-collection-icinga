@@ -15,4 +15,7 @@ Many variables are predefined by Icinga to make the installation easier. These a
 * `icingadb_redis_port: string`
      * Defines redis server port, default: `6380`
 
+* `icingadb_redis_password: string`
+    * Adds the `requirepass <string>` directive to Redis' configuration if set.
+
 There is a whole set of `defaults` in place for craeting a sane Redis installation. Should you need to fine-tune settings, please consult [the defaults at `icingadb_redis/defaults/main.yml`](../../roles/icingadb_redis/defaults/main.yml) for the specific variables.

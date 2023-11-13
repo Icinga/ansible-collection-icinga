@@ -17,7 +17,8 @@ The list is based on the section *"Plugin Check Commands for Monitoring Plugins"
 
 - `icinga_monitoring_plugins_dependency_repos: list`
   Decides which repositories are temporarily enabled when installing packages. Defaults to either `crb` or `powertools`.  
-  If the need arises, you can manually overwrite this variable to temporarily enable one or multiple repositories of your choice.
+  If the need arises, you can manually overwrite this variable to temporarily enable one or multiple repositories of your choice.  
+  You may specify `icinga_monitoring_plugins_dependency_repos: "*"` to temporarily enable every repository present.
 
 - `icinga_monitoring_plugins_remove: boolean`  
   Decides whether to remove packages that have not been asked for by the user. Default `true`  

@@ -1,6 +1,9 @@
 - name: Converge
   hosts: all
   become: true
+  module_defaults:
+    ansible.builtin.apt:
+      cache_valid_time: 3600
   vars:
     icingaweb2_resources:
       director_db:
@@ -28,7 +31,7 @@
         run_kickstart: true
         kickstart:
           config:
-            endpoint: "{{ ansible_fqdn }}"
+            endpoint: icinga-default
             host: 127.0.0.1
             username: root
             password: root
@@ -79,6 +82,7 @@
     icingaweb2_admin_username: admin
     icingaweb2_admin_password: admin
     icingaweb2_db_import_schema: true
+    icingadb_database_type: mysql
     icingadb_database_import_schema: true
     mysql_innodb_file_format: barracuda
     mysql_innodb_large_prefix: 1
@@ -160,8 +164,18 @@
       - zones.d/main/services
   collections:
     - icinga.icinga
-  roles:
-    - repos
-    - geerlingguy.mysql
-    - icinga2
-    - icingaweb2
+  pre_tasks:
+    - include_role:
+        name: repos
+    - include_role:
+        name: geerlingguy.mysql
+    - include_role:
+        name: icinga2
+    - include_role:
+        name: icingadb
+    - include_role:
+        name: icingadb_redis
+
+  post_tasks:
+    - include_role:
+        name: icingaweb2

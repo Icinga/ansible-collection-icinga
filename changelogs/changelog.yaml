@@ -43,3 +43,42 @@ releases:
     - fix_ca_host_filter.yml
     - fix_idempotence_el.yml
     release_date: '2022-09-29'
+  0.3.0:
+    changes:
+      bugfixes:
+      - Changed parameter enable_notification to enable_notifications
+      - Fix variable usage in icingaweb2_modules dict thx @Alpha041087
+      - Fixed usage of pgsql commands and imports thx @Alpha041087
+      - Prevent empty config directories to always be recreated
+      - Use lookup plugin to load icinga2_objects to support existing variables
+      major_changes:
+      - Add Installation on Suse Systems
+      - Add TLS support to import schema for mysql and psql features
+      - Add a role for the installation and configuration of icingadb.
+      - Add a role for the installation and configuration of icingadb_redis.
+      - Add a role for the installation and configuration of icingaweb2.
+      - Add a role for the installation of the monitoring plugins as listed in the
+        Icinga Template Library
+      - Add the ability to use the Icinga Repository Subscription on RedHat based
+        distributions
+      - Manage Module Icinga Director
+      - Manage Module IcingaDB
+      minor_changes:
+      - 'Role Repos: Change manual epel handling to package #151'
+      - 'The icinga2 role wrongly include parent vars file instead of its own #148'
+    fragments:
+    - change_epel_handling.yml
+    - change_include_vars_path.yml
+    - feature_add_role_icingadb.yml
+    - feature_add_role_icingadb_redis.yml
+    - feature_add_role_icingaweb2.yml
+    - feature_add_suse_installation.yml
+    - feature_add_tls_sql_support.yml
+    - feature_monitoring_plugins.yml
+    - feature_subscription_repositories.yml
+    - fix_empty_directories_always_created.yml
+    - fix_parameter_service.yml
+    - fix_pgsql_commands.yml
+    - fix_use_lookup_plugin_for_objects.yaml
+    - fix_variable_usage_in_icingaweb2_modules.yml
+    release_date: '2023-10-10'

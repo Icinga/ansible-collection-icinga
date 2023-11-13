@@ -1,2 +1,0 @@
-minor_changes:
-  - 'The icinga2 role wrongly include parent vars file instead of its own #148'

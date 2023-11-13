@@ -68,9 +68,9 @@
   collections:
     - icinga.icinga
   roles:
-    #- repos
-    #- geerlingguy.postgresql
-    #- icinga2
+    - repos
+    - geerlingguy.postgresql
+    - icinga2
     - icingadb
-    #- icingadb_redis
-    #- icingaweb2
+    - icingadb_redis
+    - icingaweb2

@@ -1,6 +1,7 @@
 icingaweb2_config_dir: /etc/icingaweb2
 icingaweb2_group: icingaweb2
 icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
+icingaweb2_director_service: icinga-director.service
 
 icingaweb2_groups:
   icingaweb2:
@@ -27,7 +28,7 @@ icingaweb2_config:
   global:
     show_stacktraces: 1
     show_application_state_messages: 1
-    config_backend: ini
+    config_resource: icingaweb2_db
     module_path: /usr/share/icingaweb2/modules
   logging:
     log: syslog

@@ -3,7 +3,14 @@
 - name: Converge
   hosts: all
   vars:
-    icingadb_database_import_schema: true
+    icingaweb2_db:
+      type: mysql
+      name: icingaweb
+      host: 127.0.0.1
+      user: icingaweb
+      password: icingaweb
+    icingaweb2_database_import_schema: false
+    icingadb_database_import_schema: false
     mysql_innodb_file_format: barracuda
     mysql_innodb_large_prefix: 1
     mysql_innodb_file_per_table: 1
@@ -12,12 +19,17 @@
       - mariadb-server
       - python3-mysqldb
     mysql_users:
+      - name: icingaweb
+        host: "%"
+        password: icingaweb
+        priv: "icingaweb.*:ALL"
       - name: icingadb
         host: "%"
         password: icingadb
         priv: "icingadb.*:ALL"
     mysql_databases:
       - name: icingadb
+      - name: icingaweb
     icinga2_confd: false
     icinga2_features:
       - name: perfdata
@@ -59,11 +71,27 @@
       - zones.d/main/commands
       - zones.d/main/hosts
       - zones.d/main/services
+    icingaweb2_modules:
+      businessprocess:
+        enabled: true
+        source: package
+        custom_process_files:
+          - name: test.conf
+            src_path: test.conf
   collections:
     - icinga.icinga
-  roles:
-    - repos
-    - icinga2
-    - geerlingguy.mysql
-    - icingadb
-    - icingadb_redis
+  pre_tasks:
+    - ansible.builtin.include_role:
+        name: repos
+    # - ansible.builtin.include_role:
+    #     name: geerlingguy.mysql
+    - ansible.builtin.include_role:
+        name: icinga2
+    - ansible.builtin.include_role:
+        name: icingadb
+    - ansible.builtin.include_role:
+        name: icingadb_redis
+
+  post_tasks:
+    - ansible.builtin.include_role:
+        name: icingaweb2

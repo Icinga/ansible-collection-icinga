@@ -8,6 +8,8 @@ on:
       - 'feature/**'
       - 'fix/**'
       - '!doc/**'
+    paths:
+      - 'plugins/**'
   pull_request:
     branches:
       - 'feature/**'
@@ -24,7 +26,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -49,7 +51,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4

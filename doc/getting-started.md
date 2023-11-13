@@ -28,7 +28,7 @@ ansible-galaxy collection install icinga.icinga
 
 Or pull the collection from the git. (Only useable with Ansible version 2.10.9)
 ```
-ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.2.1
+ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.3.0
 ```
 
 Pre 2.10 you can also clone the repository, manually build and install the collection.
@@ -36,7 +36,7 @@ Pre 2.10 you can also clone the repository, manually build and install the colle
 ```
 git clone https://github.com/Icinga/ansible-collection-icinga.git
 ansible-galaxy collection build ansible-collection-icinga
-ansible-galaxy collection install icinga-icinga-0.2.1.tar.gz
+ansible-galaxy collection install icinga-icinga-0.3.0.tar.gz
 ```
 
 ## Example Playbooks
@@ -113,4 +113,79 @@ This is an example on how to install an Icinga 2 agent instance.
   roles:
     - icinga.icinga.repos
     - icinga.icinga.icinga2
+```
+
+This is a example on how to install Icinga 2 server with Icinga Web 2 and Icinga DB.
+
+```
+- name: Converge
+  hosts: all
+  vars:
+    icingaweb2_db:
+      type: mysql
+      name: icingaweb
+      host: 127.0.0.1
+      user: icingaweb
+      password: icingaweb
+    icingaweb2_db_import_schema: true
+
+    icingadb_database_type: mysql
+    icingadb_database_host: localhost
+    icingadb_database_user: icingadb
+    icingadb_database_password: icingadb
+    icingadb_database_import_schema: true
+
+    # Mysql Configuration on Ubuntu2204
+    mysql_innodb_file_format: barracuda
+    mysql_innodb_large_prefix: 1
+    mysql_innodb_file_per_table: 1
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python3-mysqldb
+    mysql_users:
+      - name: icingaweb
+        host: "%"
+        password: icingaweb
+        priv: "icingaweb.*:ALL"
+      - name: icingadb
+        host: "%"
+        password: icingadb
+        priv: "icingadb.*:ALL"
+    mysql_databases:
+      - name: icingadb
+      - name: icingaweb
+
+
+    icinga2_confd: false
+    icinga2_features:
+      - name: icingadb
+        host: 127.0.0.1
+      - name: notification
+      - name: checker
+      - name: mainlog
+      - name: api
+        ca_host: none
+        endpoints:
+          - name: "{{ ansible_fqdn }}"
+        zones:
+          - name: "main"
+            endpoints:
+              - "{{ ansible_fqdn }}"
+  pre_tasks:
+    - ansible.builtin.include_role:
+        name: icinga.icinga.repos
+    # Geerlingguy mysql role to configure the databases.
+    - ansible.builtin.include_role:
+        name: geerlingguy.mysql
+    - ansible.builtin.include_role:
+        name: icinga.icinga.icinga2
+    - ansible.builtin.include_role:
+        name: icinga.icinga.icingadb
+    - ansible.builtin.include_role:
+        name: icinga.icinga.icingadb_redis
+
+  post_tasks:
+    - ansible.builtin.include_role:
+        name: icinga.icinga.icingaweb2
 ```

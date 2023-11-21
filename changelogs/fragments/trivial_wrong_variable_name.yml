@@ -1,0 +1,2 @@
+trivial:
+  - changing icingaweb2_database_import_schema to icingaweb2_db_import_schema (#206)

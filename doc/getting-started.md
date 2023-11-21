@@ -47,6 +47,36 @@ ansible-galaxy collection build ansible-collection-icinga
 ansible-galaxy collection install icinga-icinga-0.3.0.tar.gz
 ```
 
+## Databases
+
+Icinga2 relies on relational databases for many parts of its functionality. **None** of those databases gets installed by the roles. You need to install and configure them yourself. For doing so, there are many ways available, e.g. the Ansible role [geerlingguy.mysql](https://galaxy.ansible.com/geerlingguy/mysql) for MySQL flavour (both MySQL and MariaDB) or [geerlingguy.postgresql](https://galaxy.ansible.com/geerlingguy/postgresql) PostGresQL:
+
+```yaml
+- name: Configure databases for Icinga2
+  hosts: database
+  vars:
+    mysql_databases:
+      - name: icingadb
+      - name: icingaweb
+      - name: vspheredb
+        encoding: utf8mb4
+        collation: utf8mb4_unicode_ci
+      - name: director
+    mysql_users:
+      - name: icingadb-user
+        host: localhost
+        password: icingadb-password
+        priv: "icingadb.*:ALL"
+    [...]
+  roles:
+    - role: geerlingguy.mysql
+```
+
+> [!NOTE]
+> Schema migrations needed for the respective Icinga components to work will be handled either by the respective roles or by the Icinga components themselves.
+
+
+
 ## Example Playbooks
 
 This is an example on how to install an Icinga 2 server/master instance.

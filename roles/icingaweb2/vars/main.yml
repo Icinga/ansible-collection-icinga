@@ -3,4 +3,3 @@ icingaweb2_module_packages:
   icingadb: icingadb-web
   director: icinga-director
   businessprocess: icinga-businessprocess
-  vspheredb: icingaweb2-module-vspheredb

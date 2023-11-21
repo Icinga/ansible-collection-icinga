@@ -1,11 +1,19 @@
 ### Getting Started
 
-The collection includes two roles in the current version.
+The collection includes six roles in the current version.
 
 * icinga.repos: Role to manage repositories
   * [Documentation: doc/role-repos](role-repos/role-repos.md)
 * icinga.icinga2: Role to install and manage Icinga 2 instances.
   * [Documentation: doc/role-icinga2](role-icinga2/role-icinga2.md)
+* icinga.icingadb: Role to install and manage IcingaDB, Icinga2's new data backend.
+  * [Documentation: doc/role-icingadb](role-icingadb/role-icingadb.md)
+* icinga.icingadb_redis: Role to install and manage Redis, IcingaDB's cache backend.
+  * [Documentation: doc/role-icingadb_redis](role-icingadb_redis/role-icingadb_redis.md)
+* icinga.icingaweb2: Role to install and manage Icinga Web 2.
+  * [Documentation: doc/role-icingaweb2](role-icingaweb2/role-icingaweb2.md)
+* icinga.monitoring_plugins: Role to install and manage Icinga2 compatible monitoring plugins.
+  * [Documentation: doc/role-monitoring_plugins](role-monitoring_plugins/role-monitoring_plugins.md)
 
 
 ---

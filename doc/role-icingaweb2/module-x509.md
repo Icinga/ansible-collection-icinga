@@ -72,7 +72,7 @@ To import the database schema use `database` dictionary with the following varia
 | `port` | `int` | Defines the database port to connect to. | `3306` or `5432` |
 | `user` | `string` | Defines database user | `x509` |
 | `name` | `String` | Defines the database to connect to. | `x509` |
-| `password` | `String` | Defines the database password to connect with. | `x509` |
+| `password` | `String` | Defines the database password to connect with. | OMITTED |
 | `ssl_mode` | `String` | Clients attempt to connect using encryption, falling back to an unencrypted connection if an encrypted connection cannot be established |**n/a** |
 |`ssl_ca`| `String`| Defines the path to the ca certificate for client authentication. | **n/a** |
 |`ssl_cert`|`String`| Defines the path to the certificate for client authentication. | **n/a** |

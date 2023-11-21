@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fix incorrect templating when passing integers in some parts of the Icinga Web 2 configuration.

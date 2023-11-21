@@ -7,6 +7,10 @@ The role icingaweb2 installs and configures Icinga Web 2 and its modules.
 * [IcingaDB](./module-icingadb.md)
 * [Monitoring](./module-monitoring.md)
 
+## Databases
+
+Icingaweb2 and some of its modules rely on a relational database to persist data. These databases **won't** be created by this role - you need to deploy and configure them in advance. For more information, see the [Databases](../getting-started.md#databases) section in the getting started guide.
+
 ## Variables
 
 ### Icinga Web 2 DB Configuration

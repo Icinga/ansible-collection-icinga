@@ -49,7 +49,7 @@ ansible-galaxy collection install icinga-icinga-0.3.0.tar.gz
 
 ## Databases
 
-Icinga2 relies on relational databases for many parts of its functionality. **None** of those databases gets installed by the roles. You need to install and configure them yourself. For doing so, there are many ways available, e.g. the Ansible role [geerlingguy.mysql](https://galaxy.ansible.com/geerlingguy/mysql) for MySQL flavour (both MySQL and MariaDB) or [geerlingguy.postgresql](https://galaxy.ansible.com/geerlingguy/postgresql) PostGresQL:
+Icinga2 relies on relational databases for many parts of its functionality. **None** of those databases get installed by the roles. You need to install and configure them yourself. For doing so, there are many ways available, e.g. the Ansible role [geerlingguy.mysql](https://galaxy.ansible.com/geerlingguy/mysql) for MySQL flavours (both MySQL and MariaDB) or [geerlingguy.postgresql](https://galaxy.ansible.com/geerlingguy/postgresql) for PostGresQL:
 
 ```yaml
 - name: Configure databases for Icinga2

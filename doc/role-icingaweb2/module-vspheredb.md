@@ -1,10 +1,13 @@
-## Module Vspheredb
+## Module vSphereDB
 
-The module Icinga Vspheredb provides 
+> [!WARNING]
+> This module can only be installed from source as it has not been packaged yet.
+> Therefore, `git` is a needed dependency to be present on the target system.
+> The role will then install `vspheredb` and its dependency `incubator`.
 
 ## Configuration
 
-The general module parameter like `enabled` and `source` can be applied here.
+The general module parameter like `enabled` can be applied here.
 
 For every config file, create a dictionary with sections as keys and the parameters as values. For all parameters please check the [module documentation](https://icinga.com/docs/icinga-vsphere-integration/latest/doc/01-Installation/)
 

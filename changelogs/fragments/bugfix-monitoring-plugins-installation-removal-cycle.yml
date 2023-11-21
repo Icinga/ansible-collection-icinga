@@ -1,2 +1,0 @@
-bugfixes:
-  - Fix incorrect behaviour within `monitoring_plugins` that lead to a cycle of installation and removal of the same packages within one play

@@ -1,0 +1,39 @@
+---
+- name: "Install module from source: {{ _module }}"
+  when: vars['icingaweb2_modules'][_module]['source'] == 'git'
+  vars:
+    _module: "{{ item.key }}"
+  block:
+    - name: Download release {{ icingaweb2_module_source_versions[_module] }}
+      ansible.builtin.get_url:
+        url: https://github.com/Icinga/icingaweb2-module-{{ _module }}/archive/refs/tags/{{ icingaweb2_module_source_versions[_module] }}.tar.gz
+        dest: /tmp/
+        mode: "0644"
+      register: _download
+  
+    - name: Extract source archive
+      ansible.builtin.unarchive:
+        src: "{{ _download.dest }}"
+        dest: "{{ _download.dest | dirname }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+        remote_src: true
+
+    - name: Create module directory
+      ansible.builtin.file:
+        state: directory
+        dest: "{{ icingaweb2_config.global.module_path }}/{{ _module }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+
+    - name: Move module to module path
+      ansible.builtin.copy:
+        src: "{{ _download.dest | dirname }}/{{ _download.dest | basename | regex_replace('\\.tar\\.gz', '') }}/"
+        dest: "{{ icingaweb2_config.global.module_path }}/{{ _module }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+        force: true
+        remote_src: true

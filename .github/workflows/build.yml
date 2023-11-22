@@ -9,6 +9,11 @@ on:
       - 'feature/**'
       - 'fix/**'
       - '!doc/**'
+    paths:
+      - roles/**
+      - plugins/**
+      - molecule/**
+      - tests/**
   pull_request:
     branches:
       - 'feature/**'

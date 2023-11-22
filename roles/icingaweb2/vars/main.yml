@@ -6,4 +6,8 @@ icingaweb2_module_packages:
   businessprocess: icinga-businessprocess
 
 icingaweb2_module_source_versions:
+  businessprocess: v2.5.0
+  director: v1.11.0
+  icingadb: v1.1.1
   reporting: v1.0.0
+  x509: v1.3.1

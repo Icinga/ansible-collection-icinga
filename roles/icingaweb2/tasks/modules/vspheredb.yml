@@ -1,63 +1,4 @@
 ---
-# Needed because the role sets different permissions for modules and git fails when checking it in task #2
-- name: Module vSphereDB | Clean up module directory
-  ansible.builtin.file:
-    state: absent
-    path: "{{ icingaweb2_config.global.module_path }}/{{ module }}"
-  loop:
-    - vspheredb
-    - incubator
-  loop_control:
-    loop_var: module  
-
-- name: Module vSphereDB | Install modules from source
-  ansible.builtin.git:
-    name: https://github.com/icinga/icingaweb2-module-{{ repo_info.name }}
-    dest: "{{ icingaweb2_config.global.module_path }}/{{ repo_info.name }}"
-    version: "{{ repo_info.version }}"
-  loop:
-    - name: vspheredb
-      version: v1.7.1
-    - name: incubator
-      version: v0.20.0
-  loop_control:
-    loop_var: repo_info
-
-- name: Module vSphereDB | Ensure incubator is enabled
-  ansible.builtin.command: icingacli module enable incubator
-
-- name: Module vSphereDB | Ensure service user exists
-  ansible.builtin.user:
-    name: icingavspheredb
-    group: icingaweb2
-    system: true
-    home: /var/lib/icingavspheredb
-    shell: /bin/false
-
-- name: Module vSphereDB | Ensure service user home exists
-  ansible.builtin.file:
-    state: directory
-    dest: /var/lib/icingavspheredb
-    owner: icingavspheredb
-    group: icingaweb2
-    mode: "0750"
-
-- name: Module vSphereDB | Ensure service file is installed
-  ansible.builtin.copy:
-    src: "{{ icingaweb2_config.global.module_path }}/vspheredb/contrib/systemd/icinga-vspheredb.service"
-    dest: "/etc/systemd/system/{{ icingaweb2_vspheredb_service }}"
-    remote_src: true
-    mode: "0644"
-
-- name: Module vSphereDB | Ensure socket file is copied
-  ansible.builtin.copy:
-    src: icinga-vspheredb.conf
-    dest: /etc/tmpfiles.d/{{ icingaweb2_vspheredb_service.replace('.service', '') }}.con
-    mode: 0644
-
-- name: Module vSphereDB | Ensure socket file is installed
-  ansible.builtin.command: systemd-tmpfiles --create /etc/tmpfiles.d/{{ icingaweb2_vspheredb_service.replace('.service', '') }}.conf
-
 - name: Module vSphereDB | Ensure config directory
   ansible.builtin.file:
     state: directory
@@ -77,9 +18,46 @@
     _files:
       - config
 
-- name: Module vSphereDB | Ensure daemon is running
-  ansible.builtin.service:
-    name: "{{ icingaweb2_vspheredb_service }}"
-    state: started
-    enabled: yes
-  failed_when: false  # this is a bit buggy because we only activate the module later in the role
+- name: Module vSphereDB | Check for pending migrations
+  ansible.builtin.shell:
+    cmd: icingacli vspheredb migration pending
+  register: _pending
+  changed_when: _pending.rc|int == 0
+  failed_when: _pending.stdout|length > 0
+  when: vars['icingaweb2_modules']['vspheredb']['import_schema'] is defined and vars['icingaweb2_modules']['vspheredb']['import_schema'] and vars['icingaweb2_modules']['vspheredb']['config'] is defined
+
+- name: Module vSphereDB | Ensure installation from source is complete
+  when: icingaweb2_modules['vspheredb']['source'] == 'git'
+  block:
+    - name: Module vSphereDB | Ensure service user exists
+      ansible.builtin.user:
+        name: icingavspheredb
+        group: icingaweb2
+        system: true
+        home: /var/lib/icingavspheredb
+        shell: /bin/false
+
+    - name: Module vSphereDB | Ensure service user home exists
+      ansible.builtin.file:
+        state: directory
+        dest: /var/lib/icingavspheredb
+        owner: icingavspheredb
+        group: icingaweb2
+        mode: "0750"
+
+    - name: Module vSphereDB | Ensure service file is installed
+      ansible.builtin.copy:
+        src: "{{ icingaweb2_config.global.module_path }}/vspheredb/contrib/systemd/icinga-vspheredb.service"
+        dest: "/etc/systemd/system/icinga-vspheredb.service"
+        remote_src: true
+        mode: "0644"
+
+    - name: Module vSphereDB | Ensure socket file is copied
+      ansible.builtin.copy:
+        src: icinga-vspheredb.conf
+        dest: /etc/tmpfiles.d/icinga-vspheredb.conf
+        mode: 0644
+
+    - name: Module vSphereDB | Ensure socket file is installed
+      ansible.builtin.command: systemd-tmpfiles --create /etc/tmpfiles.d/icinga-vspheredb.conf
+

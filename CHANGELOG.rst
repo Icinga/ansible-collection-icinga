@@ -5,6 +5,34 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
+v0.3.1
+======
+
+Release Summary
+---------------
+
+This is a bugfix release
+
+Major Changes
+-------------
+
+- Added Installation of Business Process Modeling Module
+
+Minor Changes
+-------------
+
+- Adds password capabilities to icingadb-redis configuration (#202)
+- support Raspbian armhf repos (#203)
+
+Bugfixes
+--------
+
+- Fix incorrect behaviour within `monitoring_plugins` that lead to a cycle of installation and removal of the same packages within one play
+- Fix incorrect templating when passing integers in some parts of the Icinga Web 2 configuration.
+- Fix to use correct URL for Debian Ubuntu (#195)
+- Fixed typo in api.yml file (exits to exists)
+- Role Icingaweb2: Adjust preferences setting to store preferences in database
+
 v0.3.0
 ======
 

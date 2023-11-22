@@ -1,0 +1,111 @@
+---
+- name: Module Reporting | Install from source
+  when: vars['icingaweb2_modules'][_module]['source'] == 'git'
+  vars:
+    _module: "{{ item.key }}"
+  block:
+    - name: Module Reporting | Download release {{ icingaweb2_module_source_versions[_module] }}
+      ansible.builtin.get_url:
+        url: https://github.com/Icinga/icingaweb2-module-reporting/archive/refs/tags/{{ icingaweb2_module_source_versions[_module] }}.tar.gz
+        dest: /tmp/
+        mode: "0644"
+      register: _download
+
+    - name: Module Reporting | Extract source archive
+      ansible.builtin.unarchive:
+        src: "{{ _download.dest }}"
+        dest: "{{ _download.dest | dirname }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+        remote_src: true
+
+    - name: Module Reporting | Create module directory
+      ansible.builtin.file:
+        state: directory
+        dest: "{{ icingaweb2_config.global.module_path }}/{{ _module }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+
+    - name: Module Reporting | Move module to module path
+      ansible.builtin.copy:
+        src: "{{ _download.dest | dirname }}/{{ _download.dest | basename | regex_replace('\\.tar\\.gz', '') }}/"
+        dest: "{{ icingaweb2_config.global.module_path }}/{{ _module }}"
+        owner: "{{ icingaweb2_httpd_user }}"
+        group: "{{ icingaweb2_group }}"
+        mode: "0755"
+        force: true
+        remote_src: true
+
+- name: Module Reporting | Ensure config directory
+  ansible.builtin.file:
+    state: directory
+    dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}"
+    owner: "{{ icingaweb2_httpd_user }}"
+    group: "{{ icingaweb2_group }}"
+    mode: "2770"
+
+- name: Module Reporting | Manage config files
+  ansible.builtin.include_tasks: manage_module_config.yml
+  loop: "{{ _files }}"
+  loop_control:
+    loop_var: _file
+  when: vars['icingaweb2_modules'][_module][_file] is defined
+  vars:
+    _module: "{{ item.key }}"
+    _files:
+      - config
+
+- name: Module Reporting | Manage Schema
+  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
+  vars:
+    _module: "{{ item.key }}"
+  block:
+    - name: Module Reporting | Prepare _db informations
+      ansible.builtin.set_fact:
+        _db:
+          host: "{{ vars['icingaweb2_modules'][_module]['database']['host'] | default('localhost') }}"
+          port: "{{ vars['icingaweb2_modules'][_module]['database']['port'] | default('3306') }}"
+          user: "{{ vars['icingaweb2_modules'][_module]['database']['user'] | default('reporting') }}"
+          password: "{{ vars['icingaweb2_modules'][_module]['database']['password'] | default(omit) }}"
+          name: "{{ vars['icingaweb2_modules'][_module]['database']['name'] | default('reporting') }}"
+          ssl_mode: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_mode'] | default(omit) }}"
+          ssl_ca: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_ca'] | default(omit) }}"
+          ssl_cert: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_cert'] | default(omit) }}"
+          ssl_key: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_key'] | default(omit) }}"
+          ssl_cipher: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_cipher'] | default(omit) }}"
+          ssl_extra_options: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_extra_options'] | default(omit) }}"
+          schema_path_mysql: /usr/share/icingaweb2/modules/reporting/schema/mysql.schema.sql
+          schema_path_pgsql: /usr/share/icingaweb2/modules/reporting/schema/pgsql.schema.sql
+          select_query: "select * from reporting_schema"
+          type: "{{ vars['icingaweb2_modules'][_module]['database']['type'] | default(omit) }}"
+
+    - ansible.builtin.fail:
+        fail_msg: "No database type was provided"
+      when: vars['icingaweb2_modules'][_module]['database']['type'] is not defined
+
+    - ansible.builtin.fail:
+        fail_msg: "Invalid database type was provided. [Supported: mysql, pgsql]"
+      when: _db.type not in ['mysql', 'pgsql']
+
+    - name: Module Reporting | Import MySQL Schema
+      ansible.builtin.include_tasks: ../manage_mysql_imports.yml
+      when: _db.type == 'mysql'
+
+    - name: Module Reporting | Import PostgreSQL Schema
+      ansible.builtin.include_tasks: ../manage_pgsql_imports.yml
+      when: _db.type == 'pgsql'
+
+    - name: Module Reporting | empty _db var
+      ansible.builtin.set_fact:
+        _db: {}
+
+- name: Module Reporting | Configure daemon
+  ansible.builtin.copy:
+    src: "{{ icingaweb2_config.global.module_path }}/reporting/config/systemd/icinga-reporting.service"
+    dest: /etc/systemd/system/icinga-reporting.service
+    mode: "0644"
+    owner: root
+    group: root
+    remote_src: true

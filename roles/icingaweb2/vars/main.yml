@@ -4,3 +4,6 @@ icingaweb2_module_packages:
   director: icinga-director
   x509: icinga-x509
   businessprocess: icinga-businessprocess
+
+icingaweb2_module_source_versions:
+  reporting: v1.0.0

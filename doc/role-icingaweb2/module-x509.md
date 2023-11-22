@@ -2,12 +2,7 @@
 
 ### Variables and Configuration
 
-The general module parameter like `enabled` and `source` can be applied here.
-
-| Variable | Value      |
-|----------|------------|
-| enabled  | true/false |
-| source   | package    |
+The general module parameters like `enabled` and `source` can be applied here.
 
 #### Section configuration
 

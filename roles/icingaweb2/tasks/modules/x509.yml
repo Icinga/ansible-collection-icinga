@@ -64,3 +64,13 @@
     _module: "{{ item.key }}"
   when: vars['icingaweb2_modules'][_module]['certificate_files'] is defined
   changed_when: false
+
+- name: Module x509 | Ensure daemon service file is present
+  ansible.builtin.copy:
+    src: "{{ icingaweb2_config.global.module_path }}/x509/config/systemd/icinga-x509.service"
+    dest: /etc/systemd/system/icinga-x509.service
+    mode: "0644"
+    owner: root
+    group: root
+    remote_src: yes
+  when: icingaweb2_modules['x509']['source'] == 'git'

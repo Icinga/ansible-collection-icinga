@@ -43,9 +43,3 @@
   ansible.builtin.shell:
     cmd: icingacli director kickstart run
   when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and vars['icingaweb2_modules']['director']['run_kickstart'] and vars['icingaweb2_modules']['director']['kickstart'] is defined and _required.rc|int == 0
-
-- name: Module Director | Ensure daemon is running
-  ansible.builtin.service:
-    name: "{{ icingaweb2_director_service }}"
-    state: started
-    enabled: yes

@@ -4,10 +4,10 @@ galaxy_info:
     - Daniel Bodky <daniel.bodky@netways.de>
   description: Role to install, configure or manage icingadb-redis instance.
   license: Apache-2.0
-  min_ansible_version: 2.9
+  min_ansible_version: "2.9"
   platforms:
     - name: EL
-      versions: ['7']
+#      versions: ['7']
     - name: Debian
       versions: ['buster','bullseye']
     - name: Ubuntu
@@ -23,4 +23,4 @@ galaxy_info:
     - icingadb
     - redis
     - redis
-dependencies: []
+# dependencies: []

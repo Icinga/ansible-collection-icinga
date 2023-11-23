@@ -1,6 +1,6 @@
 ---
-- name: "{{ icinga2_state }} service icinga2"
-  service:
+- name: "Set service icinga2 to {{ icinga2_state }}"
+  ansible.builtin.service:
     name: icinga2
     state: "{{ icinga2_state }}"
     enabled: "{{ icinga2_enabled }}"

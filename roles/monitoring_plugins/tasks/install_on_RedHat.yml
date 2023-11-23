@@ -1,7 +1,7 @@
 ---
 
 - name: Activate epel repository
-  include_role:
+  ansible.builtin.include_role:
     name: icinga.icinga.repos
   vars:
     repos_icinga_epel: true
@@ -12,7 +12,7 @@
 
 - name: Yum - install requested packages
   become: yes
-  yum:
+  ansible.builtin.yum:
     state: present
     name: "{{ needed_packages }}"
     update_cache: true
@@ -23,7 +23,7 @@
 
 - name: Dnf - install requested packages
   become: yes
-  dnf:
+  ansible.builtin.dnf:
     state: present
     name: "{{ needed_packages }}"
     update_cache: true
@@ -35,7 +35,7 @@
 
 - name: Yum - remove non-requested packages
   become: yes
-  yum:
+  ansible.builtin.yum:
     state: absent
     name: "{{ (unwanted_packages | difference(['nagios-plugins'])) if monitoring_plugins_icinga_check_commands else unwanted_packages }}"
     autoremove: "{{ monitoring_plugins_icinga_autoremove }}"

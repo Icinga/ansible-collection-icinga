@@ -1,6 +1,6 @@
 ---
 - name: Yum - add Icinga repository (stable)
-  yum_repository:
+  ansible.builtin.yum_repository:
     file: /etc/yum.repos.d/ICINGA-release
     name: icinga-stable-release
     description: "{{ repos_icinga_yum_stable_description }}"
@@ -12,7 +12,7 @@
     password: "{{ repos_icinga_subscription_password | default(omit) }}"
 
 - name: Yum - add Icinga repository (testing)
-  yum_repository:
+  ansible.builtin.yum_repository:
     file: /etc/yum.repos.d/ICINGA-testing
     name: icinga-testing-builds
     description: "{{ repos_icinga_yum_testing_description }}"
@@ -24,7 +24,7 @@
     password: "{{ repos_icinga_subscription_password | default(omit) }}"
 
 - name: Yum - add Icinga repository (snapshot)
-  yum_repository:
+  ansible.builtin.yum_repository:
     file: /etc/yum.repos.d/ICINGA-snapshot
     name: icinga-snapshot-builds
     description: "{{ repos_icinga_yum_snapshot_description }}"
@@ -36,13 +36,13 @@
     password: "{{ repos_icinga_subscription_password | default(omit) }}"
 
 - name: Yum - add EPEL repository
-  yum:
+  ansible.builtin.yum:
     name: epel-release
     state: present
   when: repos_icinga_epel
 
 - name: Yum - add SCL repositories
-  yum:
+  ansible.builtin.yum:
     name: centos-release-scl
     state: present
   when:

@@ -1,6 +1,6 @@
 ---
 - name: Apt - ensure apt keyrings directory
-  file:
+  ansible.builtin.file:
     state: directory
     path: /etc/apt/keyrings
     owner: root
@@ -18,19 +18,19 @@
 
 - name: Apt - add Icinga repository (stable)
   become: yes
-  apt_repository:
+  ansible.builtin.apt_repository:
     filename: /etc/apt/sources.list.d/icinga
     repo: "{{ repos_icinga_apt_stable_deb }}"
     state: "{{ 'present' if repos_icinga_stable else 'absent' }}"
 - name: Apt - add Icinga repository (testing)
   become: yes
-  apt_repository:
+  ansible.builtin.apt_repository:
     filename: /etc/apt/sources.list.d/icinga
     repo: "{{ repos_icinga_apt_testing_deb }}"
     state: "{{ 'present' if repos_icinga_testing else 'absent' }}"
 - name: Apt - add Icinga repository (snapshot)
   become: yes
-  apt_repository:
+  ansible.builtin.apt_repository:
     filename: /etc/apt/sources.list.d/icinga
     repo: "{{ repos_icinga_apt_snapshot_deb }}"
     state: "{{ 'present' if repos_icinga_snapshot else 'absent' }}"

@@ -1,12 +1,12 @@
 ---
 
-- gather_facts:
+- ansible.builtin.gather_facts:
 
 - name: Include OS family specific vars
-  include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
 
 - name: Include OS distribution/version specific vars
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -18,17 +18,17 @@
         - "{{ role_path }}/vars"
 
 - name: Clean up variable discrepancy - remove entries
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins_icinga_available_packages: "{{ monitoring_plugins_icinga_available_packages | difference(monitoring_plugins_icinga_available_packages_exclude) }}"
   when: monitoring_plugins_icinga_available_packages_exclude is defined
 
 - name: Clean up variable discrepancy - add entries
-  set_fact:
+  ansible.builtin.set_fact:
     monitoring_plugins_icinga_available_packages: "{{ monitoring_plugins_icinga_available_packages + monitoring_plugins_icinga_available_packages_include }}"
   when: monitoring_plugins_icinga_available_packages_include is defined
 
 - name: Make sure that check plugins are requested and that they are defined
-  assert:
+  ansible.builtin.assert:
     that:
       - monitoring_plugins_icinga_check_commands is defined
       - diff | length == 0
@@ -37,13 +37,13 @@
     diff: "{{ monitoring_plugins_icinga_check_commands | default([]) | difference(monitoring_plugins_icinga_available_packages | map(attribute='name') | list) | difference(['all']) }}"
 
 - name: Create list of packages to be installed
-  set_fact:
+  ansible.builtin.set_fact:
     needed_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') if 'all' in monitoring_plugins_icinga_check_commands else (needed_packages | default([]) + (monitoring_plugins_icinga_available_packages | selectattr('name','equalto', item) | map(attribute='pkg_name') | list)) | unique }}"
   loop: "{{ monitoring_plugins_icinga_check_commands }}"
 
 - name: Create list of packages to be removed
-  set_fact:
+  ansible.builtin.set_fact:
     unwanted_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') | difference(needed_packages | default ([])) }}"
 
 - name: Install
-  include_tasks: "install_on_{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "install_on_{{ ansible_os_family }}.yml"

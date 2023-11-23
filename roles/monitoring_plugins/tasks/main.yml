@@ -31,10 +31,10 @@
   ansible.builtin.assert:
     that:
       - monitoring_plugins_icinga_check_commands is defined
-      - diff | length == 0
-    fail_msg: "The following requested check command names (variable 'monitoring_plugins_icinga_check_commands') are not recognized as available check plugins on this host: {{ diff }}"
+      - plugin_diff | length == 0
+    fail_msg: "The following requested check command names (variable 'monitoring_plugins_icinga_check_commands') are not recognized as available check plugins on this host: {{ plugin_diff }}"
   vars:
-    diff: "{{ monitoring_plugins_icinga_check_commands | default([]) | difference(monitoring_plugins_icinga_available_packages | map(attribute='name') | list) | difference(['all']) }}"
+    plugin_diff: "{{ monitoring_plugins_icinga_check_commands | default([]) | difference(monitoring_plugins_icinga_available_packages | map(attribute='name') | list) | difference(['all']) }}"
 
 - name: Create list of packages to be installed
   ansible.builtin.set_fact:

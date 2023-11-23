@@ -1,5 +1,5 @@
 ---
-- name: icingadb-redis-restart
+- name: Icingadb-redis-restart
   ansible.builtin.service:
     name: "{{ icingadb_redis_service_name }}"
     state: restarted

@@ -6,4 +6,4 @@
     owner: "{{ icingadb_redis_user }}"
     group: "{{ icingadb_redis_group }}"
     mode: 0640
-  notify: icingadb-redis-restart
+  notify: Icingadb-redis-restart

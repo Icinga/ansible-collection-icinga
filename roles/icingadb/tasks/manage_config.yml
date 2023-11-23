@@ -6,4 +6,4 @@
     owner: "{{ icingadb_user }}"
     group: "{{ icingadb_group }}"
     mode: 0640
-  notify: icingadb-restart
+  notify: Icingadb-restart

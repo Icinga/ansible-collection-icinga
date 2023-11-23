@@ -57,7 +57,7 @@
 
     - name: Ensure admin user exists
       ansible.builtin.shell: >-
-        echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
+        set -o pipefail && echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" | {{ _tmp_pgsqlcmd }} -w
       when: '"(0 rows)" in _icingaweb2_db_user.stdout_lines'
       run_once: yes

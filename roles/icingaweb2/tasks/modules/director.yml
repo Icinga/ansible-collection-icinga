@@ -19,7 +19,7 @@
       - config
 
 - name: Module Director | Check for pending migrations
-  ansible.builtin.shell:
+  ansible.builtin.shell:  # noqa: command-instead-of-shell
     cmd: icingacli director migration pending
   register: _pending
   changed_when: _pending.rc|int == 0
@@ -27,12 +27,12 @@
   when: vars['icingaweb2_modules']['director']['import_schema'] is defined and vars['icingaweb2_modules']['director']['import_schema'] and vars['icingaweb2_modules']['director']['config'] is defined
 
 - name: Module Director | Apply pending migrations
-  ansible.builtin.shell:
+  ansible.builtin.shell:  # noqa: command-instead-of-shell
     cmd: icingacli director migration run
   when: vars['icingaweb2_modules']['director']['import_schema'] is defined and vars['icingaweb2_modules']['director']['import_schema'] and vars['icingaweb2_modules']['director']['config'] is defined and _pending.rc|int == 0
 
 - name: Module Director | Check if kickstart is required
-  ansible.builtin.shell:
+  ansible.builtin.shell:  # noqa: command-instead-of-shell
     cmd: icingacli director kickstart required
   register: _required
   changed_when: _required.rc|int == 0
@@ -40,7 +40,7 @@
   when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and vars['icingaweb2_modules']['director']['run_kickstart'] and vars['icingaweb2_modules']['director']['kickstart'] is defined
 
 - name: Module Director | Check if kickstart is required
-  ansible.builtin.shell:
+  ansible.builtin.shell:  # noqa: command-instead-of-shell
     cmd: icingacli director kickstart run
   when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and vars['icingaweb2_modules']['director']['run_kickstart'] and vars['icingaweb2_modules']['director']['kickstart'] is defined and _required.rc|int == 0
 

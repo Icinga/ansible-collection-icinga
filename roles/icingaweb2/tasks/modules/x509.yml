@@ -21,6 +21,9 @@
       - sni
 
 - name: Module x509 | Manage Schema
+  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
+  vars:
+    _module: "{{ item.key }}"
   block:
     - name: Module x509 | Prepare _db informations
       ansible.builtin.set_fact:
@@ -36,23 +39,30 @@
           ssl_key: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_key'] | default(omit) }}"
           ssl_cipher: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_cipher'] | default(omit) }}"
           ssl_extra_options: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_extra_options'] | default(omit) }}"
-          schema_path: /usr/share/icingaweb2/modules/x509/schema/mysql.schema.sql
+          schema_path_mysql: /usr/share/icingaweb2/modules/x509/schema/mysql.schema.sql
+          schema_path_pgsql: /usr/share/icingaweb2/modules/x509/schema/pgsql.schema.sql
           select_query: "select * from x509_certificate"
-      when: vars['icingaweb2_modules'][_module]['database']['type'] | default('mysql') == 'mysql'
+          type: "{{ vars['icingaweb2_modules'][_module]['database']['type'] | default(omit) }}"
 
     - ansible.builtin.fail:
-        fail_msg: "The Database type select is not supported, {{ vars['icingaweb2_modules'][_module]['database']['type'] }} [Supported=mysql]"
-      when: vars['icingaweb2_modules'][_module]['database']['type'] is defined and vars['icingaweb2_modules'][_module]['database']['type'] != 'mysql'
+        fail_msg: No database type was provided
+      when: vars['icingaweb2_modules'][_module]['database']['type'] is not defined
 
-    - name: Module x509 | Import Schema
+    - ansible.builtin.fail:
+        fail_msg: "Invalid database type was provided. [Supported: mysql, pgsql]"
+      when: _db.type not in ['mysql', 'pgsql']
+
+    - name: Module x509 | Import MySQL Schema
       ansible.builtin.include_tasks: ../manage_mysql_imports.yml
+      when: _db.type == 'mysql'
+
+    - name: Module x509 | Import PostgresQL Schema
+      ansible.builtin.include_tasks: ../manage_pgsql_imports.yml
+      when: _db.type == 'pgsql'
 
     - name: Module x509 | empty _db var
       ansible.builtin.set_fact:
         _db: {}
-  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
-  vars:
-    _module: "{{ item.key }}"
 
 - name: Module x509 | Import Certificates
   ansible.builtin.shell: >

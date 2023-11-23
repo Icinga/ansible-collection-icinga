@@ -1,0 +1,37 @@
+---
+- name: Check Database Credentials
+  ansible.builtin.assert:
+    that:
+      - _db['user'] is defined
+      - _db['password'] is defined
+    fail_msg: "No database credentials defined."
+
+- name: Build pgsql command
+  ansible.builtin.set_fact:
+    _tmp_pgsqlcmd: >-
+      PGPASSWORD="{{ _db['password'] }}"
+      psql
+      "{% if _db['host'] | default('localhost') != 'localhost' %} host={{ _db['host'] }}{%- endif %}
+      {% if _db['port'] is defined %} port={{ _db['port'] }}{%- endif %}
+      user={{ _db['user'] }}
+      dbname={{ _db['name'] }}
+      {% if _db['ssl_mode'] is defined %} sslmode={{ _db['ssl_mode'] | default('require') }}{%- endif %}
+      {% if _db['ssl_cert'] is defined %} sslcert={{ _db['ssl_cert'] }}{%- endif %}
+      {% if _db['ssl_key'] is defined %} sslkey={{ _db['ssl_key'] }}{%- endif %}
+      {% if _db['ssl_extra_options'] is defined %} {{ _db['ssl_extra_options'] }}{%- endif %}"
+
+- name: PostgresQL check for db schema
+  ansible.builtin.shell: >
+    {{ _tmp_pgsqlcmd }}
+    -tq -c "{{ _db['select_query'] }}"
+  failed_when: false
+  changed_when: false
+  check_mode: false
+  register: _db_schema
+
+- name: PostgresQL import  db schema
+  ansible.builtin.shell: >
+    {{ _tmp_pgsqlcmd }}
+    < {{ _db['schema_path_pgsql'] }}
+  when: _db_schema.rc != 0
+  run_once: yes

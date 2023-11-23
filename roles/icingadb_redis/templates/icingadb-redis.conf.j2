@@ -120,8 +120,8 @@ lua-time-limit {{ icingadb_redis_lua_time_limit }}
 # cluster-announce-bus-port 6380
 
 ################################## SLOW LOG ###################################
-slowlog-log-slower-than {{ icingadb_slowlog_log_slower_than }}
-slowlog-max-len {{ icingadb_slowlog_max_len }}
+slowlog-log-slower-than {{ icingadb_redis_slowlog_log_slower_than }}
+slowlog-max-len {{ icingadb_redis_slowlog_max_len }}
 
 ################################ LATENCY MONITOR ##############################
 latency-monitor-threshold {{ icingadb_redis_latency_monitor_threshold }}

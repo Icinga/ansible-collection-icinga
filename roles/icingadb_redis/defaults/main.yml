@@ -49,8 +49,8 @@ icingadb_redis_auto_aof_rewrite_min_size: 64mb
 icingadb_redis_aof_load_truncated: 'yes'
 icingadb_redis_aof_use_rdb_preamble: 'yes'
 icingadb_redis_lua_time_limit: 5000
-icingadb_slowlog_log_slower_than: 10000
-icingadb_slowlog_max_len: 128
+icingadb_redis_slowlog_log_slower_than: 10000
+icingadb_redis_slowlog_max_len: 128
 icingadb_redis_latency_monitor_threshold: 0
 icingadb_redis_client_output_buffer_limits:
   - normal 0 0 0

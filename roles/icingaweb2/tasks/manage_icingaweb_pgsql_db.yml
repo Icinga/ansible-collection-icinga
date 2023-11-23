@@ -9,6 +9,7 @@
   when: icingaweb2_priv_db_password is undefined and icingaweb2_priv_db_user is undefined
 
 - name: PostgreSQL import IDO schema
+  when: icingaweb2_db_import_schema | default(False)
   block:
     - name: Build psql command
       ansible.builtin.set_fact:
@@ -39,9 +40,11 @@
         -w -f /usr/share/icingaweb2/schema/pgsql.schema.sql
       when: _icingaweb2_db_schema.rc != 0
       run_once: yes
-  when: icingaweb2_db_import_schema | default(False)
 
 - name: Ensure Icinga Web User
+  when:
+    - icingaweb2_admin_username is defined
+    - icingaweb2_admin_password is defined
   block:
     - name: PostgreSQL check for icingaweb admin user
       ansible.builtin.shell: >
@@ -58,6 +61,3 @@
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" | {{ _tmp_pgsqlcmd }} -w
       when: '"(0 rows)" in _icingaweb2_db_user.stdout_lines'
       run_once: yes
-  when:
-    - icingaweb2_admin_username is defined
-    - icingaweb2_admin_password is defined

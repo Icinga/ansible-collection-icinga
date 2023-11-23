@@ -15,6 +15,7 @@
   when: icingaweb2_priv_db_password is defined and icingaweb2_priv_db_user is defined
 
 - name: Ensure Icinga Web
+  when: icingaweb2_db_import_schema | default(False)
   block:
     - name: Build mysql command
       ansible.builtin.set_fact:
@@ -46,9 +47,11 @@
         < /usr/share/icingaweb2/schema/mysql.schema.sql
       when: _icingaweb2_db_schema.rc != 0
       run_once: yes
-  when: icingaweb2_db_import_schema | default(False)
 
 - name: Ensure Icinga Web User
+  when:
+    - icingaweb2_admin_username is defined
+    - icingaweb2_admin_password is defined
   block:
     - name: MySQL check for icingaweb db schema
       ansible.builtin.shell: >
@@ -65,6 +68,3 @@
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" |  {{ _tmp_mysqlcmd }} -Ns
       when: _icingaweb2_db_user.stdout_lines | length <= 0
       run_once: yes
-  when:
-    - icingaweb2_admin_username is defined
-    - icingaweb2_admin_password is defined

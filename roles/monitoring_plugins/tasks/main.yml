@@ -38,12 +38,12 @@
 
 - name: Create list of packages to be installed
   ansible.builtin.set_fact:
-    needed_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') if 'all' in monitoring_plugins_icinga_check_commands else (needed_packages | default([]) + (monitoring_plugins_icinga_available_packages | selectattr('name','equalto', item) | map(attribute='pkg_name') | list)) | unique }}"
+    needed_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') if 'all' in monitoring_plugins_icinga_check_commands else (needed_packages | default([]) + (monitoring_plugins_icinga_available_packages | selectattr('name', 'equalto', item) | map(attribute='pkg_name') | list)) | unique }}"
   loop: "{{ monitoring_plugins_icinga_check_commands }}"
 
 - name: Create list of packages to be removed
   ansible.builtin.set_fact:
-    unwanted_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') | difference(needed_packages | default ([])) }}"
+    unwanted_packages: "{{ monitoring_plugins_icinga_available_packages | map(attribute='pkg_name') | difference(needed_packages | default([])) }}"
 
 - name: Install
   ansible.builtin.include_tasks: "install_on_{{ ansible_os_family }}.yml"

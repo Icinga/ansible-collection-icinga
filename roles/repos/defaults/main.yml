@@ -12,9 +12,9 @@ repos_icinga_yum_snapshot_description: "ICINGA (snapshot release for epel)"
 
 repos_icinga_apt_key: "{{ repos_icinga_gpgkey }}"
 repos_icinga_apt_keyring: /etc/apt/keyrings/icinga-archive-keyring.asc
-repos_icinga_apt_stable_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }} main"
-repos_icinga_apt_testing_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }}-testing main"
-repos_icinga_apt_snapshot_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release|lower }}-snapshots main"
+repos_icinga_apt_stable_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution | lower }} icinga-{{ ansible_distribution_release | lower }} main"
+repos_icinga_apt_testing_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution | lower }} icinga-{{ ansible_distribution_release | lower }}-testing main"
+repos_icinga_apt_snapshot_deb: "deb [signed-by={{ repos_icinga_apt_keyring }}] http://packages.icinga.com/{{ ansible_distribution | lower }} icinga-{{ ansible_distribution_release | lower }}-snapshots main"
 
 repos_icinga_gpgkey: "https://packages.icinga.com/icinga.key"
 repos_icinga_stable: true

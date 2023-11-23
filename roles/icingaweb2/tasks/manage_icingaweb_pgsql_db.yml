@@ -16,13 +16,13 @@
           PGPASSWORD="{{ icingaweb2_priv_db_password | default(icingaweb2_db['password']) }}"
           psql
           "host={{ icingaweb2_db['host'] }}
-          {% if icingaweb2_db['port'] is defined %} port={{ icingaweb2_db['port'] }} {%- endif %}
+          {% if icingaweb2_db['port'] is defined %} port={{ icingaweb2_db['port'] }}{%- endif %}
           user={{ icingaweb2_priv_db_user | default(icingaweb2_db['user']) }}
           dbname={{ icingaweb2_db['name'] }}
-          {% if icingaweb2_db['ssl_mode'] is defined %} sslmode={{ icingaweb2_db['ssl_mode'] | default('require') }} {%- endif %}
-          {% if icingaweb2_db['ssl_cert'] is defined %} sslcert={{ icingaweb2_db['ssl_cert']  }} {%- endif %}
-          {% if icingaweb2_db['ssl_key'] is defined %} sslkey={{ icingaweb2_db['ssl_key'] }} {%- endif %}
-          {% if icingaweb2_db['ssl_extra_options'] is defined %} {{ icingaweb2_db['ssl_extra_options'] }} {%- endif %}"
+          {% if icingaweb2_db['ssl_mode'] is defined %} sslmode={{ icingaweb2_db['ssl_mode'] | default('require') }}{%- endif %}
+          {% if icingaweb2_db['ssl_cert'] is defined %} sslcert={{ icingaweb2_db['ssl_cert'] }}{%- endif %}
+          {% if icingaweb2_db['ssl_key'] is defined %} sslkey={{ icingaweb2_db['ssl_key'] }}{%- endif %}
+          {% if icingaweb2_db['ssl_extra_options'] is defined %} {{ icingaweb2_db['ssl_extra_options'] }}{%- endif %}"
 
     - name: PostgreSQL check for IDO schema
       ansible.builtin.shell: >

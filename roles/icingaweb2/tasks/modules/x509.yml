@@ -28,7 +28,7 @@
           host: "{{ vars['icingaweb2_modules'][_module]['database']['host'] | default('localhost') }}"
           port: "{{ vars['icingaweb2_modules'][_module]['database']['port'] | default('3306') }}"
           user: "{{ vars['icingaweb2_modules'][_module]['database']['user'] | default('x509') }}"
-          password: "{{ vars['icingaweb2_modules'][_module]['database']['password'] | default(omit) }}"
+          password: "{{ icingaweb2_modules[_module]['database']['password'] | default(omit) }}"
           name: "{{ vars['icingaweb2_modules'][_module]['database']['name'] | default('x509') }}"
           ssl_mode: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_mode'] | default(omit) }}"
           ssl_ca: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_ca'] | default(omit) }}"

@@ -7,7 +7,7 @@
         - "{{ ansible_os_family }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}-{{ ansible_lsb.id }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_lsb.id if ansible_lsb.id is defined else ansible_distribution }}.yml"
         - "{{ ansible_os_family }}.yml"
         - default.yml
       paths:

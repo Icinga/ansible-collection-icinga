@@ -5,13 +5,21 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
-v0.3.1
+v0.3.2
 ======
 
 Release Summary
 ---------------
 
-This is a bugfix release
+Bugfix Release
+
+Bugfixes
+--------
+
+- Role repos: Fix bug in variable search - thanks to @gianmarco-mameli #224
+
+v0.3.1
+======
 
 Major Changes
 -------------

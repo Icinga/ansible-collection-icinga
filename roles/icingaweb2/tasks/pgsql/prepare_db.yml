@@ -1,6 +1,6 @@
 ---
 
-- name: check for admin user
+- name: Check for admin user
   block: 
     - name: Check Database Credentials
       ansible.builtin.assert:
@@ -16,7 +16,7 @@
         _priv_db_pass: "{{ icingaweb2_priv_db_password }}"
       when: icingaweb2_priv_db_password is defined and icingaweb2_priv_db_user is defined
 
-- name: Build psql command
+- name: Prepare psql command
   ansible.builtin.set_fact:
     _tmp_pgsqlcmd: >-
       PGPASSWORD="{{ icingaweb2_priv_db_password | default(icingaweb2_db['password']) }}"

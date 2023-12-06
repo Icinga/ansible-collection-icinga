@@ -26,7 +26,7 @@
 
 - name: Manage Icinga Web 2 DB
   ansible.builtin.include_tasks: "manage_db.yml"
-  when: icingaweb2_db is defined and (icingaweb2_db_import_schema | default(False) or icingaweb2_users is defined or icingaweb2_admin is defined)
+  when: icingaweb2_db is defined and (icingaweb2_db_import_schema | default(False) or icingaweb2_users is defined or icingaweb2_admin_username is defined)
 
 - name: Configure modules
   ansible.builtin.include_tasks: "modules/{{ item.key }}.yml"

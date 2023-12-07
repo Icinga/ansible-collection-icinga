@@ -25,7 +25,7 @@ For more information on the respective settings please see [the official documen
 | `icingadb_database_ca` | `String` | Defines the path to the certificate authority for the TLS connection. | **n/a** |
 | `icingadb_database_cert` | `String` | Defines the path to the certificate for client key authentication. | **n/a** |
 | `icingadb_database_host` | `String` | Defines database address to connect to. | `127.0.0.1` |
-| `icingadb_database_import_schema` | `bool` | Defines whether to import the schema into the database or not. | `false` |
+| `icingadb_database_import_schema` | `bool` | Defines whether to import the schema into the database or not. **Needs `icingadb_database_type` to be set**. | `false` |
 | `icingadb_database_key` | `String` | Defines the path to the certificate key for client key authentication. | **n/a** |
 | `icingadb_database_name` | `String` | Defines the database to connect to. | `icingadb` |
 | `icingadb_database_password` | `String` | Defines the database password to connect with. | `icingadb` |
@@ -81,6 +81,7 @@ This play installs IcingaDB with on the same host as its connected MysQL databas
   become: true
   vars:
     icingadb_database_import_schema: true  # Import the schema into the database
+    icingadb_database_type: mysql  # needed by the schema import
 
   roles:
     - role: icinga.icinga.icingadb

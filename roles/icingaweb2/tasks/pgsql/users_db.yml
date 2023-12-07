@@ -18,4 +18,5 @@
     SET active = 1, password_hash = '"`php -r 'echo password_hash("{{ _users.password }}", PASSWORD_DEFAULT);'`"'"
     | {{ _tmp_pgsqlcmd }} -w 
   when: _icingaweb2_db_user.stdout == " name \n------\n(0 rows)" or _users.recreate is true 
+  run_once: true
   register: user_deleted

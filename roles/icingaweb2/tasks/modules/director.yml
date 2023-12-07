@@ -56,7 +56,6 @@
         system: yes
         home: /var/lib/icingadirector
         group: "{{ icingaweb2_group }}"
-      when: icingaweb2_modules['director']['source'] == 'git'  # Only required for installations from source
 
     - name: Module Director | Ensure home directory exists
       ansible.builtin.file:
@@ -65,7 +64,6 @@
         owner: icingadirector
         group: "{{ icingaweb2_group }}"
         mode: "0750"
-      when: icingaweb2_modules['director']['source'] == 'git'  # Only required for installations from source
 
     - name: Module Director | Ensure systemd unit file exists
       ansible.builtin.copy:
@@ -75,4 +73,3 @@
         group: root
         mode: "0644"
         remote_src: yes
-      when: icingaweb2_modules['director']['source'] == 'git'  # Only required for installations from source

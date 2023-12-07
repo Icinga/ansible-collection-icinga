@@ -11,7 +11,13 @@ v0.3.2
 Release Summary
 ---------------
 
-Bugfix Release
+This is a bugfix release, bringing two QOL features and a fix for the installation process of some of the roles which broke with v0.3.1.
+
+Minor Changes
+-------------
+
+- Added possibility to delegate ticket creation to satellites
+- Adjusted the installation of the director module when using the source installation.
 
 Bugfixes
 --------

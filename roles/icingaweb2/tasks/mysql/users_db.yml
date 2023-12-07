@@ -1,0 +1,21 @@
+---
+
+- name: Check for user in icingaweb_user
+  ansible.builtin.shell: >
+    {{ _tmp_mysqlcmd }}
+    -Ns -e "select name from icingaweb_user where name='{{ _users.username }}'"
+  failed_when: false
+  changed_when: false
+  check_mode: false
+  register: _icingaweb2_db_user
+
+- name: Create user in icingaweb or reset status to active or reset password
+  ansible.builtin.shell: >
+    echo "INSERT INTO icingaweb_user
+    (name, active, password_hash)
+    VALUES ('{{ _users.username }}', 1, '"`php -r 'echo password_hash("{{ _users.password }}", PASSWORD_DEFAULT);'`"')
+    ON DUPLICATE KEY UPDATE active = 1, password_hash = '"`php -r 'echo password_hash("{{ _users.password }}", PASSWORD_DEFAULT);'`"'"
+    | {{ _tmp_mysqlcmd }} -Ns
+  when: _icingaweb2_db_user.stdout_lines | length <= 0 or _users.recreate is true 
+  run_once: true
+  register: user_deleted

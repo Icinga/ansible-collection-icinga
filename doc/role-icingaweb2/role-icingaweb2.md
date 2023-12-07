@@ -32,6 +32,20 @@ icingaweb2_db:
 * `icingaweb2_admin_<username|password>: string`
   * Set the username and password for the first admin user for Icinga Web 2.
 
+* `icingaweb2_admin_recreate: boolean`
+  * Recreate can be used to change password of admin. **Default:False**
+
+In addition to the Icinga Web 2 Admin, other users can be configured by defining `icingaweb2_users`.
+The `recreate` parameter can be used to change passwords or to enable the user if he has been disabled. **Default: False**
+```
+  icingaweb2_users:
+    - username: 'foo'
+      password: 'bar'
+      recreate: true
+    - username: webadmin
+      [...]
+```
+
 #### Resources
 
 Besides the standard Icinga Web 2 database you may configure additional resources for IcingaDB or automated imports.

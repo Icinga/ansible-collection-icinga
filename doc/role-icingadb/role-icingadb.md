@@ -80,7 +80,8 @@ This play installs IcingaDB with on the same host as its connected MysQL databas
   hosts: icingadb
   become: true
   vars:
-    icingadb_database_import_schema: true  # Import the schema into the database
+    icingadb_database_import_schema: true  # Import the schema into the database.
+    icingadb_database_type: mysql # Must be set or the import will be skipped.
 
   roles:
     - role: icinga.icinga.icingadb

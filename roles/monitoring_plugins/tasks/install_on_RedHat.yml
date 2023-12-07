@@ -1,18 +1,18 @@
 ---
 
 - name: Activate epel repository
-  include_role:
+  ansible.builtin.include_role:
     name: icinga.icinga.repos
   vars:
-    icinga_repo_epel: true
-    icinga_repo_stable: false
-    icinga_repo_testing: false
-    icinga_repo_snapshot: false
-  when: icinga_monitoring_plugins_epel
+    repos_icinga_epel: true
+    repos_icinga_stable: false
+    repos_icinga_testing: false
+    repos_icinga_snapshot: false
+  when: monitoring_plugins_icinga_epel
 
 - name: Yum - install requested packages
   become: yes
-  yum:
+  ansible.builtin.yum:
     state: present
     name: "{{ needed_packages }}"
     update_cache: true
@@ -23,11 +23,11 @@
 
 - name: Dnf - install requested packages
   become: yes
-  dnf:
+  ansible.builtin.dnf:
     state: present
     name: "{{ needed_packages }}"
     update_cache: true
-    enablerepo: "{{ 'powertools' if ansible_distribution_major_version == '8' and icinga_monitoring_plugins_crb else 'crb' if ansible_distribution_major_version == '9' and icinga_monitoring_plugins_crb }}"
+    enablerepo: "{{ 'powertools' if ansible_distribution_major_version == '8' and monitoring_plugins_icinga_crb else 'crb' if ansible_distribution_major_version == '9' and monitoring_plugins_icinga_crb }}"
   when:
     - ansible_distribution_major_version >= "8"
     - needed_packages is defined
@@ -35,10 +35,10 @@
 
 - name: Yum - remove non-requested packages
   become: yes
-  yum:
+  ansible.builtin.yum:
     state: absent
-    name: "{{ (unwanted_packages | difference(['nagios-plugins'])) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"
-    autoremove: "{{ icinga_monitoring_plugins_autoremove }}"
+    name: "{{ (unwanted_packages | difference(['nagios-plugins'])) if monitoring_plugins_icinga_check_commands else unwanted_packages }}"
+    autoremove: "{{ monitoring_plugins_icinga_autoremove }}"
   when:
-    - icinga_monitoring_plugins_remove
+    - monitoring_plugins_icinga_remove
     - unwanted_packages

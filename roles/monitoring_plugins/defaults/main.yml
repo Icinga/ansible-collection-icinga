@@ -1,7 +1,7 @@
 ---
 # defaults file for monitoring_plugins
 
-icinga_monitoring_plugins_epel: false
-icinga_monitoring_plugins_crb: false
-icinga_monitoring_plugins_remove: true
-icinga_monitoring_plugins_autoremove: false
+monitoring_plugins_icinga_epel: false
+monitoring_plugins_icinga_crb: false
+monitoring_plugins_icinga_remove: true
+monitoring_plugins_icinga_autoremove: false

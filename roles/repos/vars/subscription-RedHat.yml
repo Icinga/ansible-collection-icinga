@@ -1,7 +1,7 @@
 ---
-icinga_repo_yum_stable_url: "https://packages.icinga.com/subscription/rhel/$releasever/release/"
-icinga_repo_yum_stable_description: "ICINGA (stable release for rhel)"
-icinga_repo_yum_testing_url: "https://packages.icinga.com/subscription/rhel/$releasever/testing/"
-icinga_repo_yum_testing_description: "ICINGA (testing release for rhel)"
-icinga_repo_yum_snapshot_url: "https://packages.icinga.com/subscription/rhel/$releasever/snapshot/"
-icinga_repo_yum_snapshot_description: "ICINGA (snapshot release for rhel)"
+repos_icinga_yum_stable_url: "https://packages.icinga.com/subscription/rhel/$releasever/release/"
+repos_icinga_yum_stable_description: "ICINGA (stable release for rhel)"
+repos_icinga_yum_testing_url: "https://packages.icinga.com/subscription/rhel/$releasever/testing/"
+repos_icinga_yum_testing_description: "ICINGA (testing release for rhel)"
+repos_icinga_yum_snapshot_url: "https://packages.icinga.com/subscription/rhel/$releasever/snapshot/"
+repos_icinga_yum_snapshot_description: "ICINGA (snapshot release for rhel)"

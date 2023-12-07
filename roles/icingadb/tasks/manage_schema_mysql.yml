@@ -4,10 +4,10 @@
     - name: Build mysql command
       ansible.builtin.set_fact:
         mysqlcmd: >-
-          mysql {% if icingadb_database_host | default('localhost') != 'localhost'  %} -h "{{ icingadb_database_host }}" {%- endif %}
-          {% if icingadb_database_ca is defined %} --ssl-ca "{{ icingadb_database_ca }}" {%- endif %}
-          {% if icingadb_database_cert is defined %} --ssl-cert "{{ icingadb_database_cert }}" {%- endif %}
-          {% if icingadb_database_key is defined %} --ssl-key "{{ icingadb_database_key }}" {%- endif %}
+          mysql {% if icingadb_database_host | default('localhost') != 'localhost' %} -h "{{ icingadb_database_host }}"{%- endif %}
+          {% if icingadb_database_ca is defined %} --ssl-ca "{{ icingadb_database_ca }}"{%- endif %}
+          {% if icingadb_database_cert is defined %} --ssl-cert "{{ icingadb_database_cert }}"{%- endif %}
+          {% if icingadb_database_key is defined %} --ssl-key "{{ icingadb_database_key }}"{%- endif %}
           -u "{{ icingadb_database_user | default('icingadb') }}"
           -p"{{ icingadb_database_password }}"
           "{{ icingadb_database_name | default('icingadb') }}"

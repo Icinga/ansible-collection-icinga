@@ -22,7 +22,7 @@
     group: "{{ icingaweb2_group }}"
     mode: "2770"
 
-- name: Ensure fragments exists
+- name: Ensure fragments exists  # noqa: risky-file-permissions
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_fragments_path }}/{{ item }}"
@@ -69,7 +69,7 @@
 - name: Assemble resources.ini
   when: icingaweb2_db is defined or icingaweb2_resources is defined
   block:
-    - name: Manage icingaweb_db resource config
+    - name: Manage icingaweb_db resource config  # noqa: risky-file-permissions
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/resources/resources_01"
@@ -82,7 +82,7 @@
         _i2_config_hash: "{{ icingaweb2_resources }}"
       when: icingaweb2_resources is defined
 
-    - name: Manage Resources
+    - name: Manage Resources  # noqa: risky-file-permissions
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/resources/resources_02"
@@ -102,7 +102,7 @@
             permissions:
               - "*"
 
-    - name: Manage icingaweb2_admin privileges
+    - name: Manage icingaweb2_admin privileges  # noqa: risky-file-permissions
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/roles/roles_01"
@@ -115,7 +115,7 @@
         _i2_config_hash: "{{ icingaweb2_roles }}"
       when: icingaweb2_roles is defined
 
-    - name: Manage icingaweb2_admin privileges
+    - name: Manage icingaweb2_admin privileges  # noqa: risky-file-permissions
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/roles/roles_02"

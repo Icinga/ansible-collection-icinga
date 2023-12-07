@@ -21,6 +21,9 @@
       - sni
 
 - name: Module x509 | Manage Schema
+  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
+  vars:
+    _module: "{{ item.key }}"
   block:
     - name: Module x509 | Prepare _db informations
       ansible.builtin.set_fact:
@@ -50,9 +53,6 @@
     - name: Module x509 | empty _db var
       ansible.builtin.set_fact:
         _db: {}
-  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
-  vars:
-    _module: "{{ item.key }}"
 
 - name: Module x509 | Import Certificates
   ansible.builtin.shell: >

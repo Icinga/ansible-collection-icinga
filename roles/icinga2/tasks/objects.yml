@@ -1,11 +1,11 @@
 ---
-- name: collect all config objects for myself
+- name: Collect all config objects for myself
   set_fact:
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', hostvars[item]['icinga2_objects'][icinga2_config_host]) }}"
   with_items: "{{ groups['all'] }}"
   when: hostvars[item]['icinga2_objects'][icinga2_config_host] is defined
 
-- name: collect all config objects in play vars
+- name: Collect all config objects in play vars
   set_fact:
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects[icinga2_config_host]) }}"
   when: vars['icinga2_objects'][icinga2_config_host] is defined
@@ -21,15 +21,15 @@
   with_items: "{{ result.results }}"
   when: result.results is defined
 
-- name: prepare custom config
+- name: Prepare custom config
   when: icinga2_custom_config is defined and icinga2_custom_config|length > 0
   block:
-    - name: construct _icinga2_custom_conf_paths
+    - name: Construct _icinga2_custom_conf_paths
       set_fact:
         _icinga2_custom_conf_paths: "{{ _icinga2_custom_conf_paths + [ icinga2_fragments_path + '/' + item.path + '/' + item.order|default('20')|string + '_' + item.name] }}"
       loop: "{{ icinga2_custom_config }}"
 
-    - name: prepare custom config paths
+    - name: Prepare custom config paths
       file:
         state: directory
         owner: root
@@ -37,10 +37,10 @@
         path: "{{ icinga2_fragments_path }}/{{ item.path }}/"
       loop: "{{ icinga2_custom_config }}"
 
-    - name: add custom config to assemble
+    - name: Add custom config to assemble
       ansible.builtin.copy:
         owner: root
         group: root
         src: "files/{{ item.name }}"
-        dest: "{{ icinga2_fragments_path }}/{{ item.path }}/{{ item.order|default('20')|string }}_{{ item.name }}"
+        dest: "{{ icinga2_fragments_path }}/{{ item.path }}/{{ item.order | default('20') | string }}_{{ item.name }}"
       loop: "{{ icinga2_custom_config }}"

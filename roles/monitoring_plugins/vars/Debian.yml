@@ -1,6 +1,6 @@
 ---
 
-icinga_monitoring_plugins_available_packages:
+monitoring_plugins_icinga_available_packages:
   - name: apt
     pkg_name: "monitoring-plugins-basic"
   - name: breeze

@@ -1,0 +1,11 @@
+---
+
+- name: Suse - install requested packages
+  become: true
+  ansible.builtin.package:
+    name: "{{ needed_packages }}"
+    state: present
+    update_cache: true
+  when:
+    - needed_packages is defined
+    - needed_packages

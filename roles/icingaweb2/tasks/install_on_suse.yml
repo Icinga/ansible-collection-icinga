@@ -1,0 +1,5 @@
+---
+- name: Suse - Install Icinga Web 2 packages
+  ansible.builtin.package:
+    name: "{{ icingaweb2_packages }}"
+    state: present

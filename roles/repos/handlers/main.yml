@@ -1,2 +1,6 @@
 ---
 # handlers file for icinga_repos
+
+- name: Run zypper refresh
+  ansible.builtin.command:
+    cmd: zypper refresh

@@ -1,0 +1,5 @@
+---
+- name: Suse - install icingadb packages
+  ansible.builtin.package:
+    name: "{{ icingadb_redis_packages }}"
+    state: present

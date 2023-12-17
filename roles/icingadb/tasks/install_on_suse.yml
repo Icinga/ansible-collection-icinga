@@ -1,0 +1,4 @@
+- name: Suse - Install IcingaDB packages
+  ansible.builtin.package:
+    name: "{{ icingadb_packages }}"
+    state: present

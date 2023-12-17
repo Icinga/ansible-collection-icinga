@@ -1,0 +1,57 @@
+---
+
+- name: Suse - add RPM key
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ icinga_repo_zypper_key }}"
+
+- name: Suse - add Icinga repository (stable)
+  ansible.builtin.copy:
+    dest: /etc/zypp/repos.d/icinga-stable-release.repo
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [icinga-stable-release]
+      name=ICINGA (stable release for openSUSE)
+      baseurl={{ icinga_repo_zypper_stable_url }}
+      enabled={{ '1' if icinga_repo_stable|bool else '0' }}
+      gpgcheck=1
+      gpgkey={{ icinga_repo_zypper_key }}
+  notify:
+    - Run zypper refresh
+
+#- name: Suse - add Icinga repository (testing)
+#  ansible.builtin.copy:
+#    dest: /etc/zypp/repos.d/icinga-testing-builds.repo
+#    owner: root
+#    group: root
+#    mode: '0644'
+#    content: |
+#      [icinga-testing-builds]
+#      name=ICINGA (testing builds for openSUSE)
+#      baseurl={{ icinga_repo_zypper_testing_url }}
+#      enabled={{ '1' if icinga_repo_testing | bool else '0' }}
+#      gpgcheck=1
+#      gpgkey={{ icinga_repo_zypper_key }}
+#  notify:
+#    - Run zypper refresh
+
+- name: Suse - add Icinga repository (snapshot)
+  ansible.builtin.copy:
+    dest: /etc/zypp/repos.d/icinga-snapshot-builds.repo
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [icinga-snapshot-builds]
+      name=ICINGA (snapshot builds for openSUSE)
+      baseurl={{ icinga_repo_zypper_snapshot_url }}
+      enabled={{ '1' if icinga_repo_snapshot | bool else '0' }}
+      gpgcheck=1
+      gpgkey={{ icinga_repo_zypper_key }}
+  notify:
+    - Run zypper refresh
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

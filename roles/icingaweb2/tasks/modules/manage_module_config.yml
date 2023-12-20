@@ -1,6 +1,6 @@
 - name: Module {{ _module }} | Set file content as hash
   ansible.builtin.set_fact:
-    _i2_config_hash: "{{ lookup('list', vars['icingaweb2_modules'][_module][_file]) }}"
+    _i2_config_hash: "{{ lookup('list', icingaweb2_modules[_module][_file]) }}"
 
 - name: Module {{ _module }} | Write config file {{ _file }}.ini
   ansible.builtin.template:

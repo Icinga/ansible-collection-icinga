@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Adjusted the way variables get looked up from `vars['varname']` to `varname` in most places.

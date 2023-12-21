@@ -25,24 +25,24 @@
     - name: Module x509 | Prepare _db informations
       ansible.builtin.set_fact:
         _db:
-          host: "{{ vars['icingaweb2_modules'][_module]['database']['host'] | default('localhost') }}"
-          port: "{{ vars['icingaweb2_modules'][_module]['database']['port'] | default('3306') }}"
-          user: "{{ vars['icingaweb2_modules'][_module]['database']['user'] | default('x509') }}"
-          password: "{{ vars['icingaweb2_modules'][_module]['database']['password'] | default(omit) }}"
-          name: "{{ vars['icingaweb2_modules'][_module]['database']['name'] | default('x509') }}"
-          ssl_mode: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_mode'] | default(omit) }}"
-          ssl_ca: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_ca'] | default(omit) }}"
-          ssl_cert: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_cert'] | default(omit) }}"
-          ssl_key: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_key'] | default(omit) }}"
-          ssl_cipher: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_cipher'] | default(omit) }}"
-          ssl_extra_options: "{{ vars['icingaweb2_modules'][_module]['database']['ssl_extra_options'] | default(omit) }}"
+          host: "{{ icingaweb2_modules[_module].database.host | default('localhost') }}"
+          port: "{{ icingaweb2_modules[_module].database.port | default('3306') }}"
+          user: "{{ icingaweb2_modules[_module].database.user | default('x509') }}"
+          password: "{{ icingaweb2_modules[_module].database.password | default(omit) }}"
+          name: "{{ icingaweb2_modules[_module].database.name | default('x509') }}"
+          ssl_mode: "{{ icingaweb2_modules[_module].database.ssl_mode | default(omit) }}"
+          ssl_ca: "{{ icingaweb2_modules[_module].database.ssl_ca | default(omit) }}"
+          ssl_cert: "{{ icingaweb2_modules[_module].database.ssl_cert | default(omit) }}"
+          ssl_key: "{{ icingaweb2_modules[_module].database.ssl_key | default(omit) }}"
+          ssl_cipher: "{{ icingaweb2_modules[_module].database.ssl_cipher | default(omit) }}"
+          ssl_extra_options: "{{ icingaweb2_modules[_module].database.ssl_extra_options | default(omit) }}"
           schema_path: /usr/share/icingaweb2/modules/x509/schema/mysql.schema.sql
           select_query: "select * from x509_certificate"
-      when: vars['icingaweb2_modules'][_module]['database']['type'] | default('mysql') == 'mysql'
+      when: icingaweb2_modules[_module].database.type | default('mysql') == 'mysql'
 
     - ansible.builtin.fail:
-        fail_msg: "The Database type select is not supported, {{ vars['icingaweb2_modules'][_module]['database']['type'] }} [Supported=mysql]"
-      when: vars['icingaweb2_modules'][_module]['database']['type'] is defined and vars['icingaweb2_modules'][_module]['database']['type'] != 'mysql'
+        fail_msg: "The Database type select is not supported, {{ icingaweb2_modules[_module].database.type }} [Supported=mysql]"
+      when: vars['icingaweb2_modules'][_module]['database']['type'] is defined and icingaweb2_modules[_module].database.type != 'mysql'
 
     - name: Module x509 | Import Schema
       ansible.builtin.include_tasks: ../manage_mysql_imports.yml
@@ -50,17 +50,17 @@
     - name: Module x509 | empty _db var
       ansible.builtin.set_fact:
         _db: {}
-  when: vars['icingaweb2_modules'][_module]['database']['import_schema'] | default(false)
+  when: icingaweb2_modules[_module].database.import_schema | default(false)
   vars:
     _module: "{{ item.key }}"
 
 - name: Module x509 | Import Certificates
   ansible.builtin.shell: >
     icingacli {{ _module }} import --file {{ _file }}
-  loop: "{{ vars['icingaweb2_modules'][_module]['certificate_files'] }}"
+  loop: "{{ icingaweb2_modules[_module].certificate_files }}"
   loop_control:
     loop_var: _file
   vars:
     _module: "{{ item.key }}"
-  when: vars['icingaweb2_modules'][_module]['certificate_files'] is defined
+  when: icingaweb2_modules[_module].certificate_files is defined
   changed_when: false

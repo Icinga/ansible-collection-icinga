@@ -45,6 +45,7 @@
   block:
     - name: PostgreSQL check for icingaweb admin user
       ansible.builtin.shell: >
+        LANG=C
         {{ _tmp_pgsqlcmd }}
         -w -c "select name from icingaweb_user where name like '{{ icingaweb2_admin_username }}'"
       failed_when: false

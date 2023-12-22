@@ -1,0 +1,4 @@
+---
+bugfixes:
+  - "icingaweb2: run pqslcmd with LANG=C to ensure the output is in english."
+  - remove superfluous curly brace (#246)

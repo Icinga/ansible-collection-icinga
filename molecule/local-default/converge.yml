@@ -5,6 +5,12 @@
     ansible.builtin.apt:
       cache_valid_time: 3600
   vars:
+    icingaweb2_groups:
+      icingaweb2_group_ldap:
+        resource: icingaweb2_ldap
+        user_backend: icingaweb2_user_ldap
+        group_class: group
+        group_filter: '!(objectClass=user)'
     icingaweb2_resources:
       director_db:
         type: db

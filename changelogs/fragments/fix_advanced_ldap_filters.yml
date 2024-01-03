@@ -1,0 +1,2 @@
+bugfixes:
+  - "Fix quoting for ! in templating Issue #208"

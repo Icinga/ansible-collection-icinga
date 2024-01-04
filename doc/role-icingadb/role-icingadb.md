@@ -57,6 +57,21 @@ For logging, currently only the **logging level** can be set. The default is `in
 |----------|------|-------------|---------|
 | `icingadb_logging_level` | `fatal\|error\|warn\|info\|debug` | Defines the logging level for IcingaDB. | `info` |
 
+### IcingaDB Retention
+
+| Variable | Type | Description | Default |
+|----------|------|-------------|---------|
+|`icingadb_retention_history_days`|`number`|Number of days to retain full historical data.|By default, historical data is retained forever.|
+|`icingadb_retention_sla_days`|`number`|Number of days to retain historical data for SLA reporting.|By default, it is retained forever.|
+|`icingadb_retention_acknowledgement`|`number`|Number of days to retain acknowledgements|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_comment`|`number`|Number of days to retain comments|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_downtime`|`number`|Number of days to retain downtimes|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_flapping`|`number`|Number of days to retain flapping events|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_notification`|`number`|Number of days to retain notifications|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_state`|`number`|Number of days to retain states|If not limited by icingadb_retention_history_days, forever|
+
+
+
 ### Miscellaneous
 
 The following variables are used for the IcingaDB setup and are not directly related to the configuration of IcingaDB itself. Normally, you can rely on the defaults to work and should **not** change them unless you know what you are doing.

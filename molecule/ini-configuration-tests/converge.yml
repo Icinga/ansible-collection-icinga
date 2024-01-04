@@ -15,7 +15,7 @@
       -  name: advanced_filter
          _i2_config_hash:
            section:
-             test: '(objectClass=user)'
+             test: '!(objectClass=user)'
              test2: "!(objectClass=user)"
              test3: "!attribute"
       -  name: list
@@ -28,7 +28,7 @@
       -  name: equal_sign
          _i2_config_hash:
            section:
-             test: 'equal=sign'
+             test: equal=sign
 
 
   collections:

@@ -1,3 +1,14 @@
+# test_icingadb_retentions.py
+icingadb_retention_history_days: 10
+icingadb_retention_sla_days: 11
+icingadb_retention_acknowledgement: 20
+icingadb_retention_comment: 30
+icingadb_retention_downtime: 10
+icingadb_retention_state: 60
+icingadb_retention_notification: 4
+icingadb_retention_flapping: 2
+
+
 icinga2_custom_config:
   - name: icinga2_command
     path: zones.d/main/commands/custom_commands.conf

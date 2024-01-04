@@ -1,4 +1,4 @@
-name: Python Unittest
+name: Icingaweb2 Templates
 on:
   push:
     tags:
@@ -17,7 +17,7 @@ on:
       - '!doc/**'
 
 jobs:
-  icingaweb2_ini_template:
+  test_ini_template:
     runs-on: ubuntu-latest
 
     env:

@@ -33,9 +33,14 @@
   collections:
     - icinga.icinga
   tasks:
+    - ansible.builtin.pip:
+        name: pyinilint
+        state: present
+
     - ansible.builtin.template:
         src: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY', default=Undefined) }}/roles/icingaweb2/templates/modules_config.ini.j2"
         dest: "/tmp/{{ item.name }}"
+        validate: pyinilint %s
       loop: "{{ test_cases }}"
       vars:
         _i2_config_hash: "{{ item._i2_config_hash }}"

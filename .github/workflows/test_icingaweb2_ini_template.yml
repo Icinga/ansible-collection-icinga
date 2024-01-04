@@ -10,6 +10,7 @@ on:
       - '!doc/**'
     paths:
       - 'roles/icingaweb2/templates/**'
+      - 'molecule/ini-configuration-tests/**'
   pull_request:
     branches:
       - 'feature/**'

@@ -4,7 +4,7 @@
   #
   # In addition to keep them quick and no additional variables are used.
   #
-name: role-icingaweb2
+name: role-icingadb_redis
 on:
   push:
     branches:
@@ -13,8 +13,8 @@ on:
       - 'fix/**'
       - '!doc/**'
     paths:
-      - roles/icingaweb2/**
-      - molecule/role-icingaweb2/**
+      - roles/icingadb_redis/**
+      - molecule/role-icingadb_redis/**
   pull_request:
     branches:
       - 'feature/**'
@@ -22,7 +22,7 @@ on:
       - '!doc/**'
 
 jobs:
-  icingaweb2-ubuntu2204-latest:
+  icingadb_redis-ubuntu2204-latest:
     runs-on: ubuntu-latest
 
     env:
@@ -36,7 +36,7 @@ jobs:
         distro: [ubuntu2204]
         python: ['3.10']
         ansible: ['2.16.2']
-        scenario: [role-icingaweb2]
+        scenario: [role-icingadb_redis]
 
     steps:
       - name: Check out code

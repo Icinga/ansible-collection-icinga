@@ -5,3 +5,4 @@ bugfixes:
 minor_changes:
   - added tests for icingaweb2 ini template
   - added pyinilint as ini validator after templates
+  - ensure backwards compatibility with bool filter (#218)

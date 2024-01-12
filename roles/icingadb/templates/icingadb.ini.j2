@@ -84,19 +84,28 @@ logging:
 # Retention is an optional feature to limit the number of days that historical data is available,
 # as no historical data is deleted by default.
 retention:
-  # Number of days to retain full historical data. By default, historical data is retained forever.
-#  history-days:
-
-  # Number of days to retain historical data for SLA reporting. By default, it is retained forever.
-#  sla-days:
-
-  # Map of history category to number of days to retain its data in order to
-  # enable retention only for specific categories or to
-  # override the number that has been configured in history-days.
+{% if icingadb_retention_history_days is defined and icingadb_retention_history_days is number %}
+  history-days: {{ icingadb_retention_history_days }}
+{% endif %}
+{% if icingadb_retention_sla_days is defined and icingadb_retention_sla_days is number %}
+  sla-days: {{ icingadb_retention_sla_days }}
+{% endif %}
   options:
-#    acknowledgement:
-#    comment:
-#    downtime:
-#    flapping:
-#    notification:
-#    state:
+{% if icingadb_retention_acknowledgement is defined and icingadb_retention_acknowledgement is number %}
+    acknowledgement: {{ icingadb_retention_acknowledgement }}
+{% endif %}
+{% if icingadb_retention_comment is defined and icingadb_retention_comment is number %}
+    comment: {{ icingadb_retention_comment }}
+{% endif %}
+{% if icingadb_retention_downtime is defined and icingadb_retention_downtime is number %}
+    downtime: {{ icingadb_retention_downtime }}
+{% endif %}
+{% if icingadb_retention_flapping is defined and icingadb_retention_flapping is number %}
+    flapping: {{ icingadb_retention_flapping }}
+{% endif %}
+{% if icingadb_retention_notification is defined and icingadb_retention_notification is number %}
+    notification: {{ icingadb_retention_notification }}
+{% endif %}
+{% if icingadb_retention_state is defined and icingadb_retention_state is number %}
+    state: {{ icingadb_retention_state }}
+{% endif %}

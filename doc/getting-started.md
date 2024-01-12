@@ -15,6 +15,12 @@ The collection includes six roles in the current version.
 * icinga.monitoring_plugins: Role to install and manage Icinga2 compatible monitoring plugins.
   * [Documentation: doc/role-monitoring_plugins](role-monitoring_plugins/role-monitoring_plugins.md)
 
+---
+
+The collection includes a plugin that allows you to use Icinga as an inventory source for Ansible.
+
+* icinga.icinga.icinga: Ansible Inventory Plugin to fetch hosts from Icinga.
+  * [Documentation: doc/plugins/inventory/icinga-inventory-plugin.md](plugins/inventory/icinga-inventory-plugin.md)
 
 ---
 **NOTE**

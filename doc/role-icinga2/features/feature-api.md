@@ -61,13 +61,31 @@ ca_host_port: 5665
 ```
 
 > [!INFO]
-> In case your agent can't connect to the CA host, you can use the variables `icinga2_delegate_host`
+> In case your agent can't connect to the CA host/master, you can change ca_host to your satellite.
+> In addition you can use the variables `icinga2_delegate_host`
 > and `ticket_salt` to delegate ticket creation to one of your satellites instead.
+> But is will also work because the delegation task will be initiated by the Ansible controlhost.
+
+Example if connection and ticket creation should be on the satellite:
 
 ```yaml
-ca_host: icinga-server.localdomain
+icinga2_features:
+  - name: api
+    ca_host: icinga-satellite.localdomain
+    ticket_salt: "{{ icinga2_constants.ticket_salt }}"
+  [...]
 icinga2_delegate_host: icinga-satellite.localdomain
-ticket_salt: "{{ icinga2_constants.ticket_salt }}"
+```
+Example if agent should connect to satellite and the tickets are generated on the
+master host. 
+
+```yaml
+icinga2_features:
+  - name: api
+    ca_host: icinga-satellite.localdomain
+    ticket_salt: "{{ icinga2_constants.ticket_salt }}"
+  [...]
+icinga2_delegate_host: icinga-master.localdomain
 ```
 
 By default the FQDN is used as certificate common name, to put a name

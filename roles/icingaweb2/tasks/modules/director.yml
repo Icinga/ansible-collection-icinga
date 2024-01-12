@@ -40,7 +40,7 @@
   failed_when: _required.rc|int >= 2
   when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and vars['icingaweb2_modules']['director']['kickstart'] is defined
 
-- name: Module Director | Check if kickstart is required  # noqa: command-instead-of-shell
+- name: Module Director | Run kickstart if required  # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: icingacli director kickstart run
   when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and vars['icingaweb2_modules']['director']['kickstart'] is defined and _required.rc|int == 0

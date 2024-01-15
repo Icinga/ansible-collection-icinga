@@ -124,3 +124,15 @@ releases:
     - feature_adjust_director_source_installation.yml
     - release.yml
     release_date: '2023-12-07'
+  0.3.3:
+    changes:
+      bugfixes:
+      - ensure backwards compatibility with bool filter (#218)
+      - 'icinga2 feature api: fixed missing quotes in delegate ticket command for
+        satellites or second master nodes.(#250)'
+      - 'icingaweb2: run pqslcmd with LANG=C to ensure the output is in english.(#241)'
+      - remove superfluous curly brace (#246)
+      release_summary: Bugfix Release
+    fragments:
+    - fix_missing_quotes_delegate_ticket.yml
+    release_date: '2024-01-15'

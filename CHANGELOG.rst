@@ -5,6 +5,22 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
+v0.3.3
+======
+
+Release Summary
+---------------
+
+Bugfix Release
+
+Bugfixes
+--------
+
+- ensure backwards compatibility with bool filter (#218)
+- icinga2 feature api: fixed missing quotes in delegate ticket command for satellites or second master nodes.
+- icingaweb2: run pqslcmd with LANG=C to ensure the output is in english.
+- remove superfluous curly brace (#246)
+
 v0.3.2
 ======
 

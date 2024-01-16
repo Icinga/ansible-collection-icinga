@@ -6,7 +6,7 @@
         _tmp_pgsqlcmd: >-
           PGPASSWORD="{{ icingadb_database_password }}"
           psql
-          "{% if icingadb_database_host | default('localhost') != 'localhost' %} host="{{ icingadb_database_host }}" {%- endif %}
+          "{% if icingadb_database_host %} host="{{ icingadb_database_host }}" {%- endif %}
           {% if icingadb_database_port is defined %} port={{ icingadb_database_port }} {%- endif %}
           user={{ icingadb_database_user | default('icingadb') }}
           dbname={{ icingadb_database_name | default('icingadb') }}

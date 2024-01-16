@@ -32,6 +32,22 @@ icinga2_objects:
       parent: main
 ```
 
+The advantage of the default **icinga2_objects** variable is, that you can run your playbook over many different server without deploying the
+monitoring configuration on every host in the playbook. Otherwise the variable should be only placed in `host_vars` files to restrict deployment on every host.
+
+As a secondary option, you can use the variable without the second level like the following example.
+
+> **CAUTION!** If not restricted it will be deployed on every host. This should be only defined in `host_vars` unless
+you know what you are doing!
+
+```
+icinga2_objects:
+  - name: "{{ ansible_fqdn }}"
+    type: Endpoint
+    file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+    order: 20
+```
+
 More Examples at the end -> [Examples](#examples)
 
 ## Managing Config directories

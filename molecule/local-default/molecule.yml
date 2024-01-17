@@ -19,3 +19,8 @@ provisioner:
   inventory:
     link:
       host_vars: host_vars/
+verifier:
+  name: testinfra
+  options:
+    sudo: true
+  directory: tests/integration/

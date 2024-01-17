@@ -1,3 +1,4 @@
+---
 - name: Module Director | Ensure config directory
   ansible.builtin.file:
     state: directory
@@ -18,34 +19,57 @@
       - kickstart
       - config
 
-- name: Module Director | Check for pending migrations
+- name: Module Director | Check for pending migrations  # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: icingacli director migration pending
   register: _pending
   changed_when: _pending.rc|int == 0
   failed_when: _pending.stdout|length > 0
-  when: vars['icingaweb2_modules']['director']['import_schema'] is defined and vars['icingaweb2_modules']['director']['import_schema'] and vars['icingaweb2_modules']['director']['config'] is defined
+  when: vars['icingaweb2_modules']['director']['import_schema'] is defined and icingaweb2_modules.director.import_schema and vars['icingaweb2_modules']['director']['config'] is defined
 
-- name: Module Director | Apply pending migrations
+- name: Module Director | Apply pending migrations  # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: icingacli director migration run
-  when: vars['icingaweb2_modules']['director']['import_schema'] is defined and vars['icingaweb2_modules']['director']['import_schema'] and vars['icingaweb2_modules']['director']['config'] is defined and _pending.rc|int == 0
+  when: vars['icingaweb2_modules']['director']['import_schema'] is defined and icingaweb2_modules.director.import_schema and vars['icingaweb2_modules']['director']['config'] is defined and _pending.rc|int == 0
 
-- name: Module Director | Check if kickstart is required
+- name: Module Director | Check if kickstart is required  # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: icingacli director kickstart required
   register: _required
   changed_when: _required.rc|int == 0
   failed_when: _required.rc|int >= 2
-  when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and vars['icingaweb2_modules']['director']['run_kickstart'] and vars['icingaweb2_modules']['director']['kickstart'] is defined
+  when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and vars['icingaweb2_modules']['director']['kickstart'] is defined
 
-- name: Module Director | Check if kickstart is required
+- name: Module Director | Run kickstart if required  # noqa: command-instead-of-shell
   ansible.builtin.shell:
     cmd: icingacli director kickstart run
-  when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and vars['icingaweb2_modules']['director']['run_kickstart'] and vars['icingaweb2_modules']['director']['kickstart'] is defined and _required.rc|int == 0
+  when: vars['icingaweb2_modules']['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and vars['icingaweb2_modules']['director']['kickstart'] is defined and _required.rc|int == 0
 
-- name: Module Director | Ensure daemon is running
-  ansible.builtin.service:
-    name: "{{ icingaweb2_director_service }}"
-    state: started
-    enabled: yes
+- name: Module Director | Ensure installation from source is complete
+  when: icingaweb2_modules['director']['source'] == 'git'
+  block:
+    - name: Module Director | Ensure daemon user exists
+      ansible.builtin.user:
+        name: icingadirector
+        state: present
+        shell: /bin/nologin
+        system: yes
+        home: /var/lib/icingadirector
+        group: "{{ icingaweb2_group }}"
+
+    - name: Module Director | Ensure home directory exists
+      ansible.builtin.file:
+        state: directory
+        dest: /var/lib/icingadirector
+        owner: icingadirector
+        group: "{{ icingaweb2_group }}"
+        mode: "0750"
+
+    - name: Module Director | Ensure systemd unit file exists
+      ansible.builtin.copy:
+        src: "{{ icingaweb2_config.global.module_path }}/director/contrib/systemd/icinga-director.service"
+        dest: /etc/systemd/system/icingadirector.service
+        owner: root
+        group: root
+        mode: "0644"
+        remote_src: yes

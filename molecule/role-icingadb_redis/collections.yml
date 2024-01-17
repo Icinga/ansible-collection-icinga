@@ -1,0 +1,5 @@
+collections:
+  - name: community.mysql
+  - name: community.docker
+  - name: community.general
+    version: ">=2,<3"

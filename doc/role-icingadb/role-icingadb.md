@@ -25,7 +25,7 @@ For more information on the respective settings please see [the official documen
 | `icingadb_database_ca` | `String` | Defines the path to the certificate authority for the TLS connection. | **n/a** |
 | `icingadb_database_cert` | `String` | Defines the path to the certificate for client key authentication. | **n/a** |
 | `icingadb_database_host` | `String` | Defines database address to connect to. | `127.0.0.1` |
-| `icingadb_database_import_schema` | `bool` | Defines whether to import the schema into the database or not. | `false` |
+| `icingadb_database_import_schema` | `bool` | Defines whether to import the schema into the database or not. **Needs `icingadb_database_type` to be set**. | `false` |
 | `icingadb_database_key` | `String` | Defines the path to the certificate key for client key authentication. | **n/a** |
 | `icingadb_database_name` | `String` | Defines the database to connect to. | `icingadb` |
 | `icingadb_database_password` | `String` | Defines the database password to connect with. | `icingadb` |
@@ -57,6 +57,21 @@ For logging, currently only the **logging level** can be set. The default is `in
 |----------|------|-------------|---------|
 | `icingadb_logging_level` | `fatal\|error\|warn\|info\|debug` | Defines the logging level for IcingaDB. | `info` |
 
+### IcingaDB Retention
+
+| Variable | Type | Description | Default |
+|----------|------|-------------|---------|
+|`icingadb_retention_history_days`|`number`|Number of days to retain full historical data.|By default, historical data is retained forever.|
+|`icingadb_retention_sla_days`|`number`|Number of days to retain historical data for SLA reporting.|By default, it is retained forever.|
+|`icingadb_retention_acknowledgement`|`number`|Number of days to retain acknowledgements|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_comment`|`number`|Number of days to retain comments|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_downtime`|`number`|Number of days to retain downtimes|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_flapping`|`number`|Number of days to retain flapping events|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_notification`|`number`|Number of days to retain notifications|If not limited by icingadb_retention_history_days, forever|
+|`icingadb_retention_state`|`number`|Number of days to retain states|If not limited by icingadb_retention_history_days, forever|
+
+
+
 ### Miscellaneous
 
 The following variables are used for the IcingaDB setup and are not directly related to the configuration of IcingaDB itself. Normally, you can rely on the defaults to work and should **not** change them unless you know what you are doing.
@@ -81,6 +96,7 @@ This play installs IcingaDB with on the same host as its connected MysQL databas
   become: true
   vars:
     icingadb_database_import_schema: true  # Import the schema into the database
+    icingadb_database_type: mysql  # needed by the schema import
 
   roles:
     - role: icinga.icinga.icingadb

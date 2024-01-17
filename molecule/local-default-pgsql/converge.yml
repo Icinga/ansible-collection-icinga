@@ -3,7 +3,8 @@
   become: true
   vars:
     icingadb_database_type: pgsql
-    icingadb_database_host: 127.0.0.1
+    icingadb_database_host: localhost
+    icingadb_database_port: 5432
     icingadb_database_name: icingadb
     icingadb_database_user: icingadb
     icingadb_database_password: icingadb

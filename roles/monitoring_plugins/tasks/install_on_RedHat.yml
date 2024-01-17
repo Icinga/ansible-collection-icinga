@@ -27,7 +27,7 @@
     state: present
     name: "{{ needed_packages }}"
     update_cache: true
-    enablerepo: "{{ 'powertools' if ansible_distribution_major_version == '8' and icinga_monitoring_plugins_crb else 'crb' if ansible_distribution_major_version == '9' and icinga_monitoring_plugins_crb }}"
+    enablerepo: "{{ icinga_monitoring_plugins_dependency_repos }}"
   when:
     - ansible_distribution_major_version >= "8"
     - needed_packages is defined
@@ -37,7 +37,7 @@
   become: yes
   yum:
     state: absent
-    name: "{{ (unwanted_packages | difference('nagios-plugins')) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"
+    name: "{{ (unwanted_packages | difference(['nagios-plugins'])) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"
     autoremove: "{{ icinga_monitoring_plugins_autoremove }}"
   when:
     - icinga_monitoring_plugins_remove

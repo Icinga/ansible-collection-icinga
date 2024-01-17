@@ -1,0 +1,12 @@
+---
+
+- name: Converge
+  hosts: all
+  collections:
+    - icinga.icinga
+  pre_tasks:
+    - ansible.builtin.include_role:
+        name: repos
+  post_tasks:
+    - ansible.builtin.include_role:
+        name: icingadb_redis

@@ -1,12 +1,26 @@
 ### Getting Started
 
-The collection includes two roles in the current version.
+The collection includes six roles in the current version.
 
 * icinga.repos: Role to manage repositories
   * [Documentation: doc/role-repos](role-repos/role-repos.md)
 * icinga.icinga2: Role to install and manage Icinga 2 instances.
   * [Documentation: doc/role-icinga2](role-icinga2/role-icinga2.md)
+* icinga.icingadb: Role to install and manage IcingaDB, Icinga2's new data backend.
+  * [Documentation: doc/role-icingadb](role-icingadb/role-icingadb.md)
+* icinga.icingadb_redis: Role to install and manage Redis, IcingaDB's cache backend.
+  * [Documentation: doc/role-icingadb_redis](role-icingadb_redis/role-icingadb_redis.md)
+* icinga.icingaweb2: Role to install and manage Icinga Web 2.
+  * [Documentation: doc/role-icingaweb2](role-icingaweb2/role-icingaweb2.md)
+* icinga.monitoring_plugins: Role to install and manage Icinga2 compatible monitoring plugins.
+  * [Documentation: doc/role-monitoring_plugins](role-monitoring_plugins/role-monitoring_plugins.md)
 
+---
+
+The collection includes a plugin that allows you to use Icinga as an inventory source for Ansible.
+
+* icinga.icinga.icinga: Ansible Inventory Plugin to fetch hosts from Icinga.
+  * [Documentation: doc/plugins/inventory/icinga-inventory-plugin.md](plugins/inventory/icinga-inventory-plugin.md)
 
 ---
 **NOTE**
@@ -38,6 +52,36 @@ git clone https://github.com/Icinga/ansible-collection-icinga.git
 ansible-galaxy collection build ansible-collection-icinga
 ansible-galaxy collection install icinga-icinga-0.3.0.tar.gz
 ```
+
+## Databases
+
+Icinga2 relies on relational databases for many parts of its functionality. **None** of those databases get installed by the roles. You need to install and configure them yourself. For doing so, there are many ways available, e.g. the Ansible role [geerlingguy.mysql](https://galaxy.ansible.com/geerlingguy/mysql) for MySQL flavours (both MySQL and MariaDB) or [geerlingguy.postgresql](https://galaxy.ansible.com/geerlingguy/postgresql) for PostGresQL:
+
+```yaml
+- name: Configure databases for Icinga2
+  hosts: database
+  vars:
+    mysql_databases:
+      - name: icingadb
+      - name: icingaweb
+      - name: vspheredb
+        encoding: utf8mb4
+        collation: utf8mb4_unicode_ci
+      - name: director
+    mysql_users:
+      - name: icingadb-user
+        host: localhost
+        password: icingadb-password
+        priv: "icingadb.*:ALL"
+    [...]
+  roles:
+    - role: geerlingguy.mysql
+```
+
+> [!NOTE]
+> Schema migrations needed for the respective Icinga components to work will be handled either by the respective roles or by the Icinga components themselves.
+
+
 
 ## Example Playbooks
 
@@ -127,7 +171,7 @@ This is a example on how to install Icinga 2 server with Icinga Web 2 and Icinga
       host: 127.0.0.1
       user: icingaweb
       password: icingaweb
-    icingaweb2_database_import_schema: true
+    icingaweb2_db_import_schema: true
 
     icingadb_database_type: mysql
     icingadb_database_host: localhost

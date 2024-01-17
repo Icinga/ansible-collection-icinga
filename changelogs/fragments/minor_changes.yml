@@ -1,0 +1,9 @@
+---
+bugfixes:
+  - "icingaweb2: run pqslcmd with LANG=C to ensure the output is in english."
+  - remove superfluous curly brace (#246)
+minor_changes:
+  - added tests for icingaweb2 ini template
+  - added pyinilint as ini validator after templates
+  - ensure backwards compatibility with bool filter (#218)
+  - "Icingaweb2: fix duplicate task name at kickstart tasks (#244)"

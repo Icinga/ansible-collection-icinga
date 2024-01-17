@@ -1,19 +1,20 @@
 ---
 - name: Include OS specific vars
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
         - "{{ ansible_os_family }}-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_os_family }}-{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}-{{ ansible_lsb.id if ansible_lsb.id is defined else ansible_distribution }}.yml"
         - "{{ ansible_os_family }}.yml"
         - default.yml
       paths:
         - "{{ role_path }}/vars"
 
 - name: Include OS specific vars regarding Icinga subscription
-  include_vars: "{{ lookup('first_found', params) }}"
+  ansible.builtin.include_vars: "{{ lookup('first_found', params) }}"
   vars:
     params:
       files:
@@ -29,4 +30,4 @@
     - icinga_repo_subscription_password is defined
 
 - name: Add repositories
-  include_tasks: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"

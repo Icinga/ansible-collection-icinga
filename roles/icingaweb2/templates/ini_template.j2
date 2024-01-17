@@ -7,8 +7,8 @@
 {{ option }} = "{{ value }}"
 {% elif value is iterable and (value is not string and value is not mapping) %}
 {{ option }} = "{{ value | join(', ') }}"
-{% elif value is string and "=" in value %}
-{{ option }} = "{{ value | quote }}"
+{% elif ( value is string and ( "=" in value or "!" in value ) )%}
+{{ option }} = '{{ value }}'
 {% else %}
 {{ option }} = {{ value }}
 {% endif %}

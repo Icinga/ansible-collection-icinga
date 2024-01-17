@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "icinga2 feature api: fixed missing quotes in delegate ticket command for satellites or second master nodes."

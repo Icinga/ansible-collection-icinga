@@ -12,6 +12,7 @@
     icinga2_ssl_cert: "{{ icinga2_dict_features.api.ssl_cert | default(omit) }}"
     icinga2_ssl_cacert: "{{ icinga2_dict_features.api.ssl_cacert | default(omit) }}"
     icinga2_ssl_key: "{{ icinga2_dict_features.api.ssl_key | default(omit) }}"
+    icinga2_ticket_salt: "{{ icinga2_dict_features.api.ticket_salt | default(omit) }}"
 
 - assert:
     that: ((icinga2_ssl_cacert is defined and icinga2_ssl_cert is defined and icinga2_ssl_key is defined) or (icinga2_ssl_cacert is undefined and icinga2_ssl_cert is undefined and icinga2_ssl_key is undefined and icinga2_ca_host is defined))
@@ -69,12 +70,12 @@
 
 - name: create new CA
   block:
-    - name: check ca key already exits
+    - name: check ca key already exists
       stat:
         path: "{{ icinga2_ca_path }}/ca.key"
       register: icinga2_ca_key_path
 
-    - name: check ca cert already exits
+    - name: check ca cert already exists
       stat:
         path: "{{ icinga2_ca_path }}/ca.crt"
       register: icinga2_ca_cert_path
@@ -85,12 +86,12 @@
       when: icinga2_ca_cert_path.stat.exists == false and icinga2_ca_key_path.stat.exists == false
   when: icinga2_ca_host is defined and icinga2_ca_host == 'none'
 
-- name: check cert key already exits
+- name: check cert key already exists
   stat:
     path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
   register: icinga2_ssl_key_path
 
-- name: check certificate already exits
+- name: check certificate already exists
   stat:
     path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
   register: icinga2_ssl_cert_path
@@ -135,7 +136,7 @@
         {% if icinga2_ca_host != 'none' %} --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt" {% else %} --csr "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.csr" {%- endif %}
 
     - name: delegate ticket request to master
-      shell: icinga2 pki ticket --cn "{{ icinga2_cert_name }}"
+      shell: icinga2 pki ticket --cn "{{ icinga2_cert_name }}" {% if icinga2_ticket_salt is defined %} --salt "{{ icinga2_ticket_salt }}"{% endif %}
       delegate_to: "{{ icinga2_delegate_host | default(icinga2_ca_host) }}"
       register: icinga2_ticket
       when: icinga2_ca_host != 'none'

@@ -1,0 +1,62 @@
+name: Icingaweb2 Templates
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
+      - '!doc/**'
+    paths:
+      - 'roles/icingaweb2/templates/**'
+      - 'molecule/ini-configuration-tests/**'
+  pull_request:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - '!doc/**'
+
+jobs:
+  test_ini_template:
+    runs-on: ubuntu-latest
+
+    env:
+      COLLECTION_NAMESPACE: icinga
+      COLLECTION_NAME: icinga
+
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        distro: [ubuntu2204]
+        python: ['3.9', '3.10']
+        ansible: ['2.13.10', '2.14.7']
+        scenario: [ini-configuration-tests]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies ansible
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements-test-${{ matrix.ansible }}.txt
+
+      - name: Install collection
+        run: |
+          mkdir -p ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE
+          cp -a ../ansible-collection-$COLLECTION_NAME ~/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+
+      - name: Test with molecule
+        run: |
+          ansible --version
+          molecule --version
+          molecule test -s ${{ matrix.scenario }}
+        env:
+          MOLECULE_DISTRO: ${{ matrix.distro }}

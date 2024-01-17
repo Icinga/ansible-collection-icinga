@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
@@ -54,13 +54,19 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
 
         with:
           python-version: ${{ matrix.python }}
 
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install "ansible-core>=2.13.10" "requests>=1.0.0"
+
       - name: Test with unittest
         run: |
           python -m unittest -v tests.unittestpy3.test_data
+          python -m unittest -v tests.unittestpy3.test_inventory
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}#

@@ -7,8 +7,8 @@
 
 - name: collect all config objects in play vars
   set_fact:
-    tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects[icinga2_config_host]) }}"
-  when: vars['icinga2_objects'][icinga2_config_host] is defined
+    tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects) }}"
+  when: icinga2_objects is defined and vars['icinga2_objects'][icinga2_config_host] is not defined
 
 - icinga2_object:
     args: "{{ item }}"

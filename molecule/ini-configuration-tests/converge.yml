@@ -1,0 +1,46 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    test_cases:
+      -  name: string
+         _i2_config_hash:
+           section:
+             test: string
+      -  name: number
+         _i2_config_hash:
+           section:
+             test: 10
+      -  name: advanced_filter
+         _i2_config_hash:
+           section:
+             test: '!(objectClass=user)'
+             test2: "!(objectClass=user)"
+             test3: "!attribute"
+      -  name: list
+         _i2_config_hash:
+           section:
+             test:
+               - "foo"
+               - bar
+               - 'baz'
+      -  name: equal_sign
+         _i2_config_hash:
+           section:
+             test: equal=sign
+
+
+  collections:
+    - icinga.icinga
+  tasks:
+    - ansible.builtin.pip:
+        name: pyinilint
+        state: present
+
+    - ansible.builtin.template:
+        src: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY', default=Undefined) }}/roles/icingaweb2/templates/modules_config.ini.j2"
+        dest: "/tmp/{{ item.name }}"
+        validate: pyinilint %s
+      loop: "{{ test_cases }}"
+      vars:
+        _i2_config_hash: "{{ item._i2_config_hash }}"

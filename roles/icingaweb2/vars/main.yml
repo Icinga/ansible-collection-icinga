@@ -3,4 +3,5 @@ icingaweb2_module_packages:
   icingadb: icingadb-web
   director: icinga-director
   graphite: icinga-graphite-web
+  x509: icinga-x509
   businessprocess: icinga-businessprocess

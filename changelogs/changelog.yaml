@@ -82,3 +82,45 @@ releases:
     - fix_use_lookup_plugin_for_objects.yaml
     - fix_variable_usage_in_icingaweb2_modules.yml
     release_date: '2023-10-10'
+  0.3.1:
+    changes:
+      bugfixes:
+      - Fix incorrect behaviour within `monitoring_plugins` that lead to a cycle of
+        installation and removal of the same packages within one play
+      - Fix incorrect templating when passing integers in some parts of the Icinga
+        Web 2 configuration.
+      - Fix to use correct URL for Debian Ubuntu (#195)
+      - Fixed typo in api.yml file (exits to exists)
+      - 'Role Icingaweb2: Adjust preferences setting to store preferences in database'
+      major_changes:
+      - Added Installation of Business Process Modeling Module
+      minor_changes:
+      - Adds password capabilities to icingadb-redis configuration (#202)
+      - support Raspbian armhf repos (#203)
+    fragments:
+    - bugfix-icingaweb2-templating.yml
+    - bugfix-monitoring-plugins-installation-removal-cycle.yml
+    - bugfixes_icingaweb2_preferences.yml
+    - bugfixes_use_correct_debian_url.yml
+    - feature_add_businessprocess_module_installation.yml
+    - fixed_typo_in_api_yml_file.yml
+    - minor_change_add_redis_password.yml
+    - minor_change_support_raspbian_armhf.yml
+    - trivial_192.yml
+    - trivial_naming_tasks.yml
+    - trivial_wrong_variable_name.yml
+    release_date: '2023-11-21'
+  0.3.2:
+    changes:
+      bugfixes:
+      - 'Role repos: Fix bug in variable search - thanks to @gianmarco-mameli #224'
+      minor_changes:
+      - Added possibility to delegate ticket creation to satellites
+      - Adjusted the installation of the director module when using the source installation.
+      release_summary: Bugfix Release
+    fragments:
+    - bugfix_variable_search.yml
+    - feature_add_satellite_delegation.yml
+    - feature_adjust_director_source_installation.yml
+    - release.yml
+    release_date: '2023-12-07'

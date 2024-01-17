@@ -1,0 +1,9 @@
+---
+
+- name: Verify
+  hosts: all
+  tasks:
+  - name: Check for running icinga2
+    service:
+      name: icinga2
+      state: started

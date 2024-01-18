@@ -1,0 +1,4 @@
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml

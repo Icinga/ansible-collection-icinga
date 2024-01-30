@@ -14,3 +14,10 @@
   community.general.zypper:
     name: libboost_regex1_66_0
     state: present
+  when: ansible_facts['distribution_major_version'] | int > 12
+
+- name: Zypper - install dep
+  community.general.zypper:
+    name: libboost_regex1_54_0
+    state: present
+  when: ansible_facts['distribution_major_version'] | int == 12

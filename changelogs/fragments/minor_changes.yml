@@ -2,6 +2,7 @@
 bugfixes:
   - "icingaweb2: run pqslcmd with LANG=C to ensure the output is in english."
   - remove superfluous curly brace (#246)
+  - Added block rescue statement if unsupported os found. (#232)
 minor_changes:
   - added tests for icingaweb2 ini template
   - added pyinilint as ini validator after templates

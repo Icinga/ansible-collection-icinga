@@ -18,8 +18,14 @@
   loop: "{{ icingaweb2_modules | dict2items }}"
   when: icingaweb2_modules is defined and icingaweb2_module_packages[item.key] is defined and item.value.enabled | bool == true and item.value.source == "package"
 
-- name: Include OS specific installation
-  ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+- name: Check supported operatingsystems
+  block:
+    - name: Include OS specific installation
+      ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+  rescue:
+    - name: "OS family not supported!"
+      ansible.builtin.fail:
+        msg: "The OS {{ ansible_os_family }} is not supported!"
 
 - name: Manage Icinga Web 2 config
   ansible.builtin.include_tasks: "manage_icingaweb_config.yml"

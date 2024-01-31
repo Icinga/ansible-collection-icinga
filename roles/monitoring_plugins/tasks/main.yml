@@ -2,8 +2,14 @@
 
 - gather_facts:
 
-- name: Include OS family specific vars
-  include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
+- name: Check supported operatingsystems
+  block:
+    - name: Include OS family specific vars
+      ansible.builtin.include_vars: "{{ role_path }}/vars/{{ ansible_os_family }}.yml"
+  rescue:
+    - name: "OS family not supported!"
+      ansible.builtin.fail:
+        msg: "The OS {{ ansible_os_family }} is not supported!"
 
 - name: Include OS distribution/version specific vars
   include_vars: "{{ lookup('first_found', params) }}"

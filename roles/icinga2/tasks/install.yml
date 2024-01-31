@@ -1,10 +1,15 @@
 ---
+- name: Check supported operatingsystems
+  block:
+    - name: Install on {{ ansible_os_family }}
+      ansible.builtin.include_tasks: "install_on_{{ ansible_os_family }}.yml"
+  rescue:
+    - name: "OS family not supported!"
+      ansible.builtin.fail:
+        msg: "The OS {{ ansible_os_family }} is not supported!"
 
-- name: install on {{ ansible_os_family }}
-  include_tasks: "install_on_{{ ansible_os_family }}.yml"
-
-- name: fragments dir
-  file:
+- name: Prepare fragments path
+  ansible.builtin.file:
     state: directory
     path: "{{ icinga2_fragments_path }}"
     owner: root

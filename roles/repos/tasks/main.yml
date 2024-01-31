@@ -29,5 +29,11 @@
     - icinga_repo_subscription_username is defined
     - icinga_repo_subscription_password is defined
 
-- name: Add repositories
-  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+- name: Check OS family
+  block:
+    - name: Add repositories {{ ansible_os_family }}
+      ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+  rescue:
+    - name: "OS family not supported!"
+      ansible.builtin.fail:
+        msg: "The OS '{{ ansible_os_family }}' isn't currently supported!"

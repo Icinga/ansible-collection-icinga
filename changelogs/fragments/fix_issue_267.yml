@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Added missing port paramater to mysql command within icingadb role (#267)

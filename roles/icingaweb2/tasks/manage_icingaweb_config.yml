@@ -91,7 +91,7 @@
       when: icingaweb2_resources is defined
 
 - name: Assemble roles.ini
-  when: icingaweb2_admin_password is defined or icingaweb2_roles is defined
+  when: (icingaweb2_admin_user is defined and icingaweb2_admin_password is defined) and icingaweb2_roles is defined
   block:
     - name: Build variable
       ansible.builtin.set_fact:

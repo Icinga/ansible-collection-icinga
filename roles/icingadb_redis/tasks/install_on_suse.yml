@@ -1,0 +1,5 @@
+---
+- name: Suse - install icingadb packages
+  community.general.zypper:
+    name: "{{ icingadb_redis_packages }}"
+    state: present

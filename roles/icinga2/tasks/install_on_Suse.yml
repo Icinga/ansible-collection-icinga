@@ -9,8 +9,3 @@
     name: icinga2-selinux
     state: present
   when: ansible_selinux is defined and ansible_selinux.status == "enabled"
-
-- name: Zypper - install dep
-  community.general.zypper:
-    name: libboost_regex1_66_0
-    state: present

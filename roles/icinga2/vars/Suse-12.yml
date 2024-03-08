@@ -1,5 +1,5 @@
 ---
-icinga2_packages: ["icinga2","libboost_regex1_66_0"]
+icinga2_packages: ["icinga2","libboost_regex1_54_0"]
 icinga2_user: icinga
 icinga2_group: icinga
 icinga2_config_path: /etc/icinga2

@@ -91,7 +91,7 @@
       when: icingaweb2_resources is defined
 
 - name: Assemble roles.ini
-  when: (icingaweb2_admin_username is defined and icingaweb2_admin_password is defined) and icingaweb2_roles is defined
+  when: icingaweb2_admin_username is defined and icingaweb2_admin_password is defined
   block:
     - name: Build variable
       ansible.builtin.set_fact:
@@ -108,7 +108,7 @@
         dest: "{{ icingaweb2_fragments_path }}/roles/roles_01"
         owner: root
         group: "{{ icingaweb2_group }}"
-      when: icingaweb2_admin_password is defined
+      when: icingaweb2_admin_username is defined and icingaweb2_admin_password is defined
 
     - name: Build variable
       ansible.builtin.set_fact:

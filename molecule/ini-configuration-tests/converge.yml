@@ -11,6 +11,10 @@
          _i2_config_hash:
            section:
              test: 10
+      -  name: number1
+         _i2_config_hash:
+           section:
+             test: 1
       -  name: advanced_filter
          _i2_config_hash:
            section:

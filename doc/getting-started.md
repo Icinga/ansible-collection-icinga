@@ -30,6 +30,16 @@ collection. All features which are not configured will be disabled.
 
 ---
 
+## Requirements
+
+**Operatingsystems**:
+For **OSFamily Suse** please make sure the Collection **community.general** is available.
+Otherwise the modules **zypper_repository** and **zypper** are missing.
+
+**Imports**:
+If you want the collection roles to **import schemas and users to databases**, make sure
+the client (**"mysql", "psql"**) for your database is available on your system.
+
 ## Installation
 
 To start with the collection, easily install it with the **ansible-galaxy** command.

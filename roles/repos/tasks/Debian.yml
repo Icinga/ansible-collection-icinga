@@ -1,6 +1,6 @@
 ---
 - name: Apt - ensure apt keyrings directory
-  file:
+  ansible.builtin.file:
     state: directory
     path: /etc/apt/keyrings
     owner: root

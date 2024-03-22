@@ -7,6 +7,12 @@ galaxy_info:
   license: Apache-2.0
   min_ansible_version: 2.9
   platforms:
+    - name: opensuse
+      versions:
+        - 15.5
+    - name: SLES
+      versions:
+        - 15
     - name: EL
       versions:
         - 7

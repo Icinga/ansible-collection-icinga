@@ -9,3 +9,4 @@ minor_changes:
   - ensure backwards compatibility with bool filter (#218)
   - "Icingaweb2: fix duplicate task name at kickstart tasks (#244)"
   - removed localhost condition as default as it could be a localhost connection. (#257)
+  - changed all references of "vars['icingaweb2_modules']" to "icingaweb2_modules" (#266)

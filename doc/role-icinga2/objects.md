@@ -470,11 +470,11 @@ icinga2_objects:
         description: The notification address
       -6: $notification_address6$
       -b: $notification_author$
-      vars:
-        +: true
-        notification_address: $address$
-        notification_address6: $address6$
-        notification_author: $notification.author$
+    vars:
+      +: true
+      notification_address: $address$
+      notification_address6: $address6$
+      notification_author: $notification.author$
 ````
 
 #### UserGroup

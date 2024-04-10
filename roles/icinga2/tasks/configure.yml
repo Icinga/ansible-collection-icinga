@@ -92,6 +92,7 @@
     delimiter: ' '
     owner: "{{ icinga2_user }}"
     group: "{{ icinga2_group }}"
+    mode: 0644
   loop: "{{ result.files }}"
   notify: reload icinga2 service
 

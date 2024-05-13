@@ -113,8 +113,42 @@
         --host "{{ icinga2_ca_host }}"
         --port "{{ icinga2_ca_host_port | default('5665') }}"
         --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
-      when: icinga2_ca_host != 'none'
+      when:
+        - icinga2_ca_host != 'none'
+        - icinga2_delegate_host is not defined
       register: _trusted_master_cert
+
+      #- name: fetch master certificat with delegate host
+      #  when:
+      #    - icinga2_delegate_host is defined
+      #  block:
+
+              # - name: save trusted-master.crt (delegate host)
+              #   shell: >-
+              #     icinga2 pki save-cert
+              #     --host "{{ icinga2_ca_host }}"
+              #     --port "{{ icinga2_ca_host_port | default('5665') }}"
+              #     --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
+              #   when:
+              #     - icinga2_ca_host != 'none'
+              #   register: _trusted_master_cert
+              #   args:
+              #     creates: "{{ icinga2_cert_path }}/trusted-master.crt"
+              #   delegate_to: "{{ icinga2_delegate_host }}"
+
+              # - name: slurp trusted master cert
+              #   slurp:
+              #     path: "{{ icinga2_cert_path }}/trusted-master.crt"
+              #   register: icinga2_trusted_master_cert
+              #   delegate_to: "{{ icinga2_delegate_host }}"
+
+              # - name: write slurped certificate to host
+              #   copy:
+              #     dest: "{{ icinga2_cert_path }}/trusted-master.crt"
+              #     owner: icinga
+              #     group: icinga
+              #     mode: 0644
+              #     content: "{{ icinga2_trusted_master_cert['content'] | b64decode }}"
 
     - name: normalize ca fingerprint
       set_fact:
@@ -153,6 +187,82 @@
         {% else %} sign-csr --csr "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.csr" {%- endif %}
         --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
       notify: reload icinga2 service
+      when:
+        - icinga2_delegate_host is not defined
+
+    - name: fetch certificate from delegate host
+      when:
+        - icinga2_delegate_host is defined
+      block:
+        - name: slurp key
+          slurp:
+            path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+          register: icinga2_key
+
+        - name: slurp certificate
+          slurp:
+            path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+          register: icinga2_certificate
+
+        - name: slurp ca certificate
+          slurp:
+            path: "{{ icinga2_cert_path }}/ca.crt"
+          register: icinga2_ca_certificate
+          delegate_to: "{{ icinga2_delegate_host }}"
+
+        - name: put ca certificate
+          copy:
+            dest:  "{{ icinga2_cert_path }}/ca.crt"
+            owner: icinga
+            group: icinga
+            mode: 0644
+            content: "{{ icinga2_ca_certificate['content'] | b64decode }}"
+          notify: reload icinga2 service
+
+        - name: put key
+          copy:
+            dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+            owner: icinga
+            group: icinga
+            mode: 0600
+            content: "{{ icinga2_key['content'] | b64decode }}"
+          delegate_to: "{{ icinga2_delegate_host }}"
+
+        - name: put certificate
+          copy:
+            dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+            owner: icinga
+            group: icinga
+            mode: 0600
+            content: "{{ icinga2_certificate['content'] | b64decode }}"
+          delegate_to: "{{ icinga2_delegate_host }}"
+
+        - name: get certificate delegated
+          shell: >-
+            icinga2 pki request
+            --ticket "{{ icinga2_ticket.stdout }}"
+            --host "{{ icinga2_ca_host }}"
+            --port "{{ icinga2_ca_host_port | default('5665') }}"
+            --ca "{{ icinga2_cert_path }}/ca.crt"
+            --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
+            --trustedcert "{{ icinga2_cert_path }}/trusted-master.crt"
+            --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+          delegate_to: "{{ icinga2_delegate_host }}"
+
+        - name: slurp certificate
+          slurp:
+            path: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+          register: icinga2_certificate
+          delegate_to: "{{ icinga2_delegate_host }}"
+
+        - name: put certificate
+          copy:
+            dest: "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt"
+            owner: icinga
+            group: icinga
+            mode: 0600
+            content: "{{ icinga2_certificate['content'] | b64decode }}"
+          notify: reload icinga2 service
 
     - name: copy CA root certificate
       copy:

@@ -67,6 +67,7 @@
           - name: "main"
             endpoints:
               - "{{ ansible_fqdn }}"
+    icinga2_delegate_host: "{{ ansible_fqdn }}"
     icinga2_config_directories:
       - zones.d/main/commands
       - zones.d/main/hosts

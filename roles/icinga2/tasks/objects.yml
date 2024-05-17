@@ -10,6 +10,11 @@
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects) }}"
   when: icinga2_objects is defined and vars['icinga2_objects'][icinga2_config_host] is not defined
 
+- name: collect all config objects in host
+  set_fact:
+    tmp_objects: "{{ tmp_objects| default([]) + lookup('list', hostvars[inventory_hostname]['icinga2_objects']) }}"
+  when: hostvars[inventory_hostname]['icinga2_objects'] is defined
+
 - icinga2_object:
     args: "{{ item }}"
   with_items: "{{ tmp_objects }}"

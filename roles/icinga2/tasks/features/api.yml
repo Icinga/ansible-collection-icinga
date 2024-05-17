@@ -116,7 +116,7 @@
       when:
         - icinga2_ca_host != 'none'
       register: _trusted_master_cert
-      delegate_to: "{{ icinga2_delegate_host }}"
+      delegate_to: "{{ icinga2_delegate_host | default(icinga2_ca_host) }}"
 
     - name: normalize ca fingerprint
       set_fact:
@@ -136,7 +136,7 @@
         --cn "{{ icinga2_cert_name }}"
         --key "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.key"
         {% if icinga2_ca_host != 'none' %} --cert "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.crt" {% else %} --csr "{{ icinga2_cert_path }}/{{ icinga2_cert_name }}.csr" {%- endif %}
-      delegate_to: "{{ icinga2_delegate_host }}"
+      delegate_to: "{{ icinga2_delegate_host | default(icinga2_ca_host) }}"
 
     - name: copy CA root certificate on master
       copy:

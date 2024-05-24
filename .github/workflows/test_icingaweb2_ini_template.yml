@@ -12,6 +12,7 @@ on:
       - 'roles/icingaweb2/templates/**'
       - 'molecule/ini-configuration-tests/**'
       - '.github/workflows/test_icingaweb2_ini_template.yml'
+      - 'requirements*'
   pull_request:
     branches:
       - 'feature/**'

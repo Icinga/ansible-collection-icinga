@@ -8,7 +8,7 @@
     fail_msg: "No database credentials defined. Please set icingaweb2_db.<user|password> or a privileged user with icingaweb2_priv_db_<user|password>"
   when: icingaweb2_priv_db_password is undefined and icingaweb2_priv_db_user is undefined
 
-- name: PostgreSQL import IDO schema
+- name: PostgreSQL import icingaweb db schema
   block:
     - name: Build psql command
       ansible.builtin.set_fact:
@@ -24,7 +24,7 @@
           {% if icingaweb2_db['ssl_key'] is defined %} sslkey={{ icingaweb2_db['ssl_key'] }} {%- endif %}
           {% if icingaweb2_db['ssl_extra_options'] is defined %} {{ icingaweb2_db['ssl_extra_options'] }} {%- endif %}"
 
-    - name: PostgreSQL check for IDO schema
+    - name: PostgreSQL check for icingaweb db schema
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -c "select * from icingaweb_user"
@@ -33,7 +33,7 @@
       check_mode: false
       register: _icingaweb2_db_schema
 
-    - name: PostgreSQL import IDO schema
+    - name: PostgreSQL import icingaweb db schema
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -f /usr/share/icingaweb2/schema/pgsql.schema.sql

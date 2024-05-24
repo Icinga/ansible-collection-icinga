@@ -3,6 +3,8 @@ icingaweb2_group: icingaweb2
 icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
 icingaweb2_director_service: icinga-director.service
 
+icingaweb2_ignore_unknown_modules: false
+
 icingaweb2_groups:
   icingaweb2:
     backend: db

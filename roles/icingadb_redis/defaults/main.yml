@@ -60,3 +60,8 @@ icingadb_redis_hz: 10
 icingadb_redis_dynamic_hz: 'yes'
 icingadb_redis_aof_rewrite_incremental_fsync: 'yes'
 icingadb_redis_rdb_save_incremental_fsync: 'yes'
+
+#icingadb_redis_tls_port:
+#icingadb_redis_tls_cert: /etc/ssl/certs/host.crt
+#icingadb_redis_tls_key: /etc/ssl/private/host.key
+#icingadb_redis_tls_ca: /etc/ssl/certs/root-ca.crt

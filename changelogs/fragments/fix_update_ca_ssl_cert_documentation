@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fixes documentation for the variable name to use when deploying external certificates. from ssl_ca to ssl_cacert.

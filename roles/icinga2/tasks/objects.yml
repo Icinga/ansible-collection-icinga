@@ -43,6 +43,6 @@
         owner: root
         group: root
         mode: 0644
-        src: "files/{{ item.name }}"
+        src: "files/{{ item.src_folder|default('') }}{{ item.name }}"
         dest: "{{ icinga2_fragments_path }}/{{ item.path }}/{{ item.order|default('20')|string }}_{{ item.name }}"
       loop: "{{ icinga2_custom_config }}"

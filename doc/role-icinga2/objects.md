@@ -75,6 +75,17 @@ icinga2_custom_config:
     path: zones.d/main/myown_command.conf
     order: 10
 ```
+The config files can also be structured in subfolders to provide a better overview within the files folder. In this case, the source folder below files must be specified via the "src_folder" parameter.
+
+If we have a file `myown_command_inside_folder.conf` under **files/main/** we can use this as follows
+
+```
+icinga2_custom_config:
+  - name: myown_command_inside_folder.conf
+    path: zones.d/main/myown_command.conf
+    src_folder: main/
+    order: 10
+```
 
 ## Parser Rules
 

@@ -13,7 +13,7 @@ tcp-keepalive {{ icingadb_redis_tcp_keepalive }}
 supervised {{ icingadb_redis_supervised }}
 pidfile {{ icingadb_redis_pidfile }}
 loglevel {{ icingadb_redis_loglevel }}
-logfile {{ icingadb_redis_logfile }}
+logfile "{{ icingadb_redis_logfile }}"
 # syslog-enabled no
 # syslog-ident redis
 # syslog-facility local0

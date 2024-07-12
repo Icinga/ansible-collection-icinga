@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - Fixed issue where reusing the repos role within the monitoring_plugins could cause the deactivation of the repos; using standalone task now (#270)

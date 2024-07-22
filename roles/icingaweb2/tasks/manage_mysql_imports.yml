@@ -33,6 +33,6 @@
 - name: MySQL import  db schema
   ansible.builtin.shell: >
     {{ _tmp_mysqlcmd }}
-    < {{ _db['schema_path'] }}
+    < {{ _db['schema_path_mysql'] }}
   when: _db_schema.rc != 0
   run_once: yes

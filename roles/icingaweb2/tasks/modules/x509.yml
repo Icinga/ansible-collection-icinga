@@ -44,12 +44,14 @@
           select_query: "select * from x509_certificate"
           type: "{{ icingaweb2_modules[_module]['database']['type'] | default(omit) }}"
 
-    - ansible.builtin.fail:
-        fail_msg: No database type was provided
+    - name: Module x509 | Check if database type is provided
+      ansible.builtin.fail:
+        msg: No database type was provided
       when: icingaweb2_modules[_module]['database']['type'] is not defined
 
-    - ansible.builtin.fail:
-        fail_msg: "Invalid database type was provided. [Supported: mysql, pgsql]"
+    - name: Module x509 | Check provided database type
+      ansible.builtin.fail:
+        msg: "Invalid database type was provided. [Supported: mysql, pgsql]"
       when: _db.type not in ['mysql', 'pgsql']
 
     - name: Module x509 | Import MySQL Schema

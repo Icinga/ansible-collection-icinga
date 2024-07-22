@@ -7,6 +7,9 @@ bind {% for host in icingadb_redis_binds %}
 
 protected-mode {{ icingadb_redis_protected_mode | string }}
 port {{ icingadb_redis_port }}
+{% if icingadb_redis_tls_port is defined %}
+tls-port {{ icingadb_redis_tls_port }}
+{% endif %}
 tcp-backlog {{ icingadb_redis_tcp_backlog }}
 timeout {{ icingadb_redis_timeout }}
 tcp-keepalive {{ icingadb_redis_tcp_keepalive }}
@@ -218,3 +221,10 @@ rdb-save-incremental-fsync {{ icingadb_redis_rdb_save_incremental_fsync }}
 # Maximum number of set/hash/zset/list fields that will be processed from
 # the main dictionary scan
 # active-defrag-max-scan-fields 1000
+
+# TLS
+{% if icingadb_redis_tls_cert is defined and icingadb_redis_tls_ca is defined and icingadb_redis_tls_key is defined %}
+tls-cert-file {{ icingadb_redis_tls_cert }}
+tls-key-file {{ icingadb_redis_tls_key }}
+tls-ca-cert-file {{ icingadb_redis_tls_ca }}
+{% endif %}

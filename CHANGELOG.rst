@@ -5,6 +5,22 @@ Icinga.Icinga Release Notes
 .. contents:: Topics
 
 
+v0.3.4
+======
+
+Release Summary
+---------------
+
+Bugfix release
+
+Bugfixes
+--------
+
+- Added missing port paramater to mysql command within icingadb role (#267)
+- Fixed collect of icinga2_objects when icinga2_config_host is not defined (#228)
+- Fixed issue where reusing the repos role within the monitoring_plugins could cause the deactivation of the repos; using standalone task now (#270)
+- Icinga's packages no longer create '/var/log/icingadb-redis/'. Added tasks that create a log directory based on `icingadb_redis_logfile` (#298).
+
 v0.3.3
 ======
 
@@ -17,8 +33,8 @@ Bugfixes
 --------
 
 - ensure backwards compatibility with bool filter (#218)
-- icinga2 feature api: fixed missing quotes in delegate ticket command for satellites or second master nodes.
-- icingaweb2: run pqslcmd with LANG=C to ensure the output is in english.
+- icinga2 feature api: fixed missing quotes in delegate ticket command for satellites or second master nodes.(#250)
+- icingaweb2: run pqslcmd with LANG=C to ensure the output is in english.(#241)
 - remove superfluous curly brace (#246)
 
 v0.3.2
@@ -27,7 +43,7 @@ v0.3.2
 Release Summary
 ---------------
 
-This is a bugfix release, bringing two QOL features and a fix for the installation process of some of the roles which broke with v0.3.1.
+Bugfix Release
 
 Minor Changes
 -------------

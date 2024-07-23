@@ -1,0 +1,22 @@
+DOCUMENTATION:
+    author:
+      - Lennart Betz (lennart.betz@netways.de)
+    name: prefix
+    version_added: "1.0"
+    short_description: add prefix before value
+    description:
+        - Adds prefix before string
+    options:
+      _input:
+        description: a string
+        type: str
+        required: true
+
+EXAMPLES: |
+  var: "{{ 'NodeName' | icinga.icinga.prefix('const ') }}"
+  # => 'const NodeName'
+
+RETURN:
+  _value:
+    description: String with given prefix in front
+    type: str

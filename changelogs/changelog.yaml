@@ -136,3 +136,22 @@ releases:
     fragments:
     - fix_missing_quotes_delegate_ticket.yml
     release_date: '2024-01-15'
+  0.3.4:
+    changes:
+      bugfixes:
+      - Added missing port paramater to mysql command within icingadb role (#267)
+      - Fixed collect of icinga2_objects when icinga2_config_host is not defined (#228)
+      - Fixed issue where reusing the repos role within the monitoring_plugins could
+        cause the deactivation of the repos; using standalone task now (#270)
+      - Icinga's packages no longer create '/var/log/icingadb-redis/'. Added tasks
+        that create a log directory based on `icingadb_redis_logfile` (#298).
+      release_summary: Bugfix release
+    fragments:
+    - fix_issue_228.yml
+    - fix_issue_267.yml
+    - fix_issue_268.yml
+    - fix_issue_269.yml
+    - fix_issue_270.yml
+    - fix_issue_298.yml
+    - release_summary.yml
+    release_date: '2024-07-25'

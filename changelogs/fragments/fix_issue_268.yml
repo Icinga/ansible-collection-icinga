@@ -1,3 +1,0 @@
----
-trivial:
-  - Added no_log true to obscure secret information (#268)

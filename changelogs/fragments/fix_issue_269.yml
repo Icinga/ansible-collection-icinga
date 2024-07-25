@@ -1,0 +1,3 @@
+---
+trivial:
+  - Changed conditions / boolean comparisons to be more verbose (#269)

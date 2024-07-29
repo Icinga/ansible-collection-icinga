@@ -8,7 +8,7 @@ generate configuration files with objects included.
 This variable consists of Icinga 2 object attributes and attributes referring to the file created in the process.
 
 > **_NOTE:_** The second level of the dictionary defines on which host the configuration is created. All objects in the example below, will be gathered and deployed on the host.: `host.example.org`.  
-In addition this variable can be logically defined at the **host_vars/agent** and are still deployed on the master **host.example.org**  
+In addition this variable can be logically defined at the **host_vars/agent** and are still deployed on the master **host.example.org**.  
 The second level can **only** be used in **hostvars**!
 
 The `file` key will be used to control in which directory structure the object will be placed.
@@ -22,25 +22,41 @@ The `type` will be the original Icinga 2 object types, a list of all can be foun
 When defining `icinga2_objects` as a host specific variable (hostvars/groupvars) you can define the variable as a dictionary. Each dictionary key represents the host on which the key's value will be deployed as configuration.  
 Alternatively you can define `icinga2_objects` as a list which results in the configuration being deployed on just the host for which the variable is defined.
 
-Example defining the variable within hostvars:
+Example defining the variable within hostvars as a dictionary (inventory entry):
 
-```
-icinga2_objects:
-  host.example.org:
-    - name: "{{ ansible_fqdn }}"
-      type: Endpoint
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-    - name: "{{ ansible_fqdn }}"
-      type: Zone
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-      endpoints:
-        - "{{ ansible_fqdn }}"
-      parent: main
+```yaml
+webserver.example.org:
+  ansible_host: 10.0.0.8
+  icinga2_objects:
+    host.example.org:
+      - name: "{{ inventory_hostname }}"
+        type: Host
+        file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+        address: "{{ ansible_host }}"
+        check_command: hostalive
+        check_interval: 3m
+      - ...
 ```
 
-This way you can use some host's variables (like `ansible_fqdn`) to deploy configuration on another host (in this case `host.example.org`).
+This way you can use some host's variables (like `ansible_host`) to deploy configuration on another host (in this case `host.example.org`).
+
+Example defining the variable within hostvars as a list (inventory entry):
+
+```yaml
+webserver.example.org:
+  ansible_host: 10.0.0.8
+  icinga2_objects:
+    - name: "web-api-user"
+      type: ApiUser
+      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+      password: "somepassword"
+      permissions:
+        - "objects/query/Host"
+        - "objects/query/Service"
+    - ...
+```
+
+In the above case the list `icinga2_objects` will only be deployed as configuration on host `webserver.example.org`.
 
 Additonally, the list `icinga2_objects` from within a play's `vars` key will be merged with each host's individual objects.
 

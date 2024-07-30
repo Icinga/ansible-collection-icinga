@@ -11,7 +11,7 @@
   loop: "{{ _files }}"
   loop_control:
     loop_var: _file
-  when: vars['icingaweb2_modules'][_module][_file] is defined
+  when: icingaweb2_modules[_module][_file] is defined
   vars:
     _module: "{{ item.key }}"
     _files:

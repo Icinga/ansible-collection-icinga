@@ -58,12 +58,12 @@ webserver.example.org:
 
 In the above case the list `icinga2_objects` will only be deployed as configuration on host `webserver.example.org`.
 
-Additonally, the list `icinga2_objects` from within a play's `vars` key will be merged with each host's individual objects.
+Additionally, the list `icinga2_objects` from within a play's `vars` key will be merged with each host's individual objects.
 
 ### Icinga2 Objects in Play Vars
 
 If you need to deploy certain Icinga 2 objects on every host in your play, you can define the variable `icinga2_objects` as a list within your play's `vars` key.  
-This makes sure that, **in addition** to the individual host's objects, there is a common set of objects between your hosts.
+This ensures that, **in addition** to the individual host's objects, there is a common set of objects between your hosts.
 
 Example defining the variable within your play's vars:
 

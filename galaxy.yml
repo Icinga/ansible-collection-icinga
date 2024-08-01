@@ -43,3 +43,4 @@ build_ignore:
   - changelogs
   - .idea
   - '*.tar.gz'
+  - PUBLISH.md

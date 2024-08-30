@@ -1,0 +1,28 @@
+DOCUMENTATION:
+  name: prefix
+  author: Lennart Betz <lennart.betz@netways.de>
+  version_added: "0.1.0"
+  short_description: Adds a prefix to a list or dictionary
+  description:
+    - Adds a chosen prefix to each element/key of a list/dictionary
+  options:
+    _input:
+      description: List or dictionary to put prefix in front of.
+      type: list / dict
+      required: true
+    _prefix:
+      description: String that should be used as a prefix.
+      type: string
+      required: true
+
+EXAMPLES: |
+  # Prefix every dictionary key with 'const '
+  constants: '{{ {"NodeName": "main01", "ZoneName": "main"} | icinga.icinga.prefix("const ") }}'
+
+  # Prefix every list entry with 'const '
+  constants: '{{ ["NodeName", "ZoneName"] | icinga.icinga.prefix("const ") }}'
+
+RETURN:
+  _value:
+    description: The list entries / dict keys with prefix
+    type: list / dict

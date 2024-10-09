@@ -1,14 +1,27 @@
 ---
-- name: collect all config objects for myself
+- name: collect all config objects for myself (from all inventory hosts)
   set_fact:
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', hostvars[item]['icinga2_objects'][icinga2_config_host]) }}"
   with_items: "{{ groups['all'] }}"
   when: hostvars[item]['icinga2_objects'][icinga2_config_host] is defined
 
+- name: collect all config objects for myself (from myself if list)
+  set_fact:
+    tmp_objects: "{{ tmp_objects | default([]) + lookup('list', hostvars[inventory_hostname]['icinga2_objects']) }}"
+  when:
+    - hostvars[inventory_hostname]['icinga2_objects'] is defined
+    - hostvars[inventory_hostname]['icinga2_objects'] is iterable
+    - hostvars[inventory_hostname]['icinga2_objects'] is not string
+    - hostvars[inventory_hostname]['icinga2_objects'] is not mapping
+
 - name: collect all config objects in play vars
   set_fact:
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects) }}"
-  when: icinga2_objects is defined and vars['icinga2_objects'][icinga2_config_host] is not defined
+  when:
+    - icinga2_objects is defined
+    - icinga2_objects is iterable
+    - icinga2_objects is not string
+    - icinga2_objects is not mapping
 
 - icinga2_object:
     args: "{{ item }}"

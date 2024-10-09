@@ -3,3 +3,13 @@
   community.general.zypper:
     name: "{{ icingadb_redis_packages }}"
     state: present
+
+- name: Suse - Ensure log directory exists
+  when:
+    - icingadb_redis_logfile != ""
+  ansible.builtin.file:
+    path: "{{ icingadb_redis_logfile | dirname }}"
+    state: directory
+    owner: "{{ icingadb_redis_user }}"
+    group: "{{ icingadb_redis_user }}"
+    mode: "0750"

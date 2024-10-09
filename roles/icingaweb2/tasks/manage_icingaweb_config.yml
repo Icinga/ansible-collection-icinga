@@ -45,7 +45,7 @@
     - authentication
     - groups
   vars:
-    _i2_config_hash: "{{ vars['icingaweb2_' + item] }}"
+    _i2_config_hash: "{{ lookup('ansible.builtin.vars', 'icingaweb2_' + item) }}"
 
 - name: Prepare config hash
   ansible.builtin.set_fact:

@@ -1,5 +1,5 @@
 ---
-icinga2_packages: ["icinga2"]
+icinga2_packages_dependencies: []
 icinga2_user: nagios
 icinga2_group: nagios
 icinga2_config_path: /etc/icinga2

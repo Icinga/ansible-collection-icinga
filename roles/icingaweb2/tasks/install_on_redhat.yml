@@ -1,5 +1,5 @@
 ---
 - name: RedHat - Install Icinga Web 2 packages
   ansible.builtin.yum:
-    name: "{{ icingaweb2_packages }}"
+    name: "{{ icingaweb2_packages + icingaweb2_packages_dependencies }}"
     state: present

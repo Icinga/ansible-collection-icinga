@@ -46,18 +46,18 @@ To start with the collection, easily install it with the **ansible-galaxy** comm
 
 Installation from Galaxy Server:
 
-```
+```bash
 ansible-galaxy collection install icinga.icinga
 ```
 
 Or pull the collection from the git. (Only useable with Ansible version 2.10.9)
-```
+```bash
 ansible-galaxy collection install git+https://github.com/Icinga/ansible-collection-icinga.git,0.3.0
 ```
 
 Pre 2.10 you can also clone the repository, manually build and install the collection.
 
-```
+```bash
 git clone https://github.com/Icinga/ansible-collection-icinga.git
 ansible-galaxy collection build ansible-collection-icinga
 ansible-galaxy collection install icinga-icinga-0.3.0.tar.gz
@@ -97,7 +97,7 @@ Icinga2 relies on relational databases for many parts of its functionality. **No
 
 This is an example on how to install an Icinga 2 server/master instance.
 
-```
+```yaml
 - name: install icinga2 master
   hosts: master
   vars:
@@ -143,7 +143,7 @@ This is an example on how to install an Icinga 2 server/master instance.
 
 This is an example on how to install an Icinga 2 agent instance.
 
-```
+```yaml
 - name: install icinga2 agent
   hosts: agent
   vars:
@@ -151,7 +151,7 @@ This is an example on how to install an Icinga 2 agent instance.
     icinga2_purge_features: yes # Ansible will manage all features
     icinga2_features:
       - name: api           # Enable Feature API
-        ca_host: master.localdomain      
+        ca_host: master.localdomain
         # Trusted Cert and Ticket will be gathered from this host.
         # Ticket will be "delegated" if the FQDN is not in your Ansible environment
         # use the variable icinga2_delegate_host in addition.
@@ -171,7 +171,7 @@ This is an example on how to install an Icinga 2 agent instance.
 
 This is a example on how to install Icinga 2 server with Icinga Web 2 and Icinga DB.
 
-```
+```yaml
 - name: Converge
   hosts: all
   vars:

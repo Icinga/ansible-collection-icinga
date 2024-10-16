@@ -23,7 +23,7 @@ Current supported features:
 * [Feature notification](features/feature-notification.md)
 * [Feature perfdata](features/feature-perfdata.md)
 
-```
+```yaml
 icinga2_features:
   - name: checker
   - name: mainlog

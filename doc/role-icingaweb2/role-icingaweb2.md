@@ -17,7 +17,7 @@ Icingaweb2 and some of its modules rely on a relational database to persist data
 
 If you use this configuration it will be your main Icinga Web DB, this means if the variable `icingaweb2_db_import_schema` is used the schema will be imported to this database.
 
-```
+```yaml
 icingaweb2_db:
   type: mysql
   name: icingaweb
@@ -36,7 +36,7 @@ icingaweb2_db:
 
 Besides the standard Icinga Web 2 database you may configure additional resources for IcingaDB or automated imports.
 
-```
+```yaml
 icingaweb2_resources:
   icinga_ido:
     type: db
@@ -57,7 +57,7 @@ icingaweb2_resources:
 The general configuration of Icinga Web 2 is located at `{{ icingaweb2_config_dir }}/config.ini`.
 To create the file the following variable is used (default):
 
-```
+```yaml
 icingaweb2_config:
   global:
     show_stacktraces: 1
@@ -83,7 +83,7 @@ Explained:
 
 So the above YAML results in:
 
-```
+```ini
 [global]
 show_stacktraces = "1"
 show_application_state_messages = "1"
@@ -104,10 +104,10 @@ For more information about the general configuration have a look at the [officia
 
 ### Authentication
 
-At least one method of user authentication needs to be configured in order to use Icinga Web 2. This is achieved by defining `icingaweb2_authentication`.  
+At least one method of user authentication needs to be configured in order to use Icinga Web 2. This is achieved by defining `icingaweb2_authentication`.<br>
 By default the following is set:
 
-```
+```yaml
 icingaweb2_authentication:
   icingaweb2:
     backend: db
@@ -118,10 +118,10 @@ This is also converted to INI and written to `{{ icingaweb2_config_dir }}/authen
 
 ---
 
-Similar to the above snippet group backends can also be defined using `icingaweb2_groups`.  
+Similar to the above snippet group backends can also be defined using `icingaweb2_groups`.<br>
 Default:
 
-```
+```yaml
 icingaweb2_groups:
   icingaweb2:
     backend: db

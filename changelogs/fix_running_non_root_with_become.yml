@@ -1,0 +1,2 @@
+bugfixes:
+  - Added become to tasks and handlers to be able to connect as non root user.

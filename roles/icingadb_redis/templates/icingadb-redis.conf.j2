@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
 bind {% for host in icingadb_redis_binds %}
 {{ host }}

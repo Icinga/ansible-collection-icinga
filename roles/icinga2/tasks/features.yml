@@ -1,6 +1,7 @@
 ---
 
 - name: collect all files in {{ icinga2_config_path + '/features-enabled' }}
+  become: true
   find:
     paths: "{{ icinga2_config_path + '/features-enabled' }}"
     patterns: '*.conf'
@@ -15,6 +16,7 @@
   when: icinga2_purge_features
 
 - name: purge features
+  become: true
   file:
     state: absent
     path: "{{ '/etc/icinga2/features-enabled/' + icinga2_feature_realname[item]|default(item) + '.conf' }}"

@@ -32,6 +32,7 @@
           "{{ icingaweb2_db['name'] }}"
 
     - name: MySQL check for icingaweb db schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_mysqlcmd }}
         -Ns -e "select * from icingaweb_user"
@@ -41,6 +42,7 @@
       register: _icingaweb2_db_schema
 
     - name: MySQL import icingaweb db schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_mysqlcmd }}
         < /usr/share/icingaweb2/schema/mysql.schema.sql
@@ -51,6 +53,7 @@
 - name: Ensure Icinga Web User
   block:
     - name: MySQL check for icingaweb db schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_mysqlcmd }}
         -Ns -e "select name from icingaweb_user where name like '{{ icingaweb2_admin_username }}'"
@@ -60,6 +63,7 @@
       register: _icingaweb2_db_user
 
     - name: Ensure admin user exists
+      become: true
       ansible.builtin.shell: >-
         echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" |  {{ _tmp_mysqlcmd }} -Ns

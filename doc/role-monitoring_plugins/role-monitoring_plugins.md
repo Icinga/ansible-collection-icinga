@@ -73,7 +73,7 @@ Install check commands
 
 - hosts:
     - host1
-  become: yes
+  become: true
   vars:
     icinga_monitoring_plugins_epel: true
     icinga_monitoring_plugins_crb: true
@@ -96,7 +96,7 @@ Remove all check commands known to this role. Also remove unneeded dependencies.
 
 - hosts:
     - host1
-  become: yes
+  become: true
   vars:
     icinga_monitoring_plugins_autoremove: true
     icinga_monitoring_plugins_check_commands: []

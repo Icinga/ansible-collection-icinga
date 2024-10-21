@@ -25,6 +25,7 @@
           {% if icingaweb2_db['ssl_extra_options'] is defined %} {{ icingaweb2_db['ssl_extra_options'] }} {%- endif %}"
 
     - name: PostgreSQL check for icingaweb db schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -c "select * from icingaweb_user"
@@ -34,6 +35,7 @@
       register: _icingaweb2_db_schema
 
     - name: PostgreSQL import icingaweb db schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -f /usr/share/icingaweb2/schema/pgsql.schema.sql
@@ -44,6 +46,7 @@
 - name: Ensure Icinga Web User
   block:
     - name: PostgreSQL check for icingaweb admin user
+      become: true
       ansible.builtin.shell: >
         LANG=C
         {{ _tmp_pgsqlcmd }}
@@ -54,6 +57,7 @@
       register: _icingaweb2_db_user
 
     - name: Ensure admin user exists
+      become: true
       ansible.builtin.shell: >-
         echo "INSERT INTO icingaweb_user (name, active, password_hash) VALUES ('{{ icingaweb2_admin_username }}', 1,
         '"`php -r 'echo password_hash("{{ icingaweb2_admin_password }}", PASSWORD_DEFAULT);'`"')" | {{ _tmp_pgsqlcmd }} -w

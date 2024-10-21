@@ -1,4 +1,5 @@
 - name: Module Icinga Business Process Modeling | Ensure config directory
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}"
@@ -7,14 +8,16 @@
     mode: "2770"
 
 - name: Module Icinga Business Process Modeling | Ensure processes directory
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/processes"
     owner: "{{ icingaweb2_httpd_user }}"
     group: "{{ icingaweb2_group }}"
     mode: "2770"
-  
+
 - name: Module Icinga Business Process Modeling | Copy Process
+  become: true
   ansible.builtin.copy:
     owner: "{{ icingaweb2_httpd_user }}"
     group: "{{ icingaweb2_group }}"

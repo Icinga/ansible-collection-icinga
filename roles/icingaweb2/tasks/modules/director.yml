@@ -1,5 +1,6 @@
 ---
 - name: Module Director | Ensure config directory
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/director"
@@ -20,6 +21,7 @@
       - config
 
 - name: Module Director | Check for pending migrations  # noqa: command-instead-of-shell
+  become: true
   ansible.builtin.shell:
     cmd: icingacli director migration pending
   register: _pending
@@ -28,11 +30,13 @@
   when: icingaweb2_modules['director']['import_schema'] is defined and icingaweb2_modules.director.import_schema and icingaweb2_modules['director']['config'] is defined
 
 - name: Module Director | Apply pending migrations  # noqa: command-instead-of-shell
+  become: true
   ansible.builtin.shell:
     cmd: icingacli director migration run
   when: icingaweb2_modules['director']['import_schema'] is defined and icingaweb2_modules.director.import_schema and icingaweb2_modules['director']['config'] is defined and _pending.rc|int == 0
 
 - name: Module Director | Check if kickstart is required  # noqa: command-instead-of-shell
+  become: true
   ansible.builtin.shell:
     cmd: icingacli director kickstart required
   register: _required
@@ -41,6 +45,7 @@
   when: icingaweb2_modules['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and icingaweb2_modules['director']['kickstart'] is defined
 
 - name: Module Director | Run kickstart if required  # noqa: command-instead-of-shell
+  become: true
   ansible.builtin.shell:
     cmd: icingacli director kickstart run
   when: icingaweb2_modules['director']['run_kickstart'] is defined and icingaweb2_modules.director.run_kickstart and icingaweb2_modules['director']['kickstart'] is defined and _required.rc|int == 0
@@ -49,6 +54,7 @@
   when: icingaweb2_modules['director']['source'] == 'git'
   block:
     - name: Module Director | Ensure daemon user exists
+      become: true
       ansible.builtin.user:
         name: icingadirector
         state: present
@@ -58,6 +64,7 @@
         group: "{{ icingaweb2_group }}"
 
     - name: Module Director | Ensure home directory exists
+      become: true
       ansible.builtin.file:
         state: directory
         dest: /var/lib/icingadirector
@@ -66,6 +73,7 @@
         mode: "0750"
 
     - name: Module Director | Ensure systemd unit file exists
+      become: true
       ansible.builtin.copy:
         src: "{{ icingaweb2_config.global.module_path }}/director/contrib/systemd/icinga-director.service"
         dest: /etc/systemd/system/icingadirector.service

@@ -3,6 +3,7 @@
     _i2_config_hash: "{{ lookup('list', icingaweb2_modules[_module][_file]) }}"
 
 - name: Module {{ _module }} | Write config file {{ _file }}.ini
+  become: true
   ansible.builtin.template:
     src: "modules_config.ini.j2"
     dest: "{{ icingaweb2_modules_config_dir }}/{{ _module }}/{{ _file }}.ini"

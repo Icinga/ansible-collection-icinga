@@ -1,4 +1,5 @@
 - name: Module Monitoring | Ensure config directory
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/monitoring"

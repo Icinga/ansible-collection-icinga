@@ -1,10 +1,12 @@
 ---
 - name: Zypper - install package icinga2
+  become: true
   community.general.zypper:
     name: "{{ icinga2_packages + icinga2_packages_dependencies }}"
     state: present
 
 - name: Zypper - install package icinga2-selinux
+  become: true
   community.general.zypper:
     name: icinga2-selinux
     state: present

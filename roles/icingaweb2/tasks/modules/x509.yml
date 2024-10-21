@@ -1,4 +1,5 @@
 - name: Module x509 | Ensure config directory
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_modules_config_dir }}/{{ _module }}"
@@ -67,6 +68,7 @@
         _db: {}
 
 - name: Module x509 | Import Certificates
+  become: true
   ansible.builtin.shell: >
     icingacli {{ _module }} import --file {{ _file }}
   loop: "{{ icingaweb2_modules[_module]['certificate_files'] }}"

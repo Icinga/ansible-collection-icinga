@@ -1,5 +1,6 @@
 ---
 - name: "{{ icinga2_state }} service icinga2"
+  become: true
   service:
     name: icinga2
     state: "{{ icinga2_state }}"

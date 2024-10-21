@@ -1,10 +1,12 @@
 ---
 - name: RedHat - install icingadb packages
+  become: true
   ansible.builtin.yum:
     name: "{{ icingadb_redis_packages }}"
     state: present
 
 - name: RedHat - Ensure log directory exists
+  become: true
   when:
     - icingadb_redis_logfile != ""
   ansible.builtin.file:

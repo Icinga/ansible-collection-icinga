@@ -1,10 +1,12 @@
 ---
 - name: restart icinga2 service
+  become: true
   service:
     name: icinga2
     state: restarted
 
 - name: reload icinga2 service
+  become: true
   service:
     name: icinga2
     state: reloaded

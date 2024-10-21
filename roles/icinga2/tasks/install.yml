@@ -9,6 +9,7 @@
         msg: "The OS {{ ansible_os_family }} is not supported!"
 
 - name: Prepare fragments path
+  become: true
   ansible.builtin.file:
     state: directory
     path: "{{ icinga2_fragments_path }}"

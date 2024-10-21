@@ -15,6 +15,7 @@
     - hostvars[inventory_hostname]['icinga2_objects'] is not mapping
 
 - name: collect all config objects in play vars
+  become: true
   set_fact:
     tmp_objects: "{{ tmp_objects| default([]) + lookup('list', icinga2_objects) }}"
   when:
@@ -26,6 +27,7 @@
 - icinga2_object:
     args: "{{ item }}"
   with_items: "{{ tmp_objects }}"
+  become: true
   when: tmp_objects is defined
   register: result
 
@@ -43,6 +45,7 @@
       loop: "{{ icinga2_custom_config }}"
 
     - name: prepare custom config paths
+      become: true
       file:
         state: directory
         owner: root
@@ -52,6 +55,7 @@
       loop: "{{ icinga2_custom_config }}"
 
     - name: add custom config to assemble
+      become: true
       ansible.builtin.copy:
         owner: root
         group: root

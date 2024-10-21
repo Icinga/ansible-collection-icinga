@@ -1,7 +1,7 @@
 ---
 - name: Prepare
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Install requirements for Debian
       apt:

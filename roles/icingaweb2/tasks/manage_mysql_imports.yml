@@ -22,6 +22,7 @@
       "{{ _db['name'] }}"
 
 - name: MySQL check for db schema
+  become: true
   ansible.builtin.shell: >
     {{ _tmp_mysqlcmd }}
     -Ns -e "{{ _db['select_query'] }}"
@@ -31,6 +32,7 @@
   register: _db_schema
 
 - name: MySQL import  db schema
+  become: true
   ansible.builtin.shell: >
     {{ _tmp_mysqlcmd }}
     < {{ _db['schema_path_mysql'] }}

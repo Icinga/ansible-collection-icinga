@@ -1,5 +1,6 @@
 ---
 - name: Ensure IcingaDB Service is running
+  become: true
   ansible.builtin.service:
     state: started
     enabled: yes

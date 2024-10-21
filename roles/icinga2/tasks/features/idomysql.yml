@@ -5,6 +5,7 @@
     icinga2_import_schema: "{{ icinga2_dict_features.idomysql.import_schema| default(False) }}"
 
 - name: feature idomysql IdoMysqlConnection object
+  become: true
   icinga2_object:
     name: ido-mysql
     type: IdoMysqlConnection
@@ -38,6 +39,7 @@
           "{{ icinga2_dict_features.idomysql.database | default('icinga2') }}"
 
     - name: MySQL check for IDO schema
+      become: true
       shell: >
         {{ mysqlcmd }}
         -Ns -e "select version from icinga_dbversion"
@@ -47,6 +49,7 @@
       register: db_schema
 
     - name: MySQL import IDO schema
+      become: true
       shell: >
         {{ mysqlcmd }}
         < /usr/share/icinga2-ido-mysql/schema/mysql.sql

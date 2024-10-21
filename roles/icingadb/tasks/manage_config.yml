@@ -1,5 +1,6 @@
 ---
 - name: Write configuration to /etc/icingadb/config.yml
+  become: true
   ansible.builtin.template:
     src: icingadb.ini.j2
     dest: "{{ icingadb_config_dir }}/config.yml"

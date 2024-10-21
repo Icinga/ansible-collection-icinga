@@ -67,6 +67,7 @@
 
 # Many daemons fail before e.g. the resource is set up or the schema hasn't been migrated. This is a workaround.
 - name: Manage enabled module daemons
+  become: true
   ansible.builtin.service:
     name: "icinga-{{ item.key }}"
     state: restarted

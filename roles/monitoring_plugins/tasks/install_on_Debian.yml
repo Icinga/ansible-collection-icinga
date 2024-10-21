@@ -1,7 +1,7 @@
 ---
 
 - name: Apt - install requested packages
-  become: yes
+  become: true
   apt:
     state: present
     name: "{{ needed_packages }}"
@@ -13,7 +13,7 @@
     - needed_packages
 
 - name: Apt - remove non-requested packages
-  become: yes
+  become: true
   apt:
     state: absent
     name: "{{ (unwanted_packages | difference(['monitoring-plugins-common', 'monitoring-plugins-basic'])) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"

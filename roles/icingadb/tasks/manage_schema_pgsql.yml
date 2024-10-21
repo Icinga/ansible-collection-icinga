@@ -17,6 +17,7 @@
           {% if icingadb_database_ssl_extra_options is defined %} {{ icingadb_database_ssl_extra_options }} {%- endif %}"
 
     - name: PgSQL check for IcingaDB schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -c "select version from icingadb_schema"
@@ -26,6 +27,7 @@
       register: _db_schema
 
     - name: PgSQL import IcingaDB schema
+      become: true
       ansible.builtin.shell: >
         {{ _tmp_pgsqlcmd }}
         -w -f {{ icingadb_database_schema }}

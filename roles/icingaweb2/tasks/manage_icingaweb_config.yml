@@ -1,4 +1,5 @@
 - name: Set permissions on icingaweb config
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_config_dir }}"
@@ -7,6 +8,7 @@
     mode: "2770"
 
 - name: Set permissions on enabledModules
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_config_dir }}/enabledModules"
@@ -15,6 +17,7 @@
     mode: "2770"
 
 - name: Set permissions on modules
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_config_dir }}/modules"
@@ -23,6 +26,7 @@
     mode: "2770"
 
 - name: Ensure fragments exists
+  become: true
   ansible.builtin.file:
     state: directory
     dest: "{{ icingaweb2_fragments_path }}/{{ item }}"
@@ -34,6 +38,7 @@
     - roles
 
 - name: Create icingaweb2 config files
+  become: true
   ansible.builtin.template:
     src: "modules_config.ini.j2"
     dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
@@ -70,6 +75,7 @@
   when: icingaweb2_db is defined or icingaweb2_resources is defined
   block:
     - name: Manage icingaweb_db resource config
+      become: true
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/resources/resources_01"
@@ -83,6 +89,7 @@
       when: icingaweb2_resources is defined
 
     - name: Manage Resources
+      become: true
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/resources/resources_02"
@@ -103,6 +110,7 @@
               - "*"
 
     - name: Manage icingaweb2_admin privileges
+      become: true
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/roles/roles_01"
@@ -116,6 +124,7 @@
       when: icingaweb2_roles is defined
 
     - name: Manage icingaweb2_admin privileges
+      become: true
       ansible.builtin.template:
         src: modules_config.ini.j2
         dest: "{{ icingaweb2_fragments_path }}/roles/roles_02"
@@ -125,6 +134,7 @@
 
 
 - name: Assemble configuration files
+  become: true
   ansible.builtin.assemble:
     dest: "{{ icingaweb2_config_dir }}/{{ item }}.ini"
     src: "{{ icingaweb2_fragments_path }}/{{ item }}"

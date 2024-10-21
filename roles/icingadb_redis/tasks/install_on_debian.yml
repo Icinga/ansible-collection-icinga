@@ -1,10 +1,12 @@
 ---
 - name: Debian - Install IcingaDB Redis packages
+  become: true
   ansible.builtin.apt:
     name: "{{ icingadb_redis_packages }}"
     state: present
 
 - name: Debian - Ensure log directory exists
+  become: true
   when:
     - icingadb_redis_logfile != ""
   ansible.builtin.file:

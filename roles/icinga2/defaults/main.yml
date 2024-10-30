@@ -1,4 +1,5 @@
 ---
+icinga2_packages: ["icinga2"]
 icinga2_state: started
 icinga2_enabled: true
 icinga2_confd: true

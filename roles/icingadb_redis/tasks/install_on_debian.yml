@@ -1,6 +1,15 @@
 ---
 - name: Debian - Install IcingaDB Redis packages
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ icingadb_redis_packages }}"
     state: present
-  loop: "{{ icingadb_redis_packages }}"
+
+- name: Debian - Ensure log directory exists
+  when:
+    - icingadb_redis_logfile != ""
+  ansible.builtin.file:
+    path: "{{ icingadb_redis_logfile | dirname }}"
+    state: directory
+    owner: "{{ icingadb_redis_user }}"
+    group: "adm"
+    mode: "2750"

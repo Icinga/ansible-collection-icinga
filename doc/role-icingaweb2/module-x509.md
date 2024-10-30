@@ -68,6 +68,7 @@ To import the database schema use `database` dictionary with the following varia
 | Variable | Type | Description | Default |
 |----------|------|-------------|---------|
 | `import_schema` | `Boolean` | Defines wether the schema will be imported or not. | false |
+| `type` | `String` | Defines the type of database (`mysql \| pgsql`) | **n/a** |
 | `host` | `String` | Defines database address to connect to. | `localhost` |
 | `port` | `int` | Defines the database port to connect to. | `3306` or `5432` |
 | `user` | `string` | Defines database user | `x509` |
@@ -88,6 +89,7 @@ icingaweb2_modules:
     enabled: true
     database:
       import_schema: true
+      type: mysql
       host: localhost
       port: 3306
       user: x509

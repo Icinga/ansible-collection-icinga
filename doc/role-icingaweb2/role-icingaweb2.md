@@ -32,7 +32,7 @@ icingaweb2_db:
 * `icingaweb2_admin_<username|password>: string`
   * Set the username and password for the first admin user for Icinga Web 2.
 
-#### Resources
+### Resources
 
 Besides the standard Icinga Web 2 database you may configure additional resources for IcingaDB or automated imports.
 
@@ -51,3 +51,81 @@ icingaweb2_resources:
     type: ldap
     [...]
 ```
+
+### General Configuration
+
+The general configuration of Icinga Web 2 is located at `{{ icingaweb2_config_dir }}/config.ini`.
+To create the file the following variable is used (default):
+
+```
+icingaweb2_config:
+  global:
+    show_stacktraces: 1
+    show_application_state_messages: 1
+    config_resource: icingaweb2_db
+    module_path: /usr/share/icingaweb2/modules
+  logging:
+    log: syslog
+    level: ERROR
+    application: icingaweb2
+    facility: user
+  themes:
+    default: Icinga
+```
+
+Within a task the YAML structure is effectively translated to INI and written to `{{ icingaweb2_config_dir }}/config.ini`.
+
+Explained:
+
+* `icingaweb2_config` defines the file to be written (`config.ini`)
+* `global`, `logging` and `themes` are the names of the respective sections within the INI file
+* Everything underneath each key / section is a key value pair for the given section within the INI file
+
+So the above YAML results in:
+
+```
+[global]
+show_stacktraces = "1"
+show_application_state_messages = "1"
+config_resource = icingaweb2_db
+module_path = /usr/share/icingaweb2/modules
+
+[logging]
+log = syslog
+level = ERROR
+application = icingaweb2
+facility = user
+
+[themes]
+default = Icinga
+```
+
+For more information about the general configuration have a look at the [official documentation](https://icinga.com/docs/icinga-web/latest/doc/03-Configuration/#general-configuration).
+
+### Authentication
+
+At least one method of user authentication needs to be configured in order to use Icinga Web 2. This is achieved by defining `icingaweb2_authentication`.  
+By default the following is set:
+
+```
+icingaweb2_authentication:
+  icingaweb2:
+    backend: db
+    resource: icingaweb2_db
+```
+
+This is also converted to INI and written to `{{ icingaweb2_config_dir }}/authentication.ini`
+
+---
+
+Similar to the above snippet group backends can also be defined using `icingaweb2_groups`.  
+Default:
+
+```
+icingaweb2_groups:
+  icingaweb2:
+    backend: db
+    resource: icingaweb2_db
+```
+
+For more information about key value pairs for different authentication methods see the [official documentation](https://icinga.com/docs/icinga-web/latest/doc/05-Authentication/).

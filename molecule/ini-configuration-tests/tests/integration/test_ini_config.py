@@ -20,10 +20,10 @@ def test_advanced_filter(host):
     i2_file = host.file("/tmp/advanced_filter")
     print(i2_file.content_string)
     assert i2_file.is_file
-    assert i2_file.content_string == "\n[section]\ntest = '!(objectClass=user)'\ntest2 = '!(objectClass=user)'\ntest3 = '!attribute'\n"
+    assert i2_file.content_string == '\n[section]\ntest = "!(objectClass=user)"\ntest2 = "!(objectClass=user)"\ntest3 = "!attribute"\n'
 
 def test_equal_sign(host):
     i2_file = host.file("/tmp/equal_sign")
     print(i2_file.content_string)
     assert i2_file.is_file
-    assert i2_file.content_string == "\n[section]\ntest = 'equal=sign'\n"
+    assert i2_file.content_string == '\n[section]\ntest = "equal=sign"\n'

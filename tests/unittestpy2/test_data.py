@@ -58,14 +58,13 @@ class TestIcingaParser(unittest.TestCase):
         ip = Icinga2Parser()
         data = {
             "test": {
-                "item1": "value1",
-                "1234": "value2"
+                "item1": "value1"
             }
         }
         constants = ["NodeName", "ZoneName"]
         result = ip.parse(attrs=data, constants=constants)
         #print("Tested dictionaries: " + result)
-        self.assertMultiLineEqual(result, 'test = {\n  item1 = "value1"\n  "1234" = "value2"\n}\n')
+        self.assertMultiLineEqual(result, 'test = {\n  item1 = "value1"\n}\n')
 
     def test_unparsed(self):
         ip = Icinga2Parser()

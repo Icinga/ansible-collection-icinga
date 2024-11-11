@@ -16,7 +16,7 @@ class Icinga2Parser(object):
             # Values without quotes
             if ((re.search(r'^-?\d+\.?\d*[dhms]?$', value)) or
                (re.search(r'^(true|false|null)$', value)) or
-               (re.search(r'^!?(host|service|user)\.', value))):
+               (re.search(r'^!?(host|service|user|value|key)\.', value))):
                 result = value
             elif (re.search(r'^(True|False)$', value)):
                 result = value.lower()

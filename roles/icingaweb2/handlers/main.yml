@@ -1,0 +1,11 @@
+---
+
+- name: Module Director | Apply pending migrations
+  ansible.builtin.command:
+    cmd: icingacli director migration run
+  listen: "run_director_migrations"
+
+- name: Module Director | Run kickstart if required
+  ansible.builtin.command:
+    cmd: icingacli director kickstart run
+  listen: "run_director_kickstart"

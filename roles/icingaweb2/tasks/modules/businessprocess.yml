@@ -20,7 +20,7 @@
     group: "{{ icingaweb2_group }}"
     src: "files/{{ _file.src_path }}"
     dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/processes/{{ _file.name }}"
-  when: vars['icingaweb2_modules'][_module]['custom_process_files'] is defined
+  when: icingaweb2_modules[_module]['custom_process_files'] is defined
   loop: "{{ icingaweb2_modules[_module].custom_process_files }}"
   loop_control:
     loop_var: _file

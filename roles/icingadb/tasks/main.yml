@@ -12,8 +12,14 @@
       paths:
         - "{{ role_path }}/vars"
 
-- name: Include OS specific installation
-  ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+- name: Check supported operatingsystems 
+  block:
+    - name: Include OS specific installation
+      ansible.builtin.include_tasks: "install_on_{{ ansible_os_family | lower }}.yml"
+  rescue:
+    - name: "OS family not supported!"
+      ansible.builtin.fail:
+        msg: "The OS {{ ansible_os_family }} is not supported!"
 
 - name: Include Tasks to configure IcingaDB
   ansible.builtin.include_tasks: manage_config.yml

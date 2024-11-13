@@ -39,13 +39,13 @@
   yum:
     name: epel-release
     state: present
-  when: icinga_repo_epel
+  when: icinga_repo_epel|bool == true
 
 - name: Yum - add SCL repositories
   yum:
     name: centos-release-scl
     state: present
   when:
-    - icinga_repo_scl
+    - icinga_repo_scl|bool == true
     - ansible_distribution == "CentOS"
     - ansible_distribution_major_version < "8"

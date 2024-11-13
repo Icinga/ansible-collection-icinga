@@ -24,7 +24,7 @@ database:
   ca: {{ icingadb_database_ca }}
 {% endif %}
 {% if icingadb_database_tls_insecure is defined %}
-  insecure: {{ icingadb_database_insecure }}
+  insecure: {{ icingadb_database_tls_insecure }}
 {% endif %}
 
 

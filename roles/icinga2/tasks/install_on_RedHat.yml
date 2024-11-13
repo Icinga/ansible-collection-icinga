@@ -1,8 +1,8 @@
 - name: Yum - install package icinga2
   ansible.builtin.yum:
-    name: "{{ icinga2_packages }}"
+    name: "{{ icinga2_packages + icinga2_packages_dependencies }}"
     state: present
-    
+
 - name: Yum - install package icinga2-selinux
   ansible.builtin.yum:
     name: icinga2-selinux

@@ -5,6 +5,8 @@ The list is based on the section *"Plugin Check Commands for Monitoring Plugins"
 
 * [List of available check commands](check_command_list.md)
 
+> For Suse based systems you need the Ansible module `zypper`. Refer to the [getting started](https://github.com/Icinga/ansible-collection-icinga/blob/main/doc/getting-started.md#requirements) section.
+
 ## Variables
 
 - `icinga_monitoring_plugins_epel: boolean`

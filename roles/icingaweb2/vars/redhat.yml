@@ -1,4 +1,4 @@
 ---
 icingaweb2_httpd_user: apache
 icingaweb2_fragments_path: /var/tmp/icingaweb
-icingaweb2_packages: ["icingaweb2", "icingacli", "icingaweb2-selinux"]
+icingaweb2_packages_dependencies: ["icingaweb2-selinux"]

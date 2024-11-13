@@ -7,8 +7,9 @@ generate configuration files with objects included.
 
 This variable consists of Icinga 2 object attributes and attributes referring to the file created in the process.
 
-> **_NOTE:_** The second level of the dictionary defines on which host the configuration is created. All objects in the example below, will be gathered and deployed on the host.: `host.example.org`.
-In addition this variable can be logically defined at the **host_vars/agent** and are still deployed on the master **host.example.org**
+> **_NOTE:_** The second level of the dictionary defines on which host the configuration is created. All objects in the example below, will be gathered and deployed on the host.: `host.example.org`.  
+In addition this variable can be logically defined at the **host_vars/agent** and are still deployed on the master **host.example.org**.  
+The second level can **only** be used in **hostvars**!
 
 The `file` key will be used to control in which directory structure the object will be placed.
 In addition the `order` key will define the order of the objects in the destination file.
@@ -16,39 +17,71 @@ The default for `order` is set to **10**, so everything below that number will b
 
 The `type` will be the original Icinga 2 object types, a list of all can be found in the documentation. [Icinga 2 Monitoring Objects](https://icinga.com/docs/icinga-2/latest/doc/09-object-types/#monitoring-objects)
 
+### Icinga2 Objects in Hostvars
+
+When defining `icinga2_objects` as a host specific variable (hostvars/groupvars) you can define the variable as a dictionary. Each dictionary key represents the host on which the key's value will be deployed as configuration.  
+Alternatively you can define `icinga2_objects` as a list which results in the configuration being deployed on just the host for which the variable is defined.
+
+Example defining the variable within hostvars as a dictionary (inventory entry):
+
+```yaml
+webserver.example.org:
+  ansible_host: 10.0.0.8
+  icinga2_objects:
+    host.example.org:
+      - name: "{{ inventory_hostname }}"
+        type: Host
+        file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+        address: "{{ ansible_host }}"
+        check_command: hostalive
+        check_interval: 3m
+      - ...
+```
+
+This way you can use some host's variables (like `ansible_host`) to deploy configuration on another host (in this case `host.example.org`).
+
+Example defining the variable within hostvars as a list (inventory entry):
+
+```yaml
+webserver.example.org:
+  ansible_host: 10.0.0.8
+  icinga2_objects:
+    - name: "web-api-user"
+      type: ApiUser
+      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+      password: "somepassword"
+      permissions:
+        - "objects/query/Host"
+        - "objects/query/Service"
+    - ...
+```
+
+In the above case the list `icinga2_objects` will only be deployed as configuration on host `webserver.example.org`.
+
+Additionally, the list `icinga2_objects` from within a play's `vars` key will be merged with each host's individual objects.
+
+### Icinga2 Objects in Play Vars
+
+If you need to deploy certain Icinga 2 objects on every host in your play, you can define the variable `icinga2_objects` as a list within your play's `vars` key.  
+This ensures that, **in addition** to the individual host's objects, there is a common set of objects between your hosts.
+
+Example defining the variable within your play's vars:
+
 ```
 icinga2_objects:
-  host.example.org:
-    - name: "{{ ansible_fqdn }}"
-      type: Endpoint
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-    - name: "{{ ansible_fqdn }}"
-      type: Zone
-      file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
-      order: 20
-      endpoints:
-        - "{{ ansible_fqdn }}"
-      parent: main
-```
-
-The advantage of the default **icinga2_objects** variable is, that you can run your playbook over many different server without deploying the
-monitoring configuration on every host in the playbook. Otherwise the variable should be only placed in `host_vars` files to restrict deployment on every host.
-
-As a secondary option, you can use the variable without the second level like the following example.
-
-> **CAUTION!** If not restricted it will be deployed on every host. This should be only defined in `host_vars` unless
-you know what you are doing!
-
-```
-icinga2_objects:
-  - name: "{{ ansible_fqdn }}"
-    type: Endpoint
-    file: "{{ 'conf.d/' + ansible_hostname + '.conf' }}"
+  - name: "GlobalApiUser"
+    type: ApiUser
+    file: "conf.d/global_api_users.conf"
     order: 20
+    password: supersecrectpassword123
+    permissions:
+      - "objects/query/Host"
+      - "objects/query/Service"
 ```
 
-More Examples at the end -> [Examples](#examples)
+---
+
+More examples at the end -> [Examples](#examples)
 
 ## Managing Config directories
 
@@ -470,11 +503,11 @@ icinga2_objects:
         description: The notification address
       -6: $notification_address6$
       -b: $notification_author$
-      vars:
-        +: true
-        notification_address: $address$
-        notification_address6: $address6$
-        notification_author: $notification.author$
+    vars:
+      +: true
+      notification_address: $address$
+      notification_address6: $address6$
+      notification_author: $notification.author$
 ````
 
 #### UserGroup

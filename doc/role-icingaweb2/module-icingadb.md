@@ -30,3 +30,15 @@ icingaweb2_modules:
       redis2:
         host: "192.168.56.201"
 ```
+
+### Redis TLS
+
+Please use the following parameters to configure TLS connections. The collection won't manage those certificates, ensure those are deployed beforehand. At the redis section add the following:
+
+```
+redis:
+  tls: '1'
+  ca: /path/to/ca.crt
+  cert: /path/to/cert.crt
+  key: /path/to/key.key
+```

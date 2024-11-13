@@ -1,7 +1,7 @@
 ---
 - name: Zypper - install package icinga2
   community.general.zypper:
-    name: "{{ icinga2_packages }}"
+    name: "{{ icinga2_packages + icinga2_packages_dependencies }}"
     state: present
 
 - name: Zypper - install package icinga2-selinux
@@ -9,8 +9,3 @@
     name: icinga2-selinux
     state: present
   when: ansible_selinux is defined and ansible_selinux.status == "enabled"
-
-- name: Zypper - install dep
-  community.general.zypper:
-    name: libboost_regex1_66_0
-    state: present

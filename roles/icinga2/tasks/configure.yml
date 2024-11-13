@@ -17,9 +17,11 @@
     icinga2_combined_constants: "{{ icinga2_default_constants | combine(icinga2_constants) }}"
 
 - name: set constants in {{ icinga2_config_path + '/constants.conf' }}
-  template:
+  ansible.builtin.template:
     src: constants.conf.j2
     dest: "{{ icinga2_config_path + '/constants.conf' }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
   notify: reload icinga2 service
 
 - name: features
@@ -90,6 +92,7 @@
     delimiter: ' '
     owner: "{{ icinga2_user }}"
     group: "{{ icinga2_group }}"
+    mode: 0644
   loop: "{{ result.files }}"
   notify: reload icinga2 service
 

@@ -13,7 +13,7 @@
   loop: "{{ _files }}"
   loop_control:
     loop_var: _file
-  when: vars['icingaweb2_modules'][_module][_file] is defined
+  when: icingaweb2_modules[_module][_file] is defined
   vars:
     _module: "{{ item.key }}"
     _files:
@@ -21,46 +21,58 @@
       - sni
 
 - name: Module x509 | Manage Schema
+  when: icingaweb2_modules[_module]['database']['import_schema'] | default(false)
+  vars:
+    _module: "{{ item.key }}"
   block:
     - name: Module x509 | Prepare _db informations
       ansible.builtin.set_fact:
         _db:
-          host: "{{ icingaweb2_modules[_module].database.host | default('localhost') }}"
-          port: "{{ icingaweb2_modules[_module].database.port | default('3306') }}"
-          user: "{{ icingaweb2_modules[_module].database.user | default('x509') }}"
-          password: "{{ icingaweb2_modules[_module].database.password | default(omit) }}"
-          name: "{{ icingaweb2_modules[_module].database.name | default('x509') }}"
-          ssl_mode: "{{ icingaweb2_modules[_module].database.ssl_mode | default(omit) }}"
-          ssl_ca: "{{ icingaweb2_modules[_module].database.ssl_ca | default(omit) }}"
-          ssl_cert: "{{ icingaweb2_modules[_module].database.ssl_cert | default(omit) }}"
-          ssl_key: "{{ icingaweb2_modules[_module].database.ssl_key | default(omit) }}"
-          ssl_cipher: "{{ icingaweb2_modules[_module].database.ssl_cipher | default(omit) }}"
-          ssl_extra_options: "{{ icingaweb2_modules[_module].database.ssl_extra_options | default(omit) }}"
-          schema_path: /usr/share/icingaweb2/modules/x509/schema/mysql.schema.sql
+          host: "{{ icingaweb2_modules[_module]['database']['host'] | default('localhost') }}"
+          port: "{{ icingaweb2_modules[_module]['database']['port'] | default('3306') }}"
+          user: "{{ icingaweb2_modules[_module]['database']['user'] | default('x509') }}"
+          password: "{{ icingaweb2_modules[_module]['database']['password'] | default(omit) }}"
+          name: "{{ icingaweb2_modules[_module]['database']['name'] | default('x509') }}"
+          ssl_mode: "{{ icingaweb2_modules[_module]['database']['ssl_mode'] | default(omit) }}"
+          ssl_ca: "{{ icingaweb2_modules[_module]['database']['ssl_ca'] | default(omit) }}"
+          ssl_cert: "{{ icingaweb2_modules[_module]['database']['ssl_cert'] | default(omit) }}"
+          ssl_key: "{{ icingaweb2_modules[_module]['database']['ssl_key'] | default(omit) }}"
+          ssl_cipher: "{{ icingaweb2_modules[_module]['database']['ssl_cipher'] | default(omit) }}"
+          ssl_extra_options: "{{ icingaweb2_modules[_module]['database']['ssl_extra_options'] | default(omit) }}"
+          schema_path_mysql: /usr/share/icingaweb2/modules/x509/schema/mysql.schema.sql
+          schema_path_pgsql: /usr/share/icingaweb2/modules/x509/schema/pgsql.schema.sql
           select_query: "select * from x509_certificate"
-      when: icingaweb2_modules[_module].database.type | default('mysql') == 'mysql'
+          type: "{{ icingaweb2_modules[_module]['database']['type'] | default(omit) }}"
 
-    - ansible.builtin.fail:
-        fail_msg: "The Database type select is not supported, {{ icingaweb2_modules[_module].database.type }} [Supported=mysql]"
-      when: vars['icingaweb2_modules'][_module]['database']['type'] is defined and icingaweb2_modules[_module].database.type != 'mysql'
+    - name: Module x509 | Check if database type is provided
+      ansible.builtin.fail:
+        msg: No database type was provided
+      when: icingaweb2_modules[_module]['database']['type'] is not defined
 
-    - name: Module x509 | Import Schema
+    - name: Module x509 | Check provided database type
+      ansible.builtin.fail:
+        msg: "Invalid database type was provided. [Supported: mysql, pgsql]"
+      when: _db.type not in ['mysql', 'pgsql']
+
+    - name: Module x509 | Import MySQL Schema
       ansible.builtin.include_tasks: ../manage_mysql_imports.yml
+      when: _db.type == 'mysql'
+
+    - name: Module x509 | Import PostgresQL Schema
+      ansible.builtin.include_tasks: ../manage_pgsql_imports.yml
+      when: _db.type == 'pgsql'
 
     - name: Module x509 | empty _db var
       ansible.builtin.set_fact:
         _db: {}
-  when: icingaweb2_modules[_module].database.import_schema | default(false)
-  vars:
-    _module: "{{ item.key }}"
 
 - name: Module x509 | Import Certificates
   ansible.builtin.shell: >
     icingacli {{ _module }} import --file {{ _file }}
-  loop: "{{ icingaweb2_modules[_module].certificate_files }}"
+  loop: "{{ icingaweb2_modules[_module]['certificate_files'] }}"
   loop_control:
     loop_var: _file
   vars:
     _module: "{{ item.key }}"
-  when: icingaweb2_modules[_module].certificate_files is defined
+  when: icingaweb2_modules[_module]['certificate_files'] is defined
   changed_when: false

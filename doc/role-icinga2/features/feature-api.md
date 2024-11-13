@@ -123,7 +123,7 @@ If you want to use certificates which aren't created by **Icinga 2 CA**, then us
 the following variables to point the role to your own certificates.
 
 ```
-ssl_ca: ca.crt
+ssl_cacert: ca.crt
 ssl_cert: certificate.crt
 ssl_key: certificate.key
 ```

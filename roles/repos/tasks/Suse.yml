@@ -1,0 +1,25 @@
+---
+
+- name: Suse - add RPM key
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ icinga_repo_zypper_key }}"
+
+- name: Suse - add Icinga repository (stable)
+  community.general.zypper_repository:
+    name: icinga-stable-release
+    description: ICINGA (stable release for openSUSE)
+    state: "{{ 'present' if icinga_repo_stable|bool else 'absent' }}"
+    repo: "{{ icinga_repo_zypper_stable_url }}"
+
+- name: Suse - add Icinga repository (testing)
+  ansible.builtin.fail:
+    msg: "Suse Testing repo is not available."
+  when: icinga_repo_testing|bool == true
+
+- name: Suse - add Icinga repository (snapshot)
+  community.general.zypper_repository:
+    name: icinga-snapshot-builds
+    description: ICINGA (snapshot builds for openSUSE)
+    repo: "{{ icinga_repo_zypper_snapshot_url }}"
+    state: "{{ 'present' if icinga_repo_snapshot|bool else 'absent' }}"

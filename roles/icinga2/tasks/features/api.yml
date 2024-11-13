@@ -22,7 +22,7 @@
 - name: api feature cleanup arguments list
   set_fact:
     args: "{{ args|default({}) | combine({idx.key: idx.value}) }}"
-  when: idx.key not in ['ca_host', 'icinga2_ca_host_port', 'cert_name', 'ca_fingerprint', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert' ]
+  when: idx.key not in ['ca_host', 'ca_host_port', 'cert_name', 'ca_fingerprint', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert' ]
   loop: "{{ icinga2_dict_features.api |dict2items }}"
   loop_control:
     loop_var: idx

@@ -19,7 +19,7 @@
   loop: "{{ _files }}"
   loop_control:
     loop_var: _file
-  when: vars['icingaweb2_modules'][_module][_file] is defined
+  when: icingaweb2_modules[_module][_file] is defined
   vars:
     _module: "{{ item.key }}"
     _files:
@@ -31,8 +31,8 @@
     group: "{{ icingaweb2_group }}"
     src: "files/{{ _file.src_path }}"
     dest: "{{ icingaweb2_modules_config_dir }}/{{ item.key }}/templates/{{ _file.name }}"
-  when: vars['icingaweb2_modules'][_module]['custom_template_files'] is defined
-  loop: "{{ vars['icingaweb2_modules'][_module]['custom_template_files'] }}"
+  when: icingaweb2_modules[_module].custom_template_files is defined
+  loop: "{{ icingaweb2_modules[_module].custom_template_files }}"
   loop_control:
     loop_var: _file
   vars:

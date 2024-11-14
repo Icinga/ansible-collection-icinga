@@ -1,0 +1,24 @@
+---
+- name: Create override directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/{{ kubernetes_service_name }}.service.d
+    state: directory
+    mode: '0755'
+  notify:
+    - Systemd reload
+    - Kubernetes-restart
+
+- name: Create override configuration file
+  ansible.builtin.template:
+    src: icinga-kubernetes-override.conf.j2
+    dest: "/etc/systemd/system/{{ kubernetes_service_name }}.service.d/override.conf"
+    mode: '0640'
+  notify:
+    - Systemd reload
+    - Kubernetes-restart
+
+- name: Ensure Kubernetes Service is running
+  ansible.builtin.service:
+    state: started
+    enabled: yes
+    name: "{{ kubernetes_service_name }}"

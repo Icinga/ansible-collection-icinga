@@ -1,0 +1,4 @@
+- name: Suse - Install Kubernetes packages
+  community.general.zypper:
+    name: "{{ kubernetes_packages }}"
+    state: present

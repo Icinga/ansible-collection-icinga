@@ -1,9 +1,4 @@
 ---
-- name: restart icinga2 service
-  service:
-    name: icinga2
-    state: restarted
-
 - name: reload icinga2 service
   service:
     name: icinga2

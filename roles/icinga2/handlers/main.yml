@@ -1,5 +1,5 @@
 ---
-- name: reload icinga2 service
-  service:
+- name: Reload icinga2 service
+  ansible.builtin.service:
     name: icinga2
     state: reloaded

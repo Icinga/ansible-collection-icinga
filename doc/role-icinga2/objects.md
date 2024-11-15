@@ -535,6 +535,18 @@ icinga2_objects:
         set_if: $http_ssl$
 ```
 
+#### CompatLogger
+
+```yaml
+icinga2_objects:
+[...]
+  - name: mycompatlogger
+    type: CompatLogger
+    file: "local.d/complog.conf"
+    log_dir: "LogDir + /custom_complog"
+    rotation_method: "hourly"
+```
+
 #### Dependency
 
 ```

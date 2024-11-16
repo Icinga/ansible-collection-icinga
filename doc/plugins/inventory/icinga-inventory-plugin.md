@@ -264,8 +264,8 @@ The form is `namespace.collection_name.plugin_name`.
 
 This must be `icinga.icinga.icinga`
 
-Required: `true`<br><br>
-Type: `string`<br><br>
+Required: `true`<br>
+Type: `string`<br>
 Default: `None`
 
 ---

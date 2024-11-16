@@ -332,7 +332,7 @@ Default: `None`
 
 **filters**
 
-The `filters` variable allows for filtering the Icinga 2 hosts to be used within Ansible. In the background [Icinga 2 API filters](https://icinga.com/docs/icinga-2/latest/doc/12-icinga2-api/#filters) are used.
+The `filters` variable allows for filtering the Icinga 2 hosts to be used within Ansible. In the background [Icinga 2 API filters](https://icinga.com/docs/icinga-2/latest/doc/12-icinga2-api/#filters) are used.<br>
 Options for the `filters` variable are explained in [their own section](#filter-options).
 
 ---

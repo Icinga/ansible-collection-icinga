@@ -1,7 +1,7 @@
 # Ansible Role icinga.icinga.monitoring_plugins
 
 This role manages the installation/removal of many well known check plugins typically used in monitoring systems.<br>
-The list is based on the section *"Plugin Check Commands for Monitoring Plugins"* as seen in the [**Icinga Template Library** (ITL)](https://icinga.com/docs/icinga-2/latest/doc/10-icinga-template-library/#plugin-check-commands-for-monitoring-plugins).<br>
+The list is based on the section *"Plugin Check Commands for Monitoring Plugins"* as seen in the [**Icinga Template Library** (ITL)](https://icinga.com/docs/icinga-2/latest/doc/10-icinga-template-library/#plugin-check-commands-for-monitoring-plugins).
 
 * [List of available check commands](check_command_list.md)
 

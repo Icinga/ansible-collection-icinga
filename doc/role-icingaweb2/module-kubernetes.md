@@ -13,7 +13,7 @@ The general module parameter like `enabled` and `source` can be applied here.
 
 The backend database for the module needs to be available and configured at the `icingaweb2_resources` variable.
 
-```
+```yaml
 icingaweb2_modules:
   kubernetes:
     enabled: true

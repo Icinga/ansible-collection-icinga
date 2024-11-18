@@ -37,7 +37,7 @@ The following variables are used for the Icinga Kubernetes setup. Normally, you 
 | `kubernetes_packages` | `List` | Defines the packages to install for Icinga Kubernetes. | `[icinga-kubernetes]` |
 | `kubernetes_service_name` | `String` | Defines the name of the Icinga Kubernetes service. | `icinga-kubernetes` |
 | `kubernetes_user` | `String` | Defines the user for the Icinga Kubernetes service. | `icinga-kubernetes` |
-| `kubernetes_kubeconfig_path` | `String` | Defines the path for the kubeconfig file, if not in standard path. | `{{ ansible_env.HOME }}/.kube/config` |
+| `kubernetes_kubeconfig_path` | `String` | Defines the path for the kubeconfig file, if not in standard path. | `{{ kubernetes_config_dir }}/.kube/config` |
 
 ## Examples
 

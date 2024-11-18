@@ -23,13 +23,13 @@ Collection to setup and manage components of the Icinga software stack.
 
 You can easily install the collection with the `ansible-galaxy` command.
 
-```
+```bash
 ansible-galaxy collection install icinga.icinga
 ```
 
 Or if you are using Tower or AWX add the collection to your requirements file.
 
-```
+```yaml
 collections:
   - name: icinga.icinga
 ```
@@ -38,7 +38,7 @@ collections:
 
 To use the collection in your playbooks, add the collection and then use the roles.
 
-```
+```yaml
 - hosts: icinga-server
   roles:
     - icinga.icinga.repos

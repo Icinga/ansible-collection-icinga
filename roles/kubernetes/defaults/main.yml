@@ -16,4 +16,4 @@ kubernetes_user: icinga-kubernetes
 kubernetes_database_schema: "/usr/share/icinga-kubernetes/schema/{{ kubernetes_database_type }}/schema.sql"
 kubernetes_packages:
   - icinga-kubernetes
-kubernetes_kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+kubernetes_kubeconfig_path: "{{ kubernetes_config_dir }}/kube_config"

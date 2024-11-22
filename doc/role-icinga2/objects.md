@@ -341,6 +341,8 @@ icinga2_objects:
     apply_for: config in host.vars.ips
     check_command: ping4
     vars: + config
+    assign:
+      - host.vars.ips
 ```
 
 #### Service Object

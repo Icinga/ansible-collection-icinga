@@ -16,8 +16,8 @@ This repository uses [Ansible Changelogs Fragments]. A basic changelog fragment 
 
 Each PR must use a new fragment file rather than adding to an existing one, so we can trace the change back to the PR that introduced it. Example:
 
-```
-cat changelogs/fragments/fix_issue_123.yml
+```yaml
+# cat changelogs/fragments/fix_issue_123.yml
 ---
 bugfixes:
   - Fixes issue with something that was caused by something else
@@ -32,7 +32,7 @@ Choosing a proper name for a branch helps us identify its purpose and possibly f
 Generally a branch name should include a topic such as `fix` or `feature` followed by a description and an issue number
 if applicable. Branches should have only changes relevant to a specific issue.
 
-```
+```bash
 git checkout -b fix/service-template-typo-1234
 git checkout -b feature/config-handling-1235
 git checkout -b doc/fix-typo-1236

@@ -133,7 +133,7 @@ class Icinga2Parser(object):
                         else:
                             result += "%s%s %s= {\n%s%s}\n" % (
                                 prefix, attribute_types(attr), op, process_hash(attrs=value, indent=indent+2), ' '*indent)
-                elif type(value) is list:
+                elif type(value) is list and value:
                     if value[0] == "+":
                         op = "+"
                         value.pop(0)

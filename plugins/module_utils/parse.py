@@ -91,9 +91,9 @@ class Icinga2Parser(object):
         def process_array(items, indent=2):
             result = ''
             for item in items:
-                if type(item) is dict:
+                if isinstance(item, dict):
                     result += "\n%s{\n%s%s}, " % (' ' * indent, process_hash(attrs=item, indent=indent+2), ' ' * indent)
-                elif type(item) is list:
+                elif isinstance(item, list):
                     result += "[ %s], " % (process_array(item.split(','), indent=indent+2))
                 else:
                     result += "%s, " % (parser(str(item)))
@@ -106,7 +106,7 @@ class Icinga2Parser(object):
             op = ''
 
             for attr, value in attrs.items():
-                if type(value) is dict:
+                if isinstance(value, dict):
                     if "+" in value:
                         del value['+']
                         op = "+"
@@ -134,7 +134,7 @@ class Icinga2Parser(object):
                         else:
                             result += "%s%s %s= {\n%s%s}\n" % (
                                 prefix, attribute_types(attr), op, process_hash(attrs=value, indent=indent+2), ' '*indent)
-                elif type(value) is list and value:
+                elif isinstance(value, list) and value:
                     if value[0] == "+":
                         op = "+"
                         value.pop(0)
@@ -182,13 +182,13 @@ class Icinga2Parser(object):
                 for x in value:
                     config += "%s%s %s\n" % (' '*indent, attr+' where', parser(x))
             elif attr == 'vars':
-                if type(value) is dict:
+                if isinstance(value, dict):
                     if "+" in value:
                         del value['+']
                     config += process_hash(attrs=value, indent=indent+2, level=1, prefix=("%s%s." % (' '*indent, attr)))
-                elif type(value) is list:
+                elif isinstance(value, list):
                     for item in value:
-                        if type(item) is str:
+                        if isinstance(item, str):
                             config += "%s%s += %s\n" % (indent*' ', attr, re.sub(r'^[\+,-]\s+/', '', item))
                         else:
                             if "+" in item:
@@ -203,7 +203,7 @@ class Icinga2Parser(object):
                         value = re.sub(r'^\+\s+', '', str(value))
                     config += "%s%s %s= %s\n" % (' ' * indent, attr, op, parser(value))
             else:
-                if type(value) is dict:
+                if isinstance(value, dict):
                     if "+" in value:
                         op = '+'
                         del value['+']
@@ -211,7 +211,7 @@ class Icinga2Parser(object):
                         config += "%s%s %s= {\n%s%s}\n" % (' '*indent, attr, op, process_hash(attrs=value, indent=indent+2), ' '*indent)
                     else:
                         config += "%s%s %s= {}\n" % (' '*indent, op, attr)
-                elif type(value) is list:
+                elif isinstance(value, list):
                     if value:
                         if value[0] == "+":
                             op = "+"

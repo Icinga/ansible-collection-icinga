@@ -6,7 +6,7 @@ class Icinga2Parser(object):
 
     def parse(self, attrs, constants, indent=0):
         def attribute_types(attr):
-            if re.search(r'^[a-zA-Z0-9_]+$', attr):
+            if re.search(r'^[a-zA-Z_][a-zA-Z0-9_]*$', attr):
                 result = attr
             else:
                 result = '"' + attr + '"'

@@ -43,7 +43,8 @@ the client (**"mysql", "psql"**) for your database is available on your system.
 **Permissions/Become**:
 The collection does administrative work on the server. Please ensure the ansible_user you are using has the right permissions. Otherwise use the parameter '--become' with your ansible-playbook command. 
 
-If you need to use only become for a specific role you can add the following in your playbook.
+If you need to use become for a specific role only, you can add the following structure in your playbook.
+
 ```yaml
 - name: Play
   become: false

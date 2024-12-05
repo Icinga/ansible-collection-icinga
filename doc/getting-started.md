@@ -40,6 +40,24 @@ Otherwise the modules **zypper_repository** and **zypper** are missing.
 If you want the collection roles to **import schemas and users to databases**, make sure
 the client (**"mysql", "psql"**) for your database is available on your system.
 
+**Permissions/Become**:
+The collection does administrative work on the server. Please ensure the ansible_user you are using has the right permissions. Otherwise use the parameter '--become' with your ansible-playbook command. 
+
+If you need to use become for a specific role only, you can add the following structure in your playbook.
+
+```yaml
+- name: Play
+  become: false
+  hosts: all
+  roles:
+    - name: icinga.icinga.icinga2
+      become: true
+    - some_other_role_without_become
+    - name: explicit_no_become
+      become: false
+```
+
+
 ## Installation
 
 To start with the collection, easily install it with the **ansible-galaxy** command.

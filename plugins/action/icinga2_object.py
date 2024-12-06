@@ -109,7 +109,11 @@ class ActionModule(ActionBase):
             #
             # parser
             #
-            object_content += Icinga2Parser().parse(obj['args'], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved']+varlist+list(obj['args'].keys()), 2) + '}\n'
+            object_content += Icinga2Parser().parse(
+                obj['args'],
+                list(task_vars['icinga2_combined_constants'].keys()) + task_vars['icinga2_reserved'] + varlist + list(obj['args'].keys()),
+                2
+            ) + '}\n'
             copy_action = self._task.copy()
             copy_action.args = dict()
             copy_action.args['dest'] = file_fragment

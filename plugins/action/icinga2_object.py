@@ -1,7 +1,6 @@
 # pylint: disable=consider-using-f-string,super-with-arguments
 import re
 
-from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash
 from ansible_collections.icinga.icinga.plugins.module_utils.parse import Icinga2Parser
@@ -9,136 +8,211 @@ from ansible_collections.icinga.icinga.plugins.module_utils.parse import Icinga2
 
 class ActionModule(ActionBase):
 
-    def run(self, tmp=None, task_vars=None):
+    def __init__(self, *args, **kwargs):
+        super(ActionModule, self).__init__(*args, **kwargs)
+        self.combined_constants_keys = None
+        self.icinga2_reserved = None
+        self.ensured_directories = set()
 
+    def run(self, tmp=None, task_vars=None):
         result = super(ActionModule, self).run(tmp, task_vars)
 
-        args = dict()
+        # Check if 'objects' parameter is provided
+        if 'objects' in self._task.args:
+            # Process multiple objects
+            objects = self._task.args.get('objects', [])
+            if not objects:
+                return result  # No objects to process
+
+            # Initialize overall result
+            aggregate_result = {
+                'changed': False,
+                'results': [],
+                'dest': [],
+                'failed': False,
+            }
+
+            # Cache constants and reserved words as instance variables
+            self.combined_constants_keys = list(task_vars['icinga2_combined_constants'].keys())
+            self.icinga2_reserved = task_vars['icinga2_reserved']
+
+            # Keep track of directories we've already ensured
+            self.ensured_directories = set()
+
+            # Process each object
+            for item in objects:
+                obj_result = self.process_object(item, tmp, task_vars)
+                if obj_result.get('failed'):
+                    aggregate_result['failed'] = True
+                    aggregate_result['msg'] = obj_result['msg']
+                    return aggregate_result
+
+                aggregate_result['results'].append(obj_result)
+                aggregate_result['dest'].append(obj_result['dest'])
+                if obj_result.get('changed'):
+                    aggregate_result['changed'] = True
+
+            # If only one object, flatten the result for backward compatibility
+            if len(aggregate_result['results']) == 1:
+                single_result = aggregate_result['results'][0]
+                aggregate_result.update(single_result)
+                # Remove 'results' and 'dest' list to match original structure
+                aggregate_result.pop('results', None)
+                aggregate_result['dest'] = single_result['dest']
+            else:
+                # Keep 'dest' as a list if multiple objects
+                pass
+
+            return aggregate_result
+
+        # Process a single object using individual arguments
         args = self._task.args.copy()
-        args = merge_hash(args.pop('args', {}), args)
+
+        # Cache constants and reserved words as instance variables
+        self.combined_constants_keys = list(task_vars['icinga2_combined_constants'].keys())
+        self.icinga2_reserved = task_vars['icinga2_reserved']
+        self.ensured_directories = set()
+
+        result = self.process_object(args, tmp, task_vars)
+        return result
+
+    def process_object(self, args, tmp, task_vars):
+        # Merge args
+        args = args.copy()
+        object_args = args.pop('args', {})
+        args = merge_hash(object_args, args)
         object_type = args.pop('type', None)
 
         if object_type not in task_vars['icinga2_object_types']:
-            raise AnsibleError('unknown Icinga object type: %s' % object_type)
+            return {'failed': True, 'msg': 'Unknown Icinga object type: %s' % object_type}
 
-        #
-        # distribute to object type as module (name: icinga2_type)
-        #
-        obj = dict()
+        # Execute the module for the object type
         obj = self._execute_module(
-            module_name='icinga2_'+object_type.lower(),
+            module_name='icinga2_' + object_type.lower(),
             module_args=args,
             task_vars=task_vars,
             tmp=tmp
         )
 
-        if 'failed' in obj:
-            raise AnsibleError('Call to module failed: %s' % obj['msg'])
-        if 'skipped' in obj and obj['skipped']:
-            raise AnsibleError('Call to module was skipped: %s' % obj['msg'])
+        if obj.get('failed'):
+            return {'failed': True, 'msg': 'Call to module failed: %s' % obj['msg']}
+        if obj.get('skipped'):
+            return {'failed': True, 'msg': 'Call to module was skipped: %s' % obj['msg']}
 
-        #
-        # file path handling for assemble
-        #
+        # File path handling for assemble
         path = task_vars['icinga2_fragments_path'] + '/' + obj['file'] + '/'
         file_fragment = path + obj['order'] + '_' + object_type.lower() + '-' + obj['name']
 
+        # Initialize the result for this object
+        obj_result = {
+            'changed': False,
+            'dest': file_fragment,
+            'state': obj['state'],
+            'name': obj['name'],
+            'type': object_type,
+        }
+
         if obj['state'] != 'absent':
-            file_args = dict()
-            file_args['state'] = 'directory'
-            file_args['path'] = path
-            file_module = self._execute_module(
-                module_name='file',
-                module_args=file_args,
-                task_vars=task_vars,
-                tmp=tmp
-            )
-            result = merge_hash(result, file_module)
+            varlist = []  # List of variables from 'apply for'
 
-            varlist = list()  # list of variables from 'apply for'
-
-            #
-            # quoting of object name?
-            #
+            # Quoting of object name?
             if obj['name'] not in task_vars['icinga2_combined_constants']:
                 object_name = '"' + obj['name'] + '"'
             else:
                 object_name = obj['name']
 
-            #
-            # apply rule?
-            #
-            if 'apply' in obj and obj['apply'] and not obj['args']['assign']:
-                raise AnsibleError('Apply rule %s is missing the assign rule.' % obj['name'])
-            if 'apply' in obj and obj['apply']:
+            # Apply rule?
+            if obj.get('apply'):
+                if not obj['args'].get('assign'):
+                    return {'failed': True, 'msg': 'Apply rule %s is missing the assign rule.' % obj['name']}
                 object_content = 'apply ' + object_type
-                if 'apply_target' in obj and obj['apply_target']:
+                if obj.get('apply_target'):
                     object_content += ' ' + object_name + ' to ' + obj['apply_target']
-                elif 'apply_for' in obj and obj['apply_for']:
+                elif obj.get('apply_for'):
                     object_content += ' for (' + obj['apply_for'] + ') '
                     r = re.search(r'^(.+)\s+in\s+', obj['apply_for'])
                     if r:
-                        tmp = r.group(1).strip()
-                        r = re.search(r'^(.+)=>(.+)$', tmp)
-                        if r:
-                            varlist.extend([r.group(1).strip(), r.group(2).strip()])
+                        tmp_var = r.group(1).strip()
+                        r2 = re.search(r'^(.+)=>(.+)$', tmp_var)
+                        if r2:
+                            varlist.extend([r2.group(1).strip(), r2.group(2).strip()])
                         else:
-                            varlist.append(tmp)
+                            varlist.append(tmp_var)
                 else:
                     object_content += ' ' + object_name
-            #
-            # template?
-            #
-            elif 'template' in obj and obj['template']:
+            # Template?
+            elif obj.get('template'):
                 object_content = 'template ' + object_type + ' ' + object_name
-            #
-            # object
-            #
+            # Object
             else:
                 object_content = 'object ' + object_type + ' ' + object_name
+
             object_content += ' {\n'
 
-            #
-            # imports?
-            #
-            if 'imports' in obj:
-                for item in obj['imports']:
-                    object_content += '  import "' + str(item) + '"\n'
+            # Imports?
+            if obj.get('imports'):
+                for item_import in obj['imports']:
+                    if item_import.startswith('host.vars'):
+                        object_content += '  import ' + str(item_import) + '\n'
+                    else:
+                        object_content += '  import "' + str(item_import) + '"\n'
                 object_content += '\n'
 
-            #
-            # parser
-            #
-            object_content += Icinga2Parser().parse(obj['args'], list(task_vars['icinga2_combined_constants'].keys())+task_vars['icinga2_reserved']+varlist+list(obj['args'].keys()), 2) + '}\n'
-            copy_action = self._task.copy()
-            copy_action.args = dict()
-            copy_action.args['dest'] = file_fragment
-            copy_action.args['content'] = object_content
+            # Prepare keys for parsing
+            all_keys = self.combined_constants_keys + self.icinga2_reserved + varlist + list(obj['args'].keys())
+            parsed_content = Icinga2Parser().parse(obj['args'], all_keys, 2)
+            object_content += parsed_content + '}\n'
 
-            copy_action = self._shared_loader_obj.action_loader.get(
-                'copy',
-                task=copy_action,
-                connection=self._connection,
-                play_context=self._play_context,
-                loader=self._loader,
-                templar=self._templar,
-                shared_loader_obj=self._shared_loader_obj
-                )
+            # Ensure directory exists (optimize by checking if already ensured)
+            if path not in self.ensured_directories:
+                file_args = {
+                    'state': 'directory',
+                    'path': path
+                }
 
-            result = merge_hash(result, copy_action.run(task_vars=task_vars))
-        else:
-            # remove file if does not belong to a feature
-            if 'features-available' not in path:
-                file_args = dict()
-                file_args['state'] = 'absent'
-                file_args['path'] = file_fragment
                 file_module = self._execute_module(
                     module_name='file',
                     module_args=file_args,
                     task_vars=task_vars,
                     tmp=tmp
                 )
-                result = merge_hash(result, file_module)
-            result['dest'] = file_fragment
 
-        return result
+                if file_module.get('changed', False):
+                    obj_result['changed'] = True
+
+                # Add to ensured directories
+                self.ensured_directories.add(path)
+
+            # Write the object content to the file
+            copy_args = {
+                'dest': file_fragment,
+                'content': object_content
+            }
+
+            copy_module = self._execute_module(
+                module_name='copy',
+                module_args=copy_args,
+                task_vars=task_vars,
+                tmp=tmp
+            )
+
+            if copy_module.get('changed', False):
+                obj_result['changed'] = True
+
+        else:
+            # Remove file if it does not belong to a feature
+            if 'features-available' not in path:
+                file_args = {
+                    'state': 'absent',
+                    'path': file_fragment
+                }
+                file_module = self._execute_module(
+                    module_name='file',
+                    module_args=file_args,
+                    task_vars=task_vars,
+                    tmp=tmp
+                )
+                if file_module.get('changed', False):
+                    obj_result['changed'] = True
+
+        return obj_result

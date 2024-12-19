@@ -1,0 +1,9 @@
+---
+- name: Systemd reload
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Kubernetes-restart
+  ansible.builtin.service:
+    name: "{{ kubernetes_service_name }}"
+    state: restarted

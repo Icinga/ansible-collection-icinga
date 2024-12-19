@@ -11,6 +11,7 @@ Current supported features:
 
 * [Feature API](features/feature-api.md)
 * [Feature Command](features/feature-command.md)
+* [Feature CompatLog](features/feature-compatlog.md)
 * [Feature ElasticSearch](features/feature-elasticsearch.md)
 * [Feature GelfWriter](features/feature-gelf.md)
 * [Feature Graphite](features/feature-graphite.md)

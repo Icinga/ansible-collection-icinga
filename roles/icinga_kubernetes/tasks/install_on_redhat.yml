@@ -1,4 +1,4 @@
 - name: RedHat - Install Kubernetes packages
   ansible.builtin.yum:
-    name: "{{ kubernetes_packages }}"
+    name: "{{ icinga_kubernetes_packages }}"
     state: present

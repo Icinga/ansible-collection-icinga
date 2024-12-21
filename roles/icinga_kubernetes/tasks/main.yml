@@ -25,8 +25,8 @@
   ansible.builtin.include_tasks: manage_config.yml
 
 - name: Include Tasks to import DB Schema
-  ansible.builtin.include_tasks: "manage_schema_{{ kubernetes_database_type | lower }}.yml"
-  when: kubernetes_database_import_schema and kubernetes_database_type is defined
+  ansible.builtin.include_tasks: "manage_schema_{{ icinga_kubernetes_database_type | lower }}.yml"
+  when: icinga_kubernetes_database_import_schema and icinga_kubernetes_database_type is defined
 
 - name: Include Tasks to manage Kubernetes Service
   ansible.builtin.include_tasks: manage_service.yml

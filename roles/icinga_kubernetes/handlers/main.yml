@@ -5,5 +5,5 @@
 
 - name: Kubernetes-restart
   ansible.builtin.service:
-    name: "{{ kubernetes_service_name }}"
+    name: "{{ icinga_kubernetes_service_name }}"
     state: restarted

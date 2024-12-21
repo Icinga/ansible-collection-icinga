@@ -1,7 +1,8 @@
 ### Editing /etc/systemd/system/icinga-kubernetes.service.d/override.conf
 ### Anything between here and the comment below will become the new contents of the file
 
-
+[Service]
+Environment="KUBECONFIG={{ icinga_kubernetes_kubeconfig_path }}"
 
 ### Lines below this comment will be discarded
 
@@ -10,8 +11,7 @@
 # Description=Icinga for Kubernetes
 # After=syslog.target network-online.target mariadb.service postgresql.service
 #
-[Service]
-Environment="KUBECONFIG={{ kubernetes_kubeconfig_path }}"
+# [Service]
 # Type=simple
 # ExecStart=/usr/sbin/icinga-kubernetes --config /etc/icinga-kubernetes/config.yml
 # User=icinga-kubernetes

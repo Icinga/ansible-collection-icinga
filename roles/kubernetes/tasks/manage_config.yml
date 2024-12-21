@@ -1,7 +1,7 @@
 ---
 - name: Write configuration to {{ kubernetes_config_dir }}/config.yml
   ansible.builtin.template:
-    src: kubernetes.ini.j2
+    src: kubernetes.yml.j2
     dest: "{{ kubernetes_config_dir }}/config.yml"
     owner: "{{ kubernetes_user }}"
     group: "{{ kubernetes_group }}"

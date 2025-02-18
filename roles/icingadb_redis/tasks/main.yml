@@ -12,6 +12,9 @@
       paths:
         - "{{ role_path }}/vars"
 
+- set_fact:
+    icingadb_redis_config: "{{ icingadb_redis_config | combine(icingadb_redis_defaults, recursive=True) }}"
+
 - name: Check supported operatingsystems
   block:
     - name: Include OS specific installation

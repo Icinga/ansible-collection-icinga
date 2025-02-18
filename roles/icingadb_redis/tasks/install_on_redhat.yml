@@ -7,9 +7,9 @@
 
 - name: RedHat - Ensure log directory exists
   when:
-    - icingadb_redis_logfile != ""
+    - icingadb_redis_config.logfile != ""
   ansible.builtin.file:
-    path: "{{ icingadb_redis_logfile | dirname }}"
+    path: "{{ icingadb_redis_config.logfile | dirname }}"
     state: directory
     owner: "{{ icingadb_redis_user }}"
     group: "{{ icingadb_redis_user }}"

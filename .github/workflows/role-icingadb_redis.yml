@@ -34,8 +34,8 @@ jobs:
       max-parallel: 1
       matrix:
         distro: [ubuntu2204]
-        python: ['3.10']
-        ansible: ['2.16.2']
+        python: ['3.12']
+        ansible: ['2.17']
         scenario: [role-icingadb_redis]
 
     steps:

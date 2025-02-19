@@ -1,0 +1,23 @@
+---
+
+- name: Zypper - install requested packages
+  become: yes
+  community.general.zypper:
+    state: present
+    name: "{{ needed_packages }}"
+    update_cache: true
+  register: "zypper_result"
+  changed_when: zypper_result.stdout is defined
+  when:
+    - needed_packages is defined
+    - needed_packages
+
+- name: Zypper - remove non-requested packages
+  become: yes
+  community.general.zypper:
+    state: absent
+    name: "{{ (unwanted_packages | difference(['monitoring-plugins-common'])) if icinga_monitoring_plugins_check_commands else unwanted_packages }}"
+    clean_deps: "{{ icinga_monitoring_plugins_autoremove }}"
+  when:
+    - icinga_monitoring_plugins_remove
+    - unwanted_packages

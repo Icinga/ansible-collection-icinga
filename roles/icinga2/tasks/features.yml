@@ -19,7 +19,7 @@
     state: absent
     path: "{{ '/etc/icinga2/features-enabled/' + icinga2_feature_realname[item]|default(item) + '.conf' }}"
   loop: "{{ features_enabled | default([]) | difference(icinga2_features| map(attribute='name')|list) }}"
-  notify: reload icinga2 service
+  notify: check-and-reload-icinga2-service
   when: icinga2_purge_features
 
 - name: configure features

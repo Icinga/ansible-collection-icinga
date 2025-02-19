@@ -1,9 +1,8 @@
 ---
 - name: RedHat - install icingadb packages
   ansible.builtin.yum:
-    name: "{{ item }}"
+    name: "{{ icingadb_redis_packages }}"
     state: present
-  loop: "{{ icingadb_redis_packages }}"
 
 - name: RedHat - Ensure log directory exists
   when:

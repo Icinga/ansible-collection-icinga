@@ -1,4 +1,4 @@
 ---
 icingaweb2_httpd_user: wwwrun
 icingaweb2_fragments_path: /var/tmp/icingaweb
-icingaweb2_packages: ["icingaweb2", "icingacli"]
+icingaweb2_packages_dependencies: []

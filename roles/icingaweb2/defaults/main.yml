@@ -1,7 +1,10 @@
+icingaweb2_packages: ["icingaweb2", "icingacli"]
 icingaweb2_config_dir: /etc/icingaweb2
 icingaweb2_group: icingaweb2
 icingaweb2_modules_config_dir: "{{ icingaweb2_config_dir }}/modules"
 icingaweb2_director_service: icinga-director.service
+
+icingaweb2_ignore_unknown_modules: false
 
 icingaweb2_groups:
   icingaweb2:
@@ -38,3 +41,4 @@ icingaweb2_config:
   themes:
     default: Icinga
 icingaweb2_cli: icingacli
+icingaweb2_users: []

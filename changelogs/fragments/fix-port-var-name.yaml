@@ -1,0 +1,3 @@
+---
+bugfixes:
+  - "Icinga2: Correctly rename cleanup argument from icinga2_ca_host_port to ca_host_port"

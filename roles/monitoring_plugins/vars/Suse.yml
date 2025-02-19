@@ -1,0 +1,123 @@
+---
+
+icinga_monitoring_plugins_available_packages:
+  - name: apt
+    pkg_name: "UNAVAILABLE"
+  - name: breeze
+    pkg_name: "monitoring-plugins-breeze"
+  - name: by_ssh
+    pkg_name: "monitoring-plugins-by_ssh"
+  - name: clamd
+    pkg_name: "nagios-plugins-tcp"
+  - name: dhcp
+    pkg_name: "monitoring-plugins-dhcp"
+  - name: dig
+    pkg_name: "monitoring-plugins-dig"
+  - name: disk
+    pkg_name: "monitoring-plugins-disk"
+  - name: disk_smb
+    pkg_name: "monitoring-plugins-disk_smb"
+  - name: dns
+    pkg_name: "monitoring-plugins-dns"
+  - name: file_age
+    pkg_name: "monitoring-plugins-file_age"
+  - name: flexlm
+    pkg_name: "monitoring-plugins-flexlm"
+  - name: fping
+    pkg_name: "monitoring-plugins-fping"
+  - name: fping4
+    pkg_name: "monitoring-plugins-fping"
+  - name: fping6
+    pkg_name: "monitoring-plugins-fping"
+  - name: ftp
+    pkg_name: "monitoring-plugins-tcp"
+  - name: game
+    pkg_name: "UNAVAILABLE"
+  - name: hostalive
+    pkg_name: "monitoring-plugins-ping"
+  - name: hostalive4
+    pkg_name: "monitoring-plugins-ping"
+  - name: hostalive6
+    pkg_name: "monitoring-plugins-ping"
+  - name: hpjd
+    pkg_name: "monitoring-plugins-hpjd"
+  - name: http
+    pkg_name: "monitoring-plugins-http"
+  - name: icmp
+    pkg_name: "monitoring-plugins-icmp"
+  - name: imap
+    pkg_name: "monitoring-plugins-tcp"
+  - name: ldap
+    pkg_name: "monitoring-plugins-ldap"
+  - name: load
+    pkg_name: "monitoring-plugins-load"
+  - name: mailq
+    pkg_name: "monitoring-plugins-mailq"
+  - name: mysql
+    pkg_name: "monitoring-plugins-mysql"
+  - name: mysql_query
+    pkg_name: "monitoring-plugins-mysql"
+  - name: negate
+    pkg_name: "monitoring-plugins-common"
+  - name: nrpe
+    pkg_name: "monitoring-plugins-nrpe"
+  - name: nscp
+    pkg_name: "monitoring-plugins-nt"
+  - name: ntp_peer
+    pkg_name: "monitoring-plugins-ntp_peer"
+  - name: ntp_time
+    pkg_name: "monitoring-plugins-ntp_time"
+  - name: pgsql
+    pkg_name: "monitoring-plugins-pgsql"
+  - name: ping
+    pkg_name: "monitoring-plugins-ping"
+  - name: ping4
+    pkg_name: "monitoring-plugins-ping"
+  - name: ping6
+    pkg_name: "monitoring-plugins-ping"
+  - name: pop
+    pkg_name: "monitoring-plugins-tcp"
+  - name: procs
+    pkg_name: "monitoring-plugins-procs"
+  - name: radius
+    pkg_name: "monitoring-plugins-radius"
+  - name: rpc
+    pkg_name: "monitoring-plugins-rpc"
+  - name: simap
+    pkg_name: "monitoring-plugins-tcp"
+  - name: smart
+    pkg_name: "monitoring-plugins-ide_smart"
+  - name: smtp
+    pkg_name: "monitoring-plugins-smtp"
+  - name: snmp
+    pkg_name: "monitoring-plugins-snmp"
+  - name: snmpv3
+    pkg_name: "monitoring-plugins-snmp"
+  - name: snmp-uptime
+    pkg_name: "monitoring-plugins-snmp"
+  - name: spop
+    pkg_name: "monitoring-plugins-tcp"
+  - name: ssh
+    pkg_name: "monitoring-plugins-ssh"
+  - name: ssl
+    pkg_name: "monitoring-plugins-tcp"
+  - name: ssmtp
+    pkg_name: "monitoring-plugins-tcp"
+  - name: swap
+    pkg_name: "monitoring-plugins-swap"
+  - name: tcp
+    pkg_name: "monitoring-plugins-tcp"
+  - name: udp
+    pkg_name: "monitoring-plugins-tcp"
+  - name: ups
+    pkg_name: "monitoring-plugins-ups"
+  - name: uptime
+    pkg_name: "monitoring-plugins-uptime"
+  - name: users
+    pkg_name: "monitoring-plugins-users"
+
+icinga_monitoring_plugins_available_packages_exclude:
+  - name: apt
+    pkg_name: "UNAVAILABLE"
+  - name: game
+    pkg_name: "UNAVAILABLE"

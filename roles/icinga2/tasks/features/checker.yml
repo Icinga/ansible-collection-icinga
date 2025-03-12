@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: checker
     type: CheckerComponent
-    ansible.builtin.file: features-available/checker.conf
+    file: features-available/checker.conf
     args: "{{ __icinga2_dict_features.checker }}"
   register: result
 

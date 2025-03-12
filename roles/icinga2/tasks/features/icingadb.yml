@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: icingadb
     type: IcingaDB
-    ansible.builtin.file: features-available/icingadb.conf
+    file: features-available/icingadb.conf
     args: "{{ __icinga2_dict_features.icingadb }}"
   register: result
 

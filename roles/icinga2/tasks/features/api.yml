@@ -31,7 +31,7 @@
   icinga.icinga.icinga2_object:
     name: api
     type: ApiListener
-    ansible.builtin.file: features-available/api.conf
+    file: features-available/api.conf
     args: "{{ __icinga2_api_args }}"
   register: result
 

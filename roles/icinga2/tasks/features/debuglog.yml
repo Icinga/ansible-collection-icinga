@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: debug-file
     type: FileLogger
-    ansible.builtin.file: features-available/debuglog.conf
+    file: features-available/debuglog.conf
     path: LogDir + /debug.log
     severity: debug
     args: "{{ __icinga2_dict_features.debuglog }}"

@@ -27,9 +27,12 @@ argument_specs:
           - If the package should be installed, even if SELinux is not enabled or somehow wrongly disabled in Ansible use the following variable.
         type: dict
         options:
-          enabled:
+          status:
             description: Force installation of package `icinga2-selinux`
-            type: bool
+            type: str
+            choices:
+              - enabled
+              - disabled
       icinga2_fragments_path:
         description: Base installation folder of all icinga content
         default: /var/tmp/icinga

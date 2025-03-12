@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: ido-pgsql
     type: IdoPgsqlConnection
-    ansible.builtin.file: features-available/ido-pgsql.conf
+    file: features-available/ido-pgsql.conf
     args: "{{ __icinga2_dict_features.idopgsql }}"
   register: result
 

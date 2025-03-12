@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: opentsdb
     type: OpenTsdbWriter
-    ansible.builtin.file: features-available/opentsdb.conf
+    file: features-available/opentsdb.conf
     args: "{{ __icinga2_dict_features.opentsdb }}"
   register: result
 

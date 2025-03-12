@@ -60,7 +60,7 @@ class ActionModule(ActionBase):
             #
             # quoting of object name?
             #
-            if obj['name'] not in task_vars['icinga2_combined_constants']:
+            if obj['name'] not in task_vars['__icinga2_combined_constants']:
                 object_name = '"' + obj['name'] + '"'
             else:
                 object_name = obj['name']
@@ -111,7 +111,7 @@ class ActionModule(ActionBase):
             #
             object_content += Icinga2Parser().parse(
                 obj['args'],
-                list(task_vars['icinga2_combined_constants'].keys()) + task_vars['__icinga2_reserved'] + varlist + list(obj['args'].keys()),
+                list(task_vars['__icinga2_combined_constants'].keys()) + task_vars['__icinga2_reserved'] + varlist + list(obj['args'].keys()),
                 2
             ) + '}\n'
             copy_action = self._task.copy()

@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: elasticsearch
     type: ElasticsearchWriter
-    ansible.builtin.file: features-available/elasticsearch.conf
+    file: features-available/elasticsearch.conf
     args: "{{ __icinga2_dict_features.elasticsearch }}"
   register: result
 

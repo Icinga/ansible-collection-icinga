@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: notification
     type: NotificationComponent
-    ansible.builtin.file: features-available/notification.conf
+    file: features-available/notification.conf
     args: "{{ __icinga2_dict_features.notification }}"
   register: result
 

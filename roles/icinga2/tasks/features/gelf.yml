@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: gelf
     type: GelfWriter
-    ansible.builtin.file: features-available/gelf.conf
+    file: features-available/gelf.conf
     args: "{{ __icinga2_dict_features.gelf }}"
   register: result
 

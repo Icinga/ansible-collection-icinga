@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: compatlog
     type: CompatLogger
-    ansible.builtin.file: features-available/compatlog.conf
+    file: features-available/compatlog.conf
     args: "{{ __icinga2_dict_features.compatlog }}"
   register: result
 

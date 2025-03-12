@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: graphite
     type: GraphiteWriter
-    ansible.builtin.file: features-available/graphite.conf
+    file: features-available/graphite.conf
     args: "{{ __icinga2_dict_features.graphite }}"
   register: result
 

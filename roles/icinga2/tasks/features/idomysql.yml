@@ -3,7 +3,7 @@
   icinga.icinga.icinga2_object:
     name: ido-mysql
     type: IdoMysqlConnection
-    ansible.builtin.file: features-available/ido-mysql.conf
+    file: features-available/ido-mysql.conf
     args: "{{ __icinga2_dict_features.idomysql }}"
   register: result
 

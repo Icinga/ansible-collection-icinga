@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: main-log
     type: FileLogger
-    ansible.builtin.file: features-available/mainlog.conf
+    file: features-available/mainlog.conf
     args: "{{ __icinga2_dict_features.mainlog }}"
   register: result
 

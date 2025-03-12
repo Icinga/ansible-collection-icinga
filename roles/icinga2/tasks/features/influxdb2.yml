@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: influxdb2
     type: Influxdb2Writer
-    ansible.builtin.file: features-available/influxdb2.conf
+    file: features-available/influxdb2.conf
     args: "{{ __icinga2_dict_features.influxdb2 }}"
   register: result
 

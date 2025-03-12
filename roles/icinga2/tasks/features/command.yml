@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: command
     type: ExternalCommandListener
-    ansible.builtin.file: features-available/command.conf
+    file: features-available/command.conf
     args: "{{ __icinga2_dict_features.command }}"
   register: result
 

@@ -4,7 +4,7 @@
   icinga.icinga.icinga2_object:
     name: livestatus
     type: LivestatusListener
-    ansible.builtin.file: features-available/livestatus.conf
+    file: features-available/livestatus.conf
     args: "{{ __icinga2_dict_features.livestatus }}"
   register: result
 

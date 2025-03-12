@@ -1,5 +1,4 @@
 ---
-
 - name: features | icingadb | IcingaDB object
   icinga.icinga.icinga2_object:
     name: icingadb

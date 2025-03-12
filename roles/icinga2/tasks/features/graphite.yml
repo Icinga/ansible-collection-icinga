@@ -5,9 +5,9 @@
     name: graphite
     type: GraphiteWriter
     ansible.builtin.file: features-available/graphite.conf
-    args: "{{ icinga2_dict_features.graphite }}"
+    args: "{{ __icinga2_dict_features.graphite }}"
   register: result
 
 - name: features | graphite | Enhance local object
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"

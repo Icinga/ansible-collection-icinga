@@ -5,9 +5,9 @@
     name: command
     type: ExternalCommandListener
     ansible.builtin.file: features-available/command.conf
-    args: "{{ icinga2_dict_features.command }}"
+    args: "{{ __icinga2_dict_features.command }}"
   register: result
 
 - name: features | command | Enhance local object
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"

@@ -131,3 +131,16 @@ argument_specs:
           Decides whether the unmanaged features should be purged or not. Default: true
         type: bool
         default: true
+      icinga2_delegate_host:
+        description: >-
+          The role primarily delegates the ticket creation to the Icinga ca host.
+          If the host is not listed with the same name in Ansible, you can set the name of the host in Ansible with this variable.
+          example: `icinga2_delegate_host: icinga-master`
+        type: str
+      # TODO: change logic to make it more separated since not possible to validate as item.split
+      # icinga2_objects:
+      #   description: >-
+      #     List of objects for which configuration file will generated.
+      #     COMPLEX object, can be either dict containing list of dict (host vars), or list of dict...
+      #   type: list
+      #   elements: dict

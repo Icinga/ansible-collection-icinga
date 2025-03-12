@@ -1,7 +1,7 @@
 ---
-- name: configure | Populate features (icinga2_dict_features)
+- name: configure | Populate features (__icinga2_dict_features)
   ansible.builtin.set_fact:
-    icinga2_dict_features: "{{ icinga2_dict_features | default({}) | combine({item.name: item}) }}"
+    __icinga2_dict_features: "{{ __icinga2_dict_features | default({}) | combine({item.name: item}) }}"
   with_items: "{{ icinga2_features }}"
 
 - name: configure | Main config file {{ icinga2_config_path + '/icinga2.conf' }}
@@ -12,9 +12,9 @@
     group: "{{ icinga2_group }}"
   notify: check-and-reload-icinga2-service
 
-- name: configure | Merge defaults and user specified constants (set_fact icinga2_combined_constants)
+- name: configure | Merge defaults and user specified constants (set_fact __icinga2_combined_constants)
   ansible.builtin.set_fact:
-    icinga2_combined_constants: "{{ __icinga2_default_constants | combine(icinga2_constants) }}"
+    __icinga2_combined_constants: "{{ __icinga2_default_constants | combine(icinga2_constants) }}"
 
 - name: configure | Set constants in {{ icinga2_config_path + '/constants.conf' }}
   ansible.builtin.template:
@@ -61,7 +61,7 @@
     dest: "{{ item.path }}"
   loop: "{{ result_frag.files }}"
   when:
-    - item.path not in icinga2_local_objects
+    - item.path not in __icinga2_local_objects
     - item.path not in _icinga2_custom_conf_paths
 
 - name: configure | Collect empty config dirs

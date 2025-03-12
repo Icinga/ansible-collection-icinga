@@ -5,9 +5,9 @@
     name: gelf
     type: GelfWriter
     ansible.builtin.file: features-available/gelf.conf
-    args: "{{ icinga2_dict_features.gelf }}"
+    args: "{{ __icinga2_dict_features.gelf }}"
   register: result
 
 - name: features | gelf | Enhance local object
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"

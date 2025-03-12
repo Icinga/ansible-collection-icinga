@@ -1,17 +1,17 @@
 ---
 - name: features | api | Set api feature facts
   ansible.builtin.set_fact:
-    __icinga2_cert_name: "{{ icinga2_dict_features.api.cert_name | default(ansible_fqdn) }}"
-    __icinga2_ca_host: "{{ icinga2_dict_features.api.ca_host | default(omit) }}"
-    __icinga2_ca_host_port: "{{ icinga2_dict_features.api.ca_host_port | default(omit) }}"
-    __icinga2_ca_fingerprint: "{{ icinga2_dict_features.api.ca_fingerprint | default(omit) }}"
-    __icinga2_force_newcert: "{{ icinga2_dict_features.api.force_newcert | default(False) }}"
-    __icinga2_endpoints: "{{ icinga2_dict_features.api.endpoints | default([]) }}"
-    __icinga2_zones: "{{ icinga2_dict_features.api.zones | default([]) }}"
-    __icinga2_ssl_cert: "{{ icinga2_dict_features.api.ssl_cert | default(omit) }}"
-    __icinga2_ssl_cacert: "{{ icinga2_dict_features.api.ssl_cacert | default(omit) }}"
-    __icinga2_ssl_key: "{{ icinga2_dict_features.api.ssl_key | default(omit) }}"
-    __icinga2_ticket_salt: "{{ icinga2_dict_features.api.ticket_salt | default(omit) }}"
+    __icinga2_cert_name: "{{ __icinga2_dict_features.api.cert_name | default(ansible_fqdn) }}"
+    __icinga2_ca_host: "{{ __icinga2_dict_features.api.ca_host | default(omit) }}"
+    __icinga2_ca_host_port: "{{ __icinga2_dict_features.api.ca_host_port | default(omit) }}"
+    __icinga2_ca_fingerprint: "{{ __icinga2_dict_features.api.ca_fingerprint | default(omit) }}"
+    __icinga2_force_newcert: "{{ __icinga2_dict_features.api.force_newcert | default(False) }}"
+    __icinga2_endpoints: "{{ __icinga2_dict_features.api.endpoints | default([]) }}"
+    __icinga2_zones: "{{ __icinga2_dict_features.api.zones | default([]) }}"
+    __icinga2_ssl_cert: "{{ __icinga2_dict_features.api.ssl_cert | default(omit) }}"
+    __icinga2_ssl_cacert: "{{ __icinga2_dict_features.api.ssl_cacert | default(omit) }}"
+    __icinga2_ssl_key: "{{ __icinga2_dict_features.api.ssl_key | default(omit) }}"
+    __icinga2_ticket_salt: "{{ __icinga2_dict_features.api.ticket_salt | default(omit) }}"
 
 - name: features | api | Check CA
   ansible.builtin.assert:
@@ -23,7 +23,7 @@
   when: idx.key not in ['ca_host', 'ca_host_port', 'cert_name', 'ca_fingerprint', 'force_newcert', 'zones', 'endpoints', 'ssl_cacert', 'ssl_key', 'ssl_cert' ]
   ansible.builtin.set_fact:
     __icinga2_api_args: "{{ __icinga2_api_args | default({}) | combine({idx.key: idx.value}) }}"
-  loop: "{{ icinga2_dict_features.api | dict2items }}"
+  loop: "{{ __icinga2_dict_features.api | dict2items }}"
   loop_control:
     loop_var: idx
 
@@ -37,7 +37,7 @@
 
 - name: features | api | Define local objects
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"
 
 - name: features | api | Endpoint objects
   icinga.icinga.icinga2_object:
@@ -46,12 +46,12 @@
   loop: "{{ __icinga2_endpoints }}"
   loop_control:
     loop_var: idx
-  register: result
+  register: __icinga2_api_endpoints_converted_result
 
 - name: features | api | Append idx to local objects
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [idx.dest] }}"
-  loop: "{{ result.results }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [idx.dest] }}"
+  loop: "{{ __icinga2_api_endpoints_converted_result.results }}"
   loop_control:
     loop_var: idx
 
@@ -62,12 +62,12 @@
   loop: "{{ __icinga2_zones }}"
   loop_control:
     loop_var: idx
-  register: result
+  register: __icinga2_api_zone_converted_result
 
 - name: features | api | Append idx to local objects
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [idx.dest] }}"
-  loop: "{{ result.results }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [idx.dest] }}"
+  loop: "{{ __icinga2_api_zone_converted_result.results }}"
   loop_control:
     loop_var: idx
 
@@ -172,15 +172,6 @@
 #  when: ( __icinga2_ssl_cacert is defined and __icinga2_ssl_cert is defined and __icinga2_ssl_key is defined )
   when: __icinga2_ssl_cacert is defined
   block:
-    - ansible.builtin.set_fact:
-        _tmp_crt:
-          - src: "{{ __icinga2_ssl_cacert }}"
-            dest: "{{ icinga2_cert_path }}/ca.crt"
-          - src: "{{ __icinga2_ssl_key }}"
-            dest: "{{ icinga2_cert_path }}/{{ __icinga2_cert_name }}.key"
-          - src: "{{ __icinga2_ssl_cert }}"
-            dest: "{{ icinga2_cert_path }}/{{ __icinga2_cert_name }}.crt"
-
     - name: features | api | Ensure icinga2 certificate directory
       ansible.builtin.file:
         path: "{{ icinga2_cert_path }}"
@@ -197,7 +188,13 @@
         owner: "{{ icinga2_user }}"
         group: "{{ icinga2_group }}"
       notify: check-and-reload-icinga2-service
-      loop: "{{ _tmp_crt }}"
+      loop:
+        - src: "{{ __icinga2_ssl_cacert }}"
+          dest: "{{ icinga2_cert_path }}/ca.crt"
+        - src: "{{ __icinga2_ssl_key }}"
+          dest: "{{ icinga2_cert_path }}/{{ __icinga2_cert_name }}.key"
+        - src: "{{ __icinga2_ssl_cert }}"
+          dest: "{{ icinga2_cert_path }}/{{ __icinga2_cert_name }}.crt"
       loop_control:
         loop_var: _crt
 

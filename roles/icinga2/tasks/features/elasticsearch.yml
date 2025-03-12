@@ -5,9 +5,9 @@
     name: elasticsearch
     type: ElasticsearchWriter
     ansible.builtin.file: features-available/elasticsearch.conf
-    args: "{{ icinga2_dict_features.elasticsearch }}"
+    args: "{{ __icinga2_dict_features.elasticsearch }}"
   register: result
 
 - name: features | elasticsearch | Enhance local object
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"

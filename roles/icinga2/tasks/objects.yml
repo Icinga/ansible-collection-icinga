@@ -1,22 +1,22 @@
 ---
 - name: objects | Collect all config objects for myself (from all inventory hosts)
-  ansible.builtin.set_fact:
-    tmp_objects: "{{ tmp_objects | default([]) + lookup('list', hostvars[item]['icinga2_objects'][icinga2_config_host]) }}"
-  with_items: "{{ groups['all'] }}"
   when: hostvars[item]['icinga2_objects'][icinga2_config_host] is defined
+  ansible.builtin.set_fact:
+    __icinga2_tmp_objects: "{{ __icinga2_tmp_objects | default([]) + lookup('list', hostvars[item]['icinga2_objects'][icinga2_config_host]) }}"
+  with_items: "{{ groups['all'] }}"
 
 - name: objects | Collect all config objects for myself (from myself if list)
-  ansible.builtin.set_fact:
-    tmp_objects: "{{ tmp_objects | default([]) + lookup('list', hostvars[inventory_hostname]['icinga2_objects']) }}"
   when:
     - hostvars[inventory_hostname]['icinga2_objects'] is defined
     - hostvars[inventory_hostname]['icinga2_objects'] is iterable
     - hostvars[inventory_hostname]['icinga2_objects'] is not string
     - hostvars[inventory_hostname]['icinga2_objects'] is not mapping
+  ansible.builtin.set_fact:
+    __icinga2_tmp_objects: "{{ __icinga2_tmp_objects | default([]) + lookup('list', hostvars[inventory_hostname]['icinga2_objects']) }}"
 
 - name: objects | Collect all config objects in play vars
   ansible.builtin.set_fact:
-    tmp_objects: "{{ tmp_objects | default([]) + lookup('list', icinga2_objects) }}"
+    __icinga2_tmp_objects: "{{ __icinga2_tmp_objects | default([]) + lookup('list', icinga2_objects) }}"
   when:
     - icinga2_objects is defined
     - icinga2_objects is iterable
@@ -24,17 +24,17 @@
     - icinga2_objects is not mapping
 
 - name: objects | Convert collected objects to API Object
+  when: __icinga2_tmp_objects is defined
   icinga.icinga.icinga2_object:
     args: "{{ item }}"
-  with_items: "{{ tmp_objects }}"
-  when: tmp_objects is defined
-  register: result
+  with_items: "{{ __icinga2_tmp_objects }}"
+  register: __icinga2_objects_converted
 
 - name: objects | Prepare configs as API objects
+  when: __icinga2_objects_converted.results is defined
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [item.dest] }}"
-  with_items: "{{ result.results }}"
-  when: result.results is defined
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [item.dest] }}"
+  with_items: "{{ __icinga2_objects_converted.results }}"
 
 - name: objects | Prepare custom config
   when: icinga2_custom_config is defined and icinga2_custom_config|length > 0

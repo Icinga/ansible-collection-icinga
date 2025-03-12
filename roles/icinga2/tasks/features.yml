@@ -10,8 +10,8 @@
 
 - name: features | Collect enabled features
   ansible.builtin.set_fact:
-    features_enabled: >-
-      {{ features_enabled | default([])
+    __icinga2_features_enabled: >-
+      {{ __icinga2_features_enabled | default([])
       + [ __icinga2_feature_realname[item.path | basename| splitext | first]
         | default(item.path | basename | splitext | first)
         ] }}
@@ -22,7 +22,7 @@
   ansible.builtin.file:
     state: absent
     path: "{{ '/etc/icinga2/features-enabled/' + __icinga2_feature_realname[item] | default(item) + '.conf' }}"
-  loop: "{{ features_enabled | default([]) | difference(icinga2_features | map(attribute='name') | list) }}"
+  loop: "{{ __icinga2_features_enabled | default([]) | difference(icinga2_features | map(attribute='name') | list) }}"
   notify: check-and-reload-icinga2-service
   when: icinga2_purge_features
 

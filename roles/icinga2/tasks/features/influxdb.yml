@@ -5,9 +5,9 @@
     name: influxdb
     type: InfluxdbWriter
     ansible.builtin.file: features-available/influxdb.conf
-    args: "{{ icinga2_dict_features.influxdb }}"
+    args: "{{ __icinga2_dict_features.influxdb }}"
   register: result
 
 - name: features | influxdb | Enhance local object
   ansible.builtin.set_fact:
-    icinga2_local_objects: "{{ icinga2_local_objects | default([]) + [result.dest] }}"
+    __icinga2_local_objects: "{{ __icinga2_local_objects | default([]) + [result.dest] }}"

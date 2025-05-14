@@ -31,6 +31,7 @@
    ```
 
 4. **Create a new changelog:**<br>
+
    Lint the changelogs:<br>
    ```bash
    antsibull-changelog lint

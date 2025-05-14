@@ -19,7 +19,6 @@ Collection to setup and manage components of the Icinga software stack.
   * [List of Available Check Commands](doc/role-monitoring_plugins/check_command_list.md)
 * [Inventory Plugin: icinga.icinga.icinga](doc/plugins/inventory/icinga-inventory-plugin.md)
 
-
 ## Installation
 
 You can easily install the collection with the `ansible-galaxy` command.

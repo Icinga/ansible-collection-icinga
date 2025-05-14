@@ -6,6 +6,7 @@
 Collection to setup and manage components of the Icinga software stack.
 
 ## Documentation and Roles
+
 * [Getting Started](doc/getting-started.md)
 * [Role: icinga.icinga.repos](doc/role-repos/role-repos.md)
 * [Role: icinga.icinga.icinga2](doc/role-icinga2/role-icinga2.md)

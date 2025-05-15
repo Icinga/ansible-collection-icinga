@@ -1,0 +1,4 @@
+---
+
+bugfixes:
+  - Fix bug where the port for Icinga Web's own database connection was not set in ``resources.ini``.

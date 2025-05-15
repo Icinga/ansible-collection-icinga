@@ -1,12 +1,13 @@
 namespace: icinga
 name: icinga
-version: 0.3.4
+version: 0.4.0
 readme: README.md
 authors:
   - Lennart Betz <lennart.betz@netways.de>
   - Thilo Wening <thilo.wening@netways.de>
   - Thomas Widhalm <thomas.widhalm@netways.de>
   - Afeef Ghannam <afeef.ghannam@netways.de>
+  - Matthias Döhler <matthias.doehler@netways.de>
 description: >
   This collection manages all Icinga 2 Components.
   Including the official repositories, server, satellite and agent installations.

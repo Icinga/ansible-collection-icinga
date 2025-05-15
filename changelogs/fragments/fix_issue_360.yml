@@ -1,4 +1,0 @@
----
-
-bugfixes:
-  - "Reintroduce file deleted in previous PR #354 to restore functionality in x509 module - thanks to @lutin-malin #366"

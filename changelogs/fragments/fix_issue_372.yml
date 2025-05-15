@@ -1,6 +1,0 @@
----
-
-bugfixes:
-  - Fix bug with current beta release of Ansible Core where ``XY is dict`` does not work for dictionary-like variables.
-    Use ``isinstance(XY, dict)`` now instead.
-    This bug is related to the ``prefix`` filter plugin but might arise again with other parts of the code in the future.

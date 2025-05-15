@@ -1,5 +1,0 @@
----
-
-bugfixes:
-  - Fix exposure of secret ``TicketSalt`` inside the API feature.
-    Use constant ``TicketSalt`` as the value for ``ticket_salt`` instead which is an empty string if unchanged by the user.

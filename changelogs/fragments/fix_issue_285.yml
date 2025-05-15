@@ -1,4 +1,0 @@
----
-
-bugfixes:
-  - Fix templating issue where explicitly quoting integer values for use as strings is necessary in certain versions of e.g. Jinja2 - thanks @sol1-matt

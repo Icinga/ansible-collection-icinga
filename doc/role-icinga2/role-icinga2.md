@@ -1,4 +1,4 @@
-# Role icinga.icinga.icinga2
+# Role netways.icinga.icinga2
 
 The collection provides several roles to install and configure Icinga 2.
 

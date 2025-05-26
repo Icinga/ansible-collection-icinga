@@ -1,11 +1,11 @@
-# Ansible Role icinga.icinga.monitoring_plugins
+# Ansible Role netways.icinga.monitoring_plugins
 
 This role manages the installation/removal of many well known check plugins typically used in monitoring systems.<br>
 The list is based on the section *"Plugin Check Commands for Monitoring Plugins"* as seen in the [**Icinga Template Library** (ITL)](https://icinga.com/docs/icinga-2/latest/doc/10-icinga-template-library/#plugin-check-commands-for-monitoring-plugins).
 
 * [List of available check commands](check_command_list.md)
 
-> For Suse based systems you need the Ansible module `zypper`. Refer to the [getting started](https://github.com/Icinga/ansible-collection-icinga/blob/main/doc/getting-started.md#requirements) section.
+> For Suse based systems you need the Ansible module `zypper`. Refer to the [getting started](https://github.com/NETWAYS/ansible-collection-icinga/blob/main/doc/getting-started.md#requirements) section.
 
 ## Variables
 
@@ -84,7 +84,7 @@ Install check commands<br>
       - tcp
       - uptime
   roles:
-    - icinga.icinga.monitoring_plugins
+    - netways.icinga.monitoring_plugins
 ```
 
 ---
@@ -101,5 +101,5 @@ Remove all check commands known to this role. Also remove unneeded dependencies.
     icinga_monitoring_plugins_autoremove: true
     icinga_monitoring_plugins_check_commands: []
   roles:
-    - icinga.icinga.monitoring_plugins
+    - netways.icinga.monitoring_plugins
 ```

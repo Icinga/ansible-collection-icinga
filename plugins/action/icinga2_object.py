@@ -4,7 +4,7 @@ import re
 from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
 from ansible.utils.vars import merge_hash
-from ansible_collections.icinga.icinga.plugins.module_utils.parse import Icinga2Parser
+from ansible_collections.netways.icinga.plugins.module_utils.parse import Icinga2Parser
 
 
 class ActionModule(ActionBase):

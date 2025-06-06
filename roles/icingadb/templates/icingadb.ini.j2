@@ -30,7 +30,7 @@ database:
 
 redis:
   host: {{ icingadb_redis_host }}
-{% if icingadb_redis_tls %}
+{% if icingadb_redis_tls is defiend %}
   port: 0
   tls-port: {{ icingadb_redis_tls_port | default(6380) }}
 {% elif icingadb_redis_port is defined %}

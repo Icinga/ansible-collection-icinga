@@ -15,4 +15,11 @@ database:
 prometheus:
 {% if icinga_kubernetes_prometheus_url is defined %}
   url: {{ icinga_kubernetes_prometheus_url }}
+  insecure: {{ icinga_kubernetes_prometheus_insecure | default(false) }}
+{% if icinga_kubernetes_prometheus_username is defined %}
+  username: {{ icinga_kubernetes_prometheus_username }}
+{% endif %}
+{% if icinga_kubernetes_prometheus_password is defined %}
+  password: {{ icinga_kubernetes_prometheus_password }}
+{% endif %}
 {% endif %}

@@ -38,6 +38,10 @@ The following variables are used for the Icinga Kubernetes setup. Normally, you 
 | `icinga_kubernetes_service_name` | `String` | Defines the name of the Icinga Kubernetes service. | `icinga-kubernetes` |
 | `icinga_kubernetes_user` | `String` | Defines the user for the Icinga Kubernetes service. | `icinga-kubernetes` |
 | `icinga_kubernetes_kubeconfig_path` | `String` | Defines the path for the kubeconfig file, if not in standard path defined by KUBECONFIG env |  |
+| `icinga_kubernetes_prometheus_url` | `String` | Defines optional url of a Prometheus instance to connect for metrics |  |
+| `icinga_kubernetes_prometheus_insecure` | `String` | Defines an insecure connection to the Prometheus instance |  |
+| `icinga_kubernetes_prometheus_username` | `String` | Defines optional username to access the Prometheus instance |  |
+| `icinga_kubernetes_prometheus_password` | `String` | Defines optional password to access the Prometheus instance|  |
 
 ## Examples
 

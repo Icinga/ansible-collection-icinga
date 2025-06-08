@@ -6,4 +6,4 @@
     owner: "{{ icinga_kubernetes_user }}"
     group: "{{ icinga_kubernetes_group }}"
     mode: 0640
-  notify: Kubernetes-restart
+  notify: Icinga Kubernetes restart

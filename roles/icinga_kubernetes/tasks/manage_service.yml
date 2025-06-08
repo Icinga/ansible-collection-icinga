@@ -1,24 +1,24 @@
 ---
-- name: Override KUBECONFIG path if defined
-  when: icinga_kubernetes_kubeconfig_path is defined
-  block:
-    - name: Create service override directory
-      ansible.builtin.file:
-        path: /etc/systemd/system/{{ icinga_kubernetes_service_name }}.service.d
-        state: directory
-        mode: '0755'
-      notify:
-        - Systemd reload
-        - Kubernetes-restart
-
-    - name: Create service override configuration file
-      ansible.builtin.template:
-        src: icinga-kubernetes-override.conf.j2
-        dest: "/etc/systemd/system/{{ icinga_kubernetes_service_name }}.service.d/override.conf"
-        mode: '0640'
-      notify:
-        - Systemd reload
-        - Kubernetes-restart
+- name: Configure Icinga Kubernetes clusters via env files
+  when:
+    - icinga_kubernetes_cluster_config is defined
+    - icinga_kubernetes_cluster_config | length > 0
+  ansible.builtin.template:
+    src: cluster-config.env.j2
+    dest: "{{ icinga_kubernetes_config_dir }}/{{ l_cluster_config.cluster_name }}.env"
+    owner: "{{ icinga_kubernetes_user }}"
+    group: "{{ icinga_kubernetes_group }}"
+    mode: '0640'
+  vars:
+    icinga_for_kubernetes_cluster_name: "{{ l_cluster_config.cluster_name }}"
+    kubeconfig: "{{ l_cluster_config.kubeconfig | d('') }}"
+  loop: "{{ icinga_kubernetes_cluster_config }}"
+  loop_control:
+    loop_var: l_cluster_config
+    label: "{{ l_cluster_config.cluster_name }}"
+  notify:
+    - Systemd reload
+    - Icinga Kubernetes restart
 
 - name: Ensure Kubernetes Service is running
   ansible.builtin.service:

@@ -3,7 +3,7 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: Kubernetes-restart
+- name: Icinga Kubernetes restart
   ansible.builtin.service:
     name: "{{ icinga_kubernetes_service_name }}"
     state: restarted

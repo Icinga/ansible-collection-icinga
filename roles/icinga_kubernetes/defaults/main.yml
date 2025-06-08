@@ -16,4 +16,5 @@ icinga_kubernetes_user: icinga-kubernetes
 icinga_kubernetes_database_schema: "/usr/share/icinga-kubernetes/schema/{{ icinga_kubernetes_database_type }}/schema.sql"
 icinga_kubernetes_packages:
   - icinga-kubernetes
-# icinga_kubernetes_kubeconfig_path:
+icinga_kubernetes_cluster_config:
+  - cluster_name: default

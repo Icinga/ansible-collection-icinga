@@ -37,9 +37,9 @@ The following variables are used for the Icinga Kubernetes setup. Normally, you 
 | `icinga_kubernetes_packages` | `List` | Defines the packages to install for Icinga Kubernetes. | `[icinga-kubernetes]` |
 | `icinga_kubernetes_service_name` | `String` | Defines the name of the Icinga Kubernetes service. | `icinga-kubernetes` |
 | `icinga_kubernetes_user` | `String` | Defines the user for the Icinga Kubernetes service. | `icinga-kubernetes` |
-| `icinga_kubernetes_kubeconfig_path` | `String` | Defines the path for the kubeconfig file, if not in standard path defined by KUBECONFIG env |  |
+| `icinga_kubernetes_cluster_config` | `List of dicts` | List of cluster configurations, list of dicts, must contain 'cluster_name' and optional 'kubeconfig' path, see example, leave unconfigured for default package config | `[ cluster_name: default ]` |
 | `icinga_kubernetes_prometheus_url` | `String` | Defines optional url of a Prometheus instance to connect for metrics |  |
-| `icinga_kubernetes_prometheus_insecure` | `String` | Defines an insecure connection to the Prometheus instance |  |
+| `icinga_kubernetes_prometheus_insecure` | `String` | Defines an insecure connection to the Prometheus instance | `false` |
 | `icinga_kubernetes_prometheus_username` | `String` | Defines optional username to access the Prometheus instance |  |
 | `icinga_kubernetes_prometheus_password` | `String` | Defines optional password to access the Prometheus instance|  |
 
@@ -72,7 +72,9 @@ This example installs Icinga Kubernetes and connects it to a **remote** MySQL da
     icinga_kubernetes_database_user: kube_user
     icinga_kubernetes_database_password: hellokube$123
     icinga_kubernetes_database_import_schema: true
-    icinga_kubernetes_kubeconfig_path: /opt/kube/config
+    icinga_kubernetes_cluster_config:
+      - cluster_name: default
+        kubeconfig: ~/.kube/config
 
   roles:
     - role: icinga.icinga.icinga_kubernetes

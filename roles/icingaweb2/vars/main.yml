@@ -4,3 +4,4 @@ icingaweb2_module_packages:
   director: icinga-director
   x509: icinga-x509
   businessprocess: icinga-businessprocess
+  kubernetes: icinga-kubernetes-web

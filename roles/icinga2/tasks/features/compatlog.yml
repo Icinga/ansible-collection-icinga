@@ -1,7 +1,7 @@
 ---
 
 - name: features | compatlog | CompatLogger object
-  icinga.icinga.icinga2_object:
+  netways.icinga.icinga2_object:
     name: compatlog
     type: CompatLogger
     file: features-available/compatlog.conf

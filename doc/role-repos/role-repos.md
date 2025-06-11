@@ -1,4 +1,4 @@
-# Ansible Role icinga.icinga.repos
+# Ansible Role netways.icinga.repos
 
 This role configures Icinga 2 related repositories to provide all necessary packages.
 

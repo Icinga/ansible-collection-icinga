@@ -1,4 +1,4 @@
-# Role icinga.icinga.icingaweb2
+# Role netways.icinga.icingaweb2
 
 The role icingaweb2 installs and configures Icinga Web 2 and its modules.
 
